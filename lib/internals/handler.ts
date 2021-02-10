@@ -12,8 +12,9 @@ export function Handler(method?: HttpVerb): MethodDecorator {
 
   return function (target: object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>) {
     const httpCode = Reflect.getMetadata(HTTP_CODE_TOKEN, target.constructor, propertyKey) ?? 200;
-    const metaParameters: Array<MetaParameter> =
-      Reflect.getMetadata(PARAMETER_TOKEN, target.constructor, propertyKey) ?? [];
+    const metaParameters: Array<MetaParameter> = (
+      Reflect.getMetadata(PARAMETER_TOKEN, target.constructor, propertyKey) ?? []
+    ).sort((a: MetaParameter, b: MetaParameter) => a.index - b.index);
 
     const originalHandler = descriptor.value;
     descriptor.value = async function (req: NextApiRequest, res: NextApiResponse) {
