@@ -1,8 +1,9 @@
 import 'reflect-metadata';
 import express from 'express';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import request from 'supertest';
 import { createHandler } from './createHandler';
-import { Body, Delete, Get, Header, HttpCode, Post, Put, Query, SetHeader } from './decorators';
+import { Body, Delete, Get, Header, HttpCode, Post, Put, Query, Req, Response, SetHeader } from './decorators';
 import { ParseBooleanPipe } from './pipes/parseBoolean.pipe';
 import { ParseNumberPipe } from './pipes/parseNumber.pipe';
 
@@ -36,9 +37,16 @@ class TestHandler {
 
   @Delete()
   @SetHeader('X-Method', 'delete')
-  public delete(@Header('Content-Type') contentType: string, @Query('id') id: string, @Body() body: any) {
-    return { contentType, id, receivedBody: body, test: this.testField };
+  public delete(@Req() req: NextApiRequest, @Response() res: NextApiResponse) {
+    const { headers, query, body } = req;
+    const { 'content-type': contentType } = headers;
+    const { id } = query;
+
+    return res.status(200).json({ contentType, id, receivedBody: body, test: this.testField });
   }
+  // public delete(@Header('Content-Type') contentType: string, @Query('id') id: string, @Body() body: any) {
+  //   return { contentType, id, receivedBody: body, test: this.testField };
+  // }
 }
 
 describe('E2E', () => {

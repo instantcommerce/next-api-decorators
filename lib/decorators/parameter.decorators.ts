@@ -2,7 +2,7 @@ import type { ParameterPipe } from '../pipes/ParameterPipe';
 
 export interface MetaParameter {
   index: number;
-  location: 'query' | 'body' | 'header' | 'method';
+  location: 'query' | 'body' | 'header' | 'method' | 'request' | 'response';
   name?: string;
   pipes?: ParameterPipe<any>[];
 }
@@ -40,4 +40,24 @@ export function Body(): ParameterDecorator {
  */
 export function Header(name: string): ParameterDecorator {
   return addParameter('header', name);
+}
+
+/** Returns the `req` object. */
+export function Req(): ParameterDecorator {
+  return addParameter('request');
+}
+
+/** Returns the `req` object. */
+export function Request(): ParameterDecorator {
+  return Req();
+}
+
+/** Returns the `res` object. */
+export function Res(): ParameterDecorator {
+  return addParameter('response');
+}
+
+/** Returns the `res` object. */
+export function Response(): ParameterDecorator {
+  return Res();
 }
