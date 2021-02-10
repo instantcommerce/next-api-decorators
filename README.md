@@ -115,3 +115,15 @@ export default createHandler(User);
 | `@Query(name: string)`  | Gets a query string parameter value. |
 | `@Body()`               | Gets the request body |
 | `@Header(name: string)` | Gets a header value. |
+
+
+## Available pipes
+
+Pipes are being used to validate incoming values. Currently there are two built-in pipes.
+
+ℹ️ Beware that they throw when the value is invalid.
+
+|     | Description | Usage |
+| --- | ----------- | ----- |
+| `ParseNumberPipe` | Validates the given value if it's a `Number`. Uses `parseFloat` under the hood. | `@Query('age', ParseNumberPipe)` |
+| `ParseBooleanPipe` | Validates the given value if it's a `Boolean` string. | `@Query('isActive', ParseBooleanPipe) isActive: boolean)` |
