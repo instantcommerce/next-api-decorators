@@ -1,3 +1,4 @@
+import { ServerResponse } from 'http';
 import { Stream } from 'stream';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { HEADER_TOKEN, HttpVerb, HTTP_CODE_TOKEN, MetaParameter, PARAMETER_TOKEN } from '../decorators';
@@ -41,6 +42,10 @@ export function Handler(method?: HttpVerb): MethodDecorator {
               return name ? req.headers[name.toLowerCase()] : req.headers;
             case 'method':
               return req.method;
+            case 'request':
+              return req;
+            case 'response':
+              return res;
             default:
               return undefined;
           }
@@ -52,10 +57,14 @@ export function Handler(method?: HttpVerb): MethodDecorator {
           return returnValue;
         });
 
-        const returnValue = await originalHandler.call(this, ...parameters);
-
         classHeaders?.forEach((value, name) => res.setHeader(name, value));
         methodHeaders?.forEach((value, name) => res.setHeader(name, value));
+
+        const returnValue = await originalHandler.call(this, ...parameters);
+
+        if (returnValue instanceof ServerResponse) {
+          return;
+        }
 
         res.status(httpCode ?? (returnValue ? 200 : 204));
 
