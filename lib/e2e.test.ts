@@ -1,6 +1,6 @@
 import 'reflect-metadata';
-import * as express from 'express';
-import * as request from 'supertest';
+import express from 'express';
+import request from 'supertest';
 import { createHandler } from './createHandler';
 import { Body, Delete, Get, Header, HttpCode, Post, Put, Query, SetHeader } from './decorators';
 import { ParseBooleanPipe } from './pipes/parseBoolean.pipe';
