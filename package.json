@@ -9,8 +9,8 @@
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "build": "npm run build:types && npm run build:js",
-    "build:types": "tsc --emitDeclarationOnly",
+    "build": "rm -rf dist && npm run build:types && npm run build:js",
+    "build:types": "tsc -p ./tsconfig.build.json --emitDeclarationOnly",
     "build:js": "babel lib --out-dir dist --extensions \".ts\"",
     "commit": "./node_modules/cz-customizable/standalone.js",
     "test": "jest --coverage",
