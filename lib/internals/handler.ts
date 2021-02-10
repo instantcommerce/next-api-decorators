@@ -57,7 +57,7 @@ export function Handler(method?: HttpVerb): MethodDecorator {
         classHeaders?.forEach((value, name) => res.setHeader(name, value));
         methodHeaders?.forEach((value, name) => res.setHeader(name, value));
 
-        res.status(httpCode ?? (returnValue ? 200 : 204));
+        res.status(httpCode ?? (returnValue != null ? 200 : 204));
 
         if (returnValue instanceof Stream) {
           returnValue.pipe(res);
