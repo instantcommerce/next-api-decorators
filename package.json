@@ -18,7 +18,7 @@
     "lint": "eslint \"**/*.+(js|jsx|ts|tsx|mdx)\"",
     "ts-coverage": "typescript-coverage-report",
     "semantic-release": "semantic-release",
-    "analyze": "ANALYZE=true next build"
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "reflect-metadata": "^0.1.13"
