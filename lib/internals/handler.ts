@@ -2,7 +2,6 @@ import { Stream } from 'stream';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { HEADER_TOKEN, HttpVerb, HTTP_CODE_TOKEN, MetaParameter, PARAMETER_TOKEN } from '../decorators';
 import { HttpException } from '../exceptions';
-import { applyInternalPipes } from '../pipes/applyInternalPipes';
 import { notFound } from './notFound';
 
 export function Handler(method?: HttpVerb): MethodDecorator {
@@ -29,22 +28,30 @@ export function Handler(method?: HttpVerb): MethodDecorator {
         propertyKey
       );
 
-      const parameters = metaParameters.map(({ location, name }) => {
-        switch (location) {
-          case 'query':
-            return name ? applyInternalPipes(req.query[name]) : req.query;
-          case 'body':
-            return req.body;
-          case 'header':
-            return name ? applyInternalPipes(req.headers[name.toLowerCase()]) : req.headers;
-          case 'method':
-            return req.method;
-          default:
-            return undefined;
-        }
-      });
-
       try {
+        const parameters = metaParameters.map(({ location, name, pipes }) => {
+          let returnValue: any;
+          switch (location) {
+            case 'query':
+              returnValue = name ? req.query[name] : req.query;
+              break;
+            case 'body':
+              return req.body;
+            case 'header':
+              return name ? req.headers[name.toLowerCase()] : req.headers;
+            case 'method':
+              return req.method;
+            default:
+              return undefined;
+          }
+
+          if (returnValue && pipes && pipes.length) {
+            pipes.forEach(pipeFn => (returnValue = pipeFn(returnValue)));
+          }
+
+          return returnValue;
+        });
+
         const returnValue = await originalHandler.call(this, ...parameters);
 
         classHeaders?.forEach((value, name) => res.setHeader(name, value));
