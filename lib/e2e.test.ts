@@ -1,10 +1,41 @@
 import 'reflect-metadata';
-import * as express from 'express';
-import * as request from 'supertest';
+import { IsBoolean, IsDate, IsEnum, IsInt, IsNotEmpty, IsOptional } from 'class-validator';
+import express from 'express';
+import request from 'supertest';
 import { createHandler } from './createHandler';
 import { Body, Delete, Get, Header, HttpCode, Post, Put, Query, SetHeader } from './decorators';
 import { ParseBooleanPipe } from './pipes/parseBoolean.pipe';
 import { ParseNumberPipe } from './pipes/parseNumber.pipe';
+
+enum CreateSource {
+  ONLINE = 'online',
+  OFFLINE = 'offline'
+}
+
+class CreateDto {
+  @IsNotEmpty()
+  public firstName!: string;
+
+  @IsNotEmpty()
+  public lastName!: string;
+
+  @IsInt()
+  public birthYear!: number;
+
+  @IsBoolean()
+  public isActive!: boolean;
+
+  @IsDate()
+  public dateOfBirth!: Date;
+
+  @IsDate()
+  @IsOptional()
+  public createdAt?: Date;
+
+  @IsEnum(CreateSource)
+  @IsOptional()
+  public source?: CreateSource;
+}
 
 @SetHeader('X-Api', 'true')
 class TestHandler {
@@ -24,8 +55,8 @@ class TestHandler {
   @Post()
   @HttpCode(201)
   @SetHeader('X-Method', 'create')
-  public create(@Header('Content-Type') contentType: string, @Body() body: any) {
-    return { contentType, receivedBody: body, test: this.testField };
+  public create(@Header('Content-Type') contentType: string, @Body() body: CreateDto) {
+    return { contentType, receivedBody: body, test: this.testField, instanceOf: body instanceof CreateDto };
   }
 
   @Put()
@@ -75,7 +106,13 @@ describe('E2E', () => {
   it('create', () =>
     request(server)
       .post('/')
-      .send({ firstName: 'Ada', lastName: 'Lovelace', dateOfBirth: '1815-12-10' })
+      .send({
+        firstName: 'Ada',
+        lastName: 'Lovelace',
+        dateOfBirth: new Date('1815-12-10'),
+        birthYear: 1815,
+        isActive: true
+      } as CreateDto)
       .expect(201)
       .then(res =>
         expect(res).toMatchObject({
@@ -86,11 +123,32 @@ describe('E2E', () => {
           body: {
             contentType: 'application/json',
             test: 'test',
+            instanceOf: true,
             receivedBody: {
               firstName: 'Ada',
               lastName: 'Lovelace',
-              dateOfBirth: '1815-12-10'
+              dateOfBirth: '1815-12-10T00:00:00.000Z'
             }
+          }
+        })
+      ));
+
+  it('Returns error for create', () =>
+    request(server)
+      .post('/')
+      .send({
+        firstName: 'Ada',
+        lastName: 'Lovelace',
+        dateOfBirth: new Date('1815-12-10'),
+        birthYear: 1815,
+        isActive: true,
+        source: 'TEST'
+      })
+      .expect(400)
+      .then(res =>
+        expect(res).toMatchObject({
+          body: {
+            errors: expect.arrayContaining([expect.stringContaining('source must be a valid enum value')])
           }
         })
       ));
