@@ -10,7 +10,7 @@ export function Handler(method?: HttpVerb): MethodDecorator {
   }
 
   return function (target: object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>) {
-    const httpCode = Reflect.getMetadata(HTTP_CODE_TOKEN, target.constructor, propertyKey) ?? 200;
+    const httpCode: number | undefined = Reflect.getMetadata(HTTP_CODE_TOKEN, target.constructor, propertyKey);
     const metaParameters: Array<MetaParameter> = (
       Reflect.getMetadata(PARAMETER_TOKEN, target.constructor, propertyKey) ?? []
     ).sort((a: MetaParameter, b: MetaParameter) => a.index - b.index);
@@ -57,7 +57,7 @@ export function Handler(method?: HttpVerb): MethodDecorator {
         classHeaders?.forEach((value, name) => res.setHeader(name, value));
         methodHeaders?.forEach((value, name) => res.setHeader(name, value));
 
-        res.status(httpCode);
+        res.status(httpCode ?? (returnValue ? 200 : 204));
 
         if (returnValue instanceof Stream) {
           returnValue.pipe(res);
