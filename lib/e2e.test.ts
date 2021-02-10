@@ -3,6 +3,8 @@ import * as express from 'express';
 import * as request from 'supertest';
 import { createHandler } from './createHandler';
 import { Body, Delete, Get, Header, HttpCode, Post, Put, Query, SetHeader } from './decorators';
+import { ParseBooleanPipe } from './pipes/parseBoolean.pipe';
+import { ParseNumberPipe } from './pipes/parseNumber.pipe';
 
 @SetHeader('X-Api', 'true')
 class TestHandler {
@@ -13,8 +15,8 @@ class TestHandler {
   public read(
     @Header('Content-Type') contentType: string,
     @Query('id') id: string,
-    @Query('step') step: number,
-    @Query('redirect') redirect: boolean
+    @Query('step', ParseNumberPipe) step: number,
+    @Query('redirect', ParseBooleanPipe) redirect: boolean
   ) {
     return { contentType, id, step, redirect, test: this.testField };
   }
