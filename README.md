@@ -5,11 +5,13 @@
   <h1 align="center">@storyofams/next-api-decorators</h1>
 </p>
 
-Collection of decorators to create structured API routes with Next.js.
+<p align="center">Collection of decorators to create structured API routes with Next.js.</p>
 
 ---
 
 ## Usage
+
+Since decorators are still in proposal state, you need to add the following plugins to your project in order to use them.
 
 ```bash
 $ yarn add -D babel-plugin-transform-typescript-metadata @babel/plugin-proposal-decorators babel-plugin-parameter-decorator
