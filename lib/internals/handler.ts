@@ -84,16 +84,16 @@ export function Handler(method?: HttpVerb): MethodDecorator {
       } catch (err) {
         console.error(err);
 
-        if (err instanceof HttpException) {
-          res.status(err.statusCode ?? 500).json({
-            statusCode: err.statusCode ?? 500,
-            error: err.message ?? 'An unknown error occurred.',
-            errors: err.errors,
-            stack: 'stack' in err && process.env.NODE_ENV === 'development' ? err.stack : undefined
-          });
-        } else {
-          res.status(500).end();
-        }
+        const statusCode = err instanceof HttpException ? err.statusCode : 500;
+        const message = err instanceof HttpException ? err.message : 'An unknown error occurred.';
+        const errors = err instanceof HttpException && err.errors?.length ? err.errors : [message];
+
+        res.status(statusCode).json({
+          statusCode,
+          message,
+          errors,
+          stack: 'stack' in err && process.env.NODE_ENV === 'development' ? err.stack : undefined
+        });
       }
     };
   };
