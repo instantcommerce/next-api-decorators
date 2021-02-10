@@ -62,7 +62,7 @@ export function Handler(method?: HttpVerb): MethodDecorator {
         if (returnValue instanceof Stream) {
           returnValue.pipe(res);
         } else {
-          res.json(returnValue);
+          res.json(returnValue ?? null);
         }
       } catch (err) {
         console.error(err);
