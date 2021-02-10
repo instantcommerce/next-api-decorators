@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "isolatedModules": true,
+    "outDir": "./dist",
+    "skipLibCheck": true
+  },
+  "exclude": ["node_modules"],
+  "include": ["lib/**/*.ts"]
+}

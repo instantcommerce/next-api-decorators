@@ -1,0 +1,84 @@
+{
+  "name": "@storyofams/next-api-decorators",
+  "version": "1.0.0",
+  "author": {
+    "name": "Story of AMS",
+    "url": "https://storyofams.com",
+    "email": "dev@storyofams.com"
+  },
+  "main": "dist/index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "npm run build:types && npm run build:js",
+    "build:types": "tsc --emitDeclarationOnly",
+    "build:js": "babel lib --out-dir dist --extensions \".ts\"",
+    "commit": "./node_modules/cz-customizable/standalone.js",
+    "test": "jest --coverage",
+    "test:watch": "jest --watch",
+    "lint": "eslint \"**/*.+(js|jsx|ts|tsx|mdx)\"",
+    "ts-coverage": "typescript-coverage-report",
+    "semantic-release": "semantic-release",
+    "analyze": "ANALYZE=true next build"
+  },
+  "dependencies": {
+    "reflect-metadata": "^0.1.13"
+  },
+  "peerDependencies": {
+    "next": "10.0.5",
+    "@babel/plugin-proposal-decorators": "7.12.13",
+    "babel-plugin-parameter-decorator": "1.0.16"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.12.10",
+    "@babel/core": "7.12.10",
+    "@babel/plugin-proposal-decorators": "7.12.13",
+    "@babel/runtime-corejs2": "7.12.5",
+    "@commitlint/cli": "11.0.0",
+    "@commitlint/config-conventional": "11.0.0",
+    "@jest/types": "26.6.2",
+    "@storyofams/eslint-config-ams": "1.1.2",
+    "@typescript-eslint/eslint-plugin": "4.13.0",
+    "@typescript-eslint/parser": "4.13.0",
+    "babel-eslint": "10.1.0",
+    "babel-loader": "8.2.2",
+    "babel-plugin-parameter-decorator": "1.0.16",
+    "eslint": "7.18.0",
+    "eslint-config-prettier": "7.1.0",
+    "eslint-import-resolver-alias": "1.1.2",
+    "eslint-plugin-import": "2.22.1",
+    "eslint-plugin-prettier": "3.3.1",
+    "husky": "4.3.8",
+    "jest": "26.6.3",
+    "lint-staged": "10.5.3",
+    "next": "10.0.5",
+    "prettier": "2.2.1",
+    "semantic-release": "17.3.3",
+    "typescript": "4.1.3"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@storyofams/eslint-config-ams/node"
+    ]
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-customizable"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "**/*.+(js|jsx|ts|tsx|mdx)": [
+      "eslint --fix"
+    ]
+  }
+}
