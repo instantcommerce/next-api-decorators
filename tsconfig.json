@@ -5,6 +5,8 @@
     "forceConsistentCasingInFileNames": true,
     "declaration": true,
     "emitDeclarationOnly": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "isolatedModules": true,
     "outDir": "./dist",
     "skipLibCheck": true
