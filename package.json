@@ -20,6 +20,9 @@
     "semantic-release": "semantic-release",
     "prepublishOnly": "npm run build"
   },
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "reflect-metadata": "^0.1.13"
   },
