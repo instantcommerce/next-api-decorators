@@ -84,7 +84,7 @@ export function Handler(method?: HttpVerb): MethodDecorator {
           return;
         }
 
-        res.status(httpCode ?? (returnValue ? 200 : 204));
+        res.status(httpCode ?? (returnValue != null ? 200 : 204));
 
         if (returnValue instanceof Stream) {
           returnValue.pipe(res);
