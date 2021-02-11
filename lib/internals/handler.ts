@@ -80,7 +80,7 @@ export function Handler(method?: HttpVerb): MethodDecorator {
 
         const returnValue = await originalHandler.call(this, ...parameters);
 
-        if (returnValue instanceof ServerResponse) {
+        if (returnValue instanceof ServerResponse || res.headersSent) {
           return;
         }
 
@@ -92,8 +92,6 @@ export function Handler(method?: HttpVerb): MethodDecorator {
           res.json(returnValue ?? null);
         }
       } catch (err) {
-        console.error(err);
-
         const statusCode = err instanceof HttpException ? err.statusCode : 500;
         const message = err instanceof HttpException ? err.message : 'An unknown error occurred.';
         const errors = err instanceof HttpException && err.errors?.length ? err.errors : [message];
