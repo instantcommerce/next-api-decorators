@@ -75,7 +75,7 @@ export default createHandler(User);
 If you want to use `class-validator` to validate request bodies and get them as DTOs, add it to your project by running:
 
 ```bash
-$ yarn add class-validator
+$ yarn add class-validator class-transformer
 ```
 
 Then you can define your DTOs like:
@@ -134,7 +134,7 @@ export default createHandler(User);
 
 ## Built-in pipes
 
-Pipes are being used to validate and transforms incoming values. The pipes can be added to the `@Query` decorator like:
+Pipes are being used to validate and transform incoming values. The pipes can be added to the `@Query` decorator like:
 
 ```ts
 @Query('isActive', ParseBooleanPipe) isActive: boolean
@@ -144,5 +144,39 @@ Pipes are being used to validate and transforms incoming values. The pipes can b
 
 |                    | Description                                  | Remarks                                       |
 | ------------------ | -------------------------------------------- | --------------------------------------------- |
-| `ParseNumberPipe`  | Validates ands transforms `Number` strings.  | Uses `parseFloat` under the hood              |
-| `ParseBooleanPipe` | Validates ands transforms `Boolean` strings. | Allows `'true'` and `'false'` as valid values |
+| `ParseNumberPipe`  | Validates and transforms `Number` strings.  | Uses `parseFloat` under the hood              |
+| `ParseBooleanPipe` | Validates and transforms `Boolean` strings. | Allows `'true'` and `'false'` as valid values |
+
+
+## Exceptions
+
+The following built-in exceptions are provided by this package:
+
+* `NotFoundException`
+* `BadRequestException`
+
+
+### Custom exceptions
+
+Any exception class that extends the base `HttpException` will be handled by the built-in error handler.
+
+```ts
+import { HttpException } from '@storyofams/next-api-decorators';
+
+export class ForbiddenException extends HttpException {
+  public constructor(message?: string) {
+    super(403, message);
+  }
+}
+```
+
+Then later in the app, we can use it in our route handler:
+
+```ts
+class Events {
+  @Get()
+  public events() {
+    throw new ForbiddenException();
+  }
+}
+```
