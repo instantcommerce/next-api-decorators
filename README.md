@@ -30,13 +30,24 @@ Your `tsconfig.json` needs the following flags:
 "emitDecoratorMetadata": true
 ```
 
-## Example usage
+## Usage
+
+### Basic example
 
 ```ts
-// pages/api/test.ts
-import { createHandler, Get, NotFoundException } from '@storyofams/next-api-decorators';
+// pages/api/user.ts
+import {
+  createHandler,
+  Get,
+  Post,
+  HttpCode,
+  Query,
+  Body,
+  NotFoundException
+} from '@storyofams/next-api-decorators';
 
 class User {
+  // GET /api/user
   @Get()
   public async fetchUser(@Query('id') id: string) {
     const user = await User.findById(id);
@@ -48,33 +59,18 @@ class User {
     return user;
   }
 
+  // POST /api/user
   @Post()
+  @HttpCode(201)
   public createUser(@Body() body: any) {
     return User.create(body);
-  }
-
-  @Put()
-  public async updateUser(@Query('id') id: string, @Body() body: Record<string, string>) {
-    const user = await User.findById(id);
-
-    if (!user) {
-      throw new NotFoundException('User not found.');
-    }
-
-    user.firstName = body.firstName;
-    user.lastName = body.lastName;
-
-    return user.save();
-  }
-
-  @Delete()
-  public async deleteUser(@Query('id') id: string) {
-    await User.deleteOne({ id });
   }
 }
 
 export default createHandler(User);
 ```
+
+### Data transfer object
 
 If you want to use `class-validator` to validate request bodies and get them as DTOs, add it to your project by running:
 
@@ -82,19 +78,18 @@ If you want to use `class-validator` to validate request bodies and get them as 
 $ yarn add class-validator
 ```
 
-Then you can define your DTOs like below:
+Then you can define your DTOs like:
 
 ```ts
-// pages/api/test.ts
-import { createHandler, Get, NotFoundException } from '@storyofams/next-api-decorators';
-import { IsNotEmpty } from 'class-validator';
+import { createHandler, Post, Body } from '@storyofams/next-api-decorators';
+import { IsNotEmpty, IsEmail } from 'class-validator';
 
 class CreateUserDto {
   @IsNotEmpty()
-  public firstName: string;
+  public name: string;
 
-  @IsNotEmpty()
-  public lastName: string;
+  @IsEmail()
+  public email: string;
 }
 
 class User {
@@ -110,35 +105,44 @@ export default createHandler(User);
 ## Available decorators
 
 ### Class decorators
-|             | Description |
-| ----        | ----------- |
-| `SetHeader` | Sets a header value into the response for all routes defined in the class.
+
+|             | Description                                                                |
+| ----------- | -------------------------------------------------------------------------- |
+| `SetHeader` | Sets a header value into the response for all routes defined in the class. |
 
 ### Method decorators
-|             | Description |
-| ---         | ----------- |
-| `Get`       | Marks the method as `GET` handler.
-| `Post`      | Marks the method as `POST` handler.
-| `Put`       | Marks the method as `PUT` handler.
-| `Delete`    | Marks the method as `DELETE` handler.
-| `SetHeader` | Sets a header key/value into the response for the route.
-| `HttpCode`  | Sets the http code the route response.
+
+|             | Description                                               |
+| ----------- | --------------------------------------------------------- |
+| `Get`       | Marks the method as `GET` handler.                        |
+| `Post`      | Marks the method as `POST` handler.                       |
+| `Put`       | Marks the method as `PUT` handler.                        |
+| `Delete`    | Marks the method as `DELETE` handler.                     |
+| `SetHeader` | Sets a header name/value into the response for the route. |
+| `HttpCode`  | Sets the http code the route response.                    |
 
 ### Parameter decorators
-|                         | Description |
-| ----------------------- | ----------- |
-| `@Query(name: string)`  | Gets a query string parameter value. |
-| `@Body()`               | Gets the request body |
-| `@Header(name: string)` | Gets a header value. |
+
+|                         | Description                                 |
+| ----------------------- | ------------------------------------------- |
+| `@Body()`               | Gets the request body.                      |
+| `@Query(key: string)`   | Gets a query string parameter value by key. |
+| `@Header(name: string)` | Gets a header value by name.                |
 
 
-## Available pipes
 
-Pipes are being used to validate incoming values. Currently there are two built-in pipes.
 
-ℹ️ Beware that they throw when the value is invalid.
+## Built-in pipes
 
-|     | Description | Usage |
-| --- | ----------- | ----- |
-| `ParseNumberPipe` | Validates the given value if it's a `Number`. Uses `parseFloat` under the hood. | `@Query('age', ParseNumberPipe)` |
-| `ParseBooleanPipe` | Validates the given value if it's a `Boolean` string. | `@Query('isActive', ParseBooleanPipe) isActive: boolean)` |
+Pipes are being used to validate and transforms incoming values. The pipes can be added to the `@Query` decorator like:
+
+```ts
+@Query('isActive', ParseBooleanPipe) isActive: boolean
+```
+
+⚠️ Beware that they throw when the value is invalid.
+
+|                    | Description                                 |
+| ------------------ | ------------------------------------------- |
+| `ParseNumberPipe`  | Validates ands transforms `Number` string.  |
+| `ParseBooleanPipe` | Validates ands transforms `Boolean` string. |
