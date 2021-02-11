@@ -8,6 +8,14 @@
   },
   "main": "dist/index.js",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/storyofams/next-api-decorators"
+  },
+  "bugs": {
+    "url": "https://github.com/storyofams/next-api-decorators/issues"
+  },
+  "keywords": ["typescript", "next.js", "decorators"],
   "scripts": {
     "build": "rm -rf dist && npm run build:types && npm run build:js",
     "build:types": "tsc -p ./tsconfig.build.json --emitDeclarationOnly",
