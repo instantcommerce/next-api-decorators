@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import 'reflect-metadata';
-import { Body, PARAMETER_TOKEN, Header, Query } from './parameter.decorators';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { Body, PARAMETER_TOKEN, Req, Request, Res, Response, Header, Query } from './parameter.decorators';
 
 describe('Parameter decorators', () => {
   it('Body should be set.', () => {
@@ -48,6 +49,44 @@ describe('Parameter decorators', () => {
         { index: 0, location: 'query', name: 'firstName' },
         { index: 1, location: 'query', name: 'lastName' },
         { index: 2, location: 'query', name: 'city' }
+      ])
+    );
+  });
+
+  it('Req should be set.', () => {
+    class Test {
+      public index(@Req() req: NextApiRequest) {}
+    }
+
+    const meta = Reflect.getMetadata(PARAMETER_TOKEN, Test, 'index');
+    expect(Array.isArray(meta)).toBe(true);
+    expect(meta).toHaveLength(1);
+    expect(meta).toMatchObject(expect.arrayContaining([{ index: 0, location: 'request' }]));
+  });
+
+  it('Res should be set.', () => {
+    class Test {
+      public index(@Res() res: NextApiResponse) {}
+    }
+
+    const meta = Reflect.getMetadata(PARAMETER_TOKEN, Test, 'index');
+    expect(Array.isArray(meta)).toBe(true);
+    expect(meta).toHaveLength(1);
+    expect(meta).toMatchObject(expect.arrayContaining([{ index: 0, location: 'response' }]));
+  });
+
+  it('Request and Response should be set.', () => {
+    class Test {
+      public index(@Request() req: NextApiRequest, @Response() res: NextApiResponse) {}
+    }
+
+    const meta = Reflect.getMetadata(PARAMETER_TOKEN, Test, 'index');
+    expect(Array.isArray(meta)).toBe(true);
+    expect(meta).toHaveLength(2);
+    expect(meta).toMatchObject(
+      expect.arrayContaining([
+        { index: 0, location: 'request' },
+        { index: 1, location: 'response' }
       ])
     );
   });

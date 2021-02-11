@@ -1,3 +1,4 @@
+import { ServerResponse } from 'http';
 import { Stream } from 'stream';
 import type { ClassConstructor } from 'class-transformer';
 import type { NextApiRequest, NextApiResponse } from 'next';
@@ -8,6 +9,7 @@ import { notFound } from './notFound';
 
 async function getParameterValue(
   req: NextApiRequest,
+  res: NextApiResponse,
   bodyParamType: ClassConstructor<any>[],
   { location, name, index }: MetaParameter
 ): Promise<string | object | undefined> {
@@ -25,6 +27,10 @@ async function getParameterValue(
       return name ? req.headers[name.toLowerCase()] : req.headers;
     case 'method':
       return req.method;
+    case 'request':
+      return req;
+    case 'response':
+      return res;
     default:
       return undefined;
   }
@@ -59,7 +65,7 @@ export function Handler(method?: HttpVerb): MethodDecorator {
       try {
         const parameters = await Promise.all(
           metaParameters.map(async ({ location, name, pipes, index }) => {
-            let returnValue = await getParameterValue(req, bodyParamType, { location, name, index });
+            let returnValue = await getParameterValue(req, res, bodyParamType, { location, name, index });
 
             if (returnValue && pipes && pipes.length) {
               pipes.forEach(pipeFn => (returnValue = pipeFn(returnValue)));
@@ -69,10 +75,14 @@ export function Handler(method?: HttpVerb): MethodDecorator {
           })
         );
 
-        const returnValue = await originalHandler.call(this, ...parameters);
-
         classHeaders?.forEach((value, name) => res.setHeader(name, value));
         methodHeaders?.forEach((value, name) => res.setHeader(name, value));
+
+        const returnValue = await originalHandler.call(this, ...parameters);
+
+        if (returnValue instanceof ServerResponse) {
+          return;
+        }
 
         res.status(httpCode ?? (returnValue != null ? 200 : 204));
 
