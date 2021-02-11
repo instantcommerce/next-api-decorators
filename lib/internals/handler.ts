@@ -67,8 +67,15 @@ export function Handler(method?: HttpVerb): MethodDecorator {
           metaParameters.map(async ({ location, name, pipes, index }) => {
             let returnValue = await getParameterValue(req, res, bodyParamType, { location, name, index });
 
-            if (returnValue && pipes && pipes.length) {
-              pipes.forEach(pipeFn => (returnValue = pipeFn(returnValue)));
+            if (pipes && pipes.length) {
+              pipes.forEach(
+                pipeFn =>
+                  (returnValue = pipeFn.name
+                    ? // Bare pipe function. i.e: `ParseNumberPipe`
+                      (pipeFn as Function).call(null, null).call(null, returnValue, name)
+                    : // Pipe with options. i.e: `ParseNumberPipe({ nullable: false })`
+                      pipeFn.call(null, returnValue, name))
+              );
             }
 
             return returnValue;
@@ -92,8 +99,6 @@ export function Handler(method?: HttpVerb): MethodDecorator {
           res.json(returnValue ?? null);
         }
       } catch (err) {
-        console.error(err);
-
         const statusCode = err instanceof HttpException ? err.statusCode : 500;
         const message = err instanceof HttpException ? err.message : 'An unknown error occurred.';
         const errors = err instanceof HttpException && err.errors?.length ? err.errors : [message];
