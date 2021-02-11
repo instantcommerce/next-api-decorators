@@ -75,9 +75,6 @@ class TestHandler {
 
     return res.status(200).json({ contentType, id, receivedBody: body, test: this.testField });
   }
-  // public delete(@Header('Content-Type') contentType: string, @Query('id') id: string, @Body() body: any) {
-  //   return { contentType, id, receivedBody: body, test: this.testField };
-  // }
 }
 
 describe('E2E', () => {
