@@ -142,7 +142,7 @@ Pipes are being used to validate and transforms incoming values. The pipes can b
 
 ⚠️ Beware that they throw when the value is invalid.
 
-|                    | Description                                 |
-| ------------------ | ------------------------------------------- |
-| `ParseNumberPipe`  | Validates ands transforms `Number` string.  |
-| `ParseBooleanPipe` | Validates ands transforms `Boolean` string. |
+|                    | Description                                  | Remarks                                       |
+| ------------------ | -------------------------------------------- | --------------------------------------------- |
+| `ParseNumberPipe`  | Validates ands transforms `Number` strings.  | Uses `parseFloat` under the hood              |
+| `ParseBooleanPipe` | Validates ands transforms `Boolean` strings. | Allows `'true'` and `'false'` as valid values |
