@@ -9,13 +9,28 @@
 
 ---
 
-## Usage
+## Installation
 
-Since decorators are still in proposal state, you need to add the following plugins to your project in order to use them.
+Add the package to your project:
+
+```bash
+$ yarn add @storyofams/next-api-decorators
+```
+
+Since decorators are still in proposal state, you need to add the following plugins to your `devDependencies` in order to use them:
 
 ```bash
 $ yarn add -D babel-plugin-transform-typescript-metadata @babel/plugin-proposal-decorators babel-plugin-parameter-decorator
 ```
+
+Your `tsconfig.json` needs the following flags:
+
+```json
+"experimentalDecorators": true,
+"emitDecoratorMetadata": true
+```
+
+## Example usage
 
 ```ts
 // pages/api/test.ts
@@ -41,7 +56,7 @@ class User {
   @Put()
   public async updateUser(@Query('id') id: string, @Body() body: Record<string, string>) {
     const user = await User.findById(id);
-    
+
     if (!user) {
       throw new NotFoundException('User not found.');
     }
