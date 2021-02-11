@@ -47,7 +47,7 @@ class TestHandler {
   public read(
     @Header('Content-Type') contentType: string,
     @Query('id') id: string,
-    @Query('step', ParseNumberPipe) step: number,
+    @Query('step', ParseNumberPipe({ nullable: false })) step: number,
     @Query('redirect', ParseBooleanPipe) redirect: boolean
   ) {
     return { contentType, id, step, redirect, test: this.testField };
@@ -73,7 +73,7 @@ class TestHandler {
     const { 'content-type': contentType } = headers;
     const { id } = query;
 
-    return res.status(200).json({ contentType, id, receivedBody: body, test: this.testField });
+    res.status(200).json({ contentType, id, receivedBody: body, test: this.testField });
   }
 }
 
@@ -104,6 +104,19 @@ describe('E2E', () => {
             id: 'my-id',
             step: 1,
             redirect: true
+          }
+        })
+      ));
+
+  it('read', () =>
+    request(server)
+      .get('/?id=my-id&redirect=true')
+      .set('Content-Type', 'application/json')
+      .expect(400)
+      .then(res =>
+        expect(res).toMatchObject({
+          body: {
+            message: 'step is a required parameter.'
           }
         })
       ));
