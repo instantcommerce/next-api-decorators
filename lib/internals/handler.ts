@@ -87,7 +87,7 @@ export function Handler(method?: HttpVerb): MethodDecorator {
 
         const returnValue = await originalHandler.call(this, ...parameters);
 
-        if (returnValue instanceof ServerResponse) {
+        if (returnValue instanceof ServerResponse || res.headersSent) {
           return;
         }
 
