@@ -53,8 +53,8 @@ class TestHandler {
     return { contentType, id, step, redirect, test: this.testField };
   }
 
-  @Post()
   @HttpCode(201)
+  @Post()
   @SetHeader('X-Method', 'create')
   public create(@Header('Content-Type') contentType: string, @Body() body: CreateDto) {
     return { contentType, receivedBody: body, test: this.testField, instanceOf: body instanceof CreateDto };
