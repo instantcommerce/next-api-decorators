@@ -5,7 +5,7 @@
   <h1 align="center">@storyofams/next-api-decorators</h1>
 </p>
 
-<p align="center">Collection of decorators to create structured API routes with Next.js.</p>
+<p align="center">Collection of decorators to create typed Next.js API routes, with easy request validation and transformation.</p>
 
 ---
 
@@ -36,21 +36,13 @@ Your `tsconfig.json` needs the following flags:
 
 ```ts
 // pages/api/user.ts
-import {
-  createHandler,
-  Get,
-  Post,
-  HttpCode,
-  Query,
-  Body,
-  NotFoundException
-} from '@storyofams/next-api-decorators';
+import { createHandler, Get, Post, Query, Body, NotFoundException } from '@storyofams/next-api-decorators';
 
 class User {
   // GET /api/user
   @Get()
   public async fetchUser(@Query('id') id: string) {
-    const user = await User.findById(id);
+    const user = await DB.findUserById(id);
 
     if (!user) {
       throw new NotFoundException('User not found.');
@@ -61,9 +53,8 @@ class User {
 
   // POST /api/user
   @Post()
-  @HttpCode(201)
   public createUser(@Body() body: any) {
-    return User.create(body);
+    return DB.createUser(body);
   }
 }
 
@@ -106,20 +97,20 @@ export default createHandler(User);
 
 ### Class decorators
 
-|             | Description                                                                |
-| ----------- | -------------------------------------------------------------------------- |
-| `SetHeader` | Sets a header value into the response for all routes defined in the class. |
+|                                           | Description                                                    |
+| ----------------------------------------- | -------------------------------------------------------------- |
+| `@SetHeader(name: string, value: string)` | Sets a header name/value into all routes defined in the class. |
 
 ### Method decorators
 
-|             | Description                                               |
-| ----------- | --------------------------------------------------------- |
-| `Get`       | Marks the method as `GET` handler.                        |
-| `Post`      | Marks the method as `POST` handler.                       |
-| `Put`       | Marks the method as `PUT` handler.                        |
-| `Delete`    | Marks the method as `DELETE` handler.                     |
-| `SetHeader` | Sets a header name/value into the response for the route. |
-| `HttpCode`  | Sets the http code the route response.                    |
+|                                           | Description                                        |
+| ----------------------------------------- | -------------------------------------------------- |
+| `@Get()`                                  | Marks the method as `GET` handler.                 |
+| `@Post()`                                 | Marks the method as `POST` handler.                |
+| `@Put()`                                  | Marks the method as `PUT` handler.                 |
+| `@Delete()`                               | Marks the method as `DELETE` handler.              |
+| `@SetHeader(name: string, value: string)` | Sets a header name/value into the route response.  |
+| `@HttpCode(code: number)`                 | Sets the http code in the route response.          |
 
 ### Parameter decorators
 

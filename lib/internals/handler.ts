@@ -42,17 +42,16 @@ export function Handler(method?: HttpVerb): MethodDecorator {
   }
 
   return function (target: object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>) {
-    const httpCode: number | undefined = Reflect.getMetadata(HTTP_CODE_TOKEN, target.constructor, propertyKey);
-    const metaParameters: Array<MetaParameter> = (
-      Reflect.getMetadata(PARAMETER_TOKEN, target.constructor, propertyKey) ?? []
-    ).sort((a: MetaParameter, b: MetaParameter) => a.index - b.index);
-
     const originalHandler = descriptor.value;
     descriptor.value = async function (req: NextApiRequest, res: NextApiResponse) {
       if (req.method !== method) {
         return notFound(req, res);
       }
 
+      const httpCode: number | undefined = Reflect.getMetadata(HTTP_CODE_TOKEN, target.constructor, propertyKey);
+      const metaParameters: Array<MetaParameter> = (
+        Reflect.getMetadata(PARAMETER_TOKEN, target.constructor, propertyKey) ?? []
+      ).sort((a: MetaParameter, b: MetaParameter) => a.index - b.index);
       const classHeaders: Map<string, string> | undefined = Reflect.getMetadata(HEADER_TOKEN, target.constructor);
       const methodHeaders: Map<string, string> | undefined = Reflect.getMetadata(
         HEADER_TOKEN,
