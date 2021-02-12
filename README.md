@@ -54,7 +54,7 @@ class User {
   // POST /api/user
   @Post()
   public createUser(@Body() body: any) {
-    return User.create(body);
+    return DB.createUser(body);
   }
 }
 
