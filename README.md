@@ -5,7 +5,7 @@
   <h1 align="center">@storyofams/next-api-decorators</h1>
 </p>
 
-<p align="center">Collection of decorators to create structured API routes with Next.js.</p>
+<p align="center">Collection of decorators to create typed Next.js API routes, with easy request validation and transformation.</p>
 
 ---
 
@@ -50,7 +50,7 @@ class User {
   // GET /api/user
   @Get()
   public async fetchUser(@Query('id') id: string) {
-    const user = await User.findById(id);
+    const user = await DB.findUserById(id);
 
     if (!user) {
       throw new NotFoundException('User not found.');
