@@ -67,8 +67,15 @@ export function Handler(method?: HttpVerb): MethodDecorator {
           metaParameters.map(async ({ location, name, pipes, index }) => {
             let returnValue = await getParameterValue(req, res, bodyParamType, { location, name, index });
 
-            if (returnValue && pipes && pipes.length) {
-              pipes.forEach(pipeFn => (returnValue = pipeFn(returnValue)));
+            if (pipes && pipes.length) {
+              pipes.forEach(
+                pipeFn =>
+                  (returnValue = pipeFn.name
+                    ? // Bare pipe function. i.e: `ParseNumberPipe`
+                      (pipeFn as Function).call(null, null).call(null, returnValue, name)
+                    : // Pipe with options. i.e: `ParseNumberPipe({ nullable: false })`
+                      pipeFn.call(null, returnValue, name))
+              );
             }
 
             return returnValue;
