@@ -20,11 +20,12 @@ $ yarn add @storyofams/next-api-decorators
 Since decorators are still in proposal state, you need to add the following plugins to your `devDependencies` in order to use them:
 
 ```bash
-$ yarn add -D @babel/plugin-proposal-decorators babel-plugin-parameter-decorator
+$ yarn add -D babel-plugin-transform-typescript-metadata @babel/plugin-proposal-decorators babel-plugin-parameter-decorator
 ```
 
 Make sure to add the following lines to the `plugins` section in your babel configuration file:
 ```json
+"babel-plugin-transform-typescript-metadata",
 ["@babel/plugin-proposal-decorators", { "legacy": true }],
 "babel-plugin-parameter-decorator",
 ```
