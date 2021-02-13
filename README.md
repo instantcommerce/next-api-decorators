@@ -7,6 +7,11 @@
 
 <p align="center">Collection of decorators to create typed Next.js API routes, with easy request validation and transformation.</p>
 
+<p align="center">
+  <img src="https://github.com/storyofams/next-api-decorators/workflows/Release/badge.svg">
+  <img src="https://img.shields.io/npm/v/@storyofams/next-api-decorators">
+</p>
+
 ---
 
 ## Installation
