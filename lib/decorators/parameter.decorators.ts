@@ -19,18 +19,33 @@ function addParameter(location: MetaParameter['location'], name?: MetaParameter[
   };
 }
 
+/** Returns the query string. */
+export function Query(): ParameterDecorator;
 /**
  * Returns a parameter from the query string.
  *
  * @param name Parameter name
  */
-export function Query(name: string, ...pipes: ParameterPipe<any>[]): ParameterDecorator {
-  return addParameter('query', name, pipes.length ? pipes : undefined);
+export function Query(name: string, ...pipes: ParameterPipe<any>[]): ParameterDecorator;
+/**
+ * Returns the query string with pipes applied.
+ *
+ * @param pipes Pipes to be applied.
+ */
+export function Query(...pipes: ParameterPipe<any>[]): ParameterDecorator;
+export function Query(nameOrPipes?: string | ParameterPipe<any>, ...pipes: ParameterPipe<any>[]): ParameterDecorator {
+  if (typeof nameOrPipes === 'string') {
+    return addParameter('query', nameOrPipes, pipes.length ? pipes : undefined);
+  } else if (typeof nameOrPipes === 'function') {
+    return addParameter('query', undefined, [nameOrPipes, ...pipes]);
+  } else {
+    return addParameter('query', undefined);
+  }
 }
 
 /** Returns the request body. */
-export function Body(): ParameterDecorator {
-  return addParameter('body');
+export function Body(...pipes: ParameterPipe<any>[]): ParameterDecorator {
+  return addParameter('body', undefined, pipes);
 }
 
 /**

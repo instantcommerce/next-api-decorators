@@ -13,7 +13,7 @@ describe('Parameter decorators', () => {
     const meta = Reflect.getMetadata(PARAMETER_TOKEN, Test, 'index');
     expect(Array.isArray(meta)).toBe(true);
     expect(meta).toHaveLength(1);
-    expect(meta).toMatchObject(expect.arrayContaining([{ index: 0, location: 'body' }]));
+    expect(meta).toMatchObject(expect.arrayContaining([expect.objectContaining({ index: 0, location: 'body' })]));
   });
 
   it('Header should be set.', () => {
@@ -26,13 +26,26 @@ describe('Parameter decorators', () => {
     expect(meta).toHaveLength(2);
     expect(meta).toMatchObject(
       expect.arrayContaining([
-        { index: 0, location: 'header', name: 'Content-Type' },
-        { index: 1, location: 'header', name: 'Referer' }
+        expect.objectContaining({ index: 0, location: 'header', name: 'Content-Type' }),
+        expect.objectContaining({ index: 1, location: 'header', name: 'Referer' })
       ])
     );
   });
 
-  it('Header should be set.', () => {
+  it('Query should be set for the whole query string.', () => {
+    class Test {
+      public index(@Query() query: any) {}
+    }
+
+    const meta = Reflect.getMetadata(PARAMETER_TOKEN, Test, 'index');
+    expect(Array.isArray(meta)).toBe(true);
+    expect(meta).toHaveLength(1);
+    expect(meta).toMatchObject(
+      expect.arrayContaining([expect.objectContaining({ index: 0, location: 'query', name: undefined })])
+    );
+  });
+
+  it('Query parameters should be set.', () => {
     class Test {
       public index(
         @Query('firstName') firstName: string,
@@ -46,9 +59,9 @@ describe('Parameter decorators', () => {
     expect(meta).toHaveLength(3);
     expect(meta).toMatchObject(
       expect.arrayContaining([
-        { index: 0, location: 'query', name: 'firstName' },
-        { index: 1, location: 'query', name: 'lastName' },
-        { index: 2, location: 'query', name: 'city' }
+        expect.objectContaining({ index: 0, location: 'query', name: 'firstName' }),
+        expect.objectContaining({ index: 1, location: 'query', name: 'lastName' }),
+        expect.objectContaining({ index: 2, location: 'query', name: 'city' })
       ])
     );
   });
@@ -61,7 +74,7 @@ describe('Parameter decorators', () => {
     const meta = Reflect.getMetadata(PARAMETER_TOKEN, Test, 'index');
     expect(Array.isArray(meta)).toBe(true);
     expect(meta).toHaveLength(1);
-    expect(meta).toMatchObject(expect.arrayContaining([{ index: 0, location: 'request' }]));
+    expect(meta).toMatchObject(expect.arrayContaining([expect.objectContaining({ index: 0, location: 'request' })]));
   });
 
   it('Res should be set.', () => {
@@ -72,7 +85,7 @@ describe('Parameter decorators', () => {
     const meta = Reflect.getMetadata(PARAMETER_TOKEN, Test, 'index');
     expect(Array.isArray(meta)).toBe(true);
     expect(meta).toHaveLength(1);
-    expect(meta).toMatchObject(expect.arrayContaining([{ index: 0, location: 'response' }]));
+    expect(meta).toMatchObject(expect.arrayContaining([expect.objectContaining({ index: 0, location: 'response' })]));
   });
 
   it('Request and Response should be set.', () => {
@@ -85,8 +98,8 @@ describe('Parameter decorators', () => {
     expect(meta).toHaveLength(2);
     expect(meta).toMatchObject(
       expect.arrayContaining([
-        { index: 0, location: 'request' },
-        { index: 1, location: 'response' }
+        expect.objectContaining({ index: 0, location: 'request' }),
+        expect.objectContaining({ index: 1, location: 'response' })
       ])
     );
   });
