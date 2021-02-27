@@ -1,5 +1,10 @@
-export interface PipeOptions {
-  nullable?: boolean;
+export interface PipeMetadata<T = any> {
+  readonly metaType?: T;
+  readonly name?: string;
 }
 
-export type ParameterPipe<T> = (value: any, name?: string) => T;
+export interface PipeOptions {
+  readonly nullable?: boolean;
+}
+
+export type ParameterPipe<TOutput, TMeta = unknown> = (value: any, metadata?: PipeMetadata<TMeta>) => TOutput;

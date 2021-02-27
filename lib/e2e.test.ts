@@ -5,6 +5,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import request from 'supertest';
 import { createHandler } from './createHandler';
 import { Body, Delete, Get, Header, HttpCode, Post, Put, Query, Req, Res, Response, SetHeader } from './decorators';
+import { ValidationPipe } from './pipes';
 import { ParseBooleanPipe } from './pipes/parseBoolean.pipe';
 import { ParseNumberPipe } from './pipes/parseNumber.pipe';
 
@@ -56,7 +57,7 @@ class TestHandler {
   @HttpCode(201)
   @Post()
   @SetHeader('X-Method', 'create')
-  public create(@Header('Content-Type') contentType: string, @Body() body: CreateDto) {
+  public create(@Header('Content-Type') contentType: string, @Body(ValidationPipe) body: CreateDto) {
     return { contentType, receivedBody: body, test: this.testField, instanceOf: body instanceof CreateDto };
   }
 
@@ -77,7 +78,7 @@ class TestHandler {
     const { 'content-type': contentType } = headers;
     const { id } = query;
 
-    res.status(200).json({ contentType, id, receivedBody: body, test: this.testField });
+    return res.status(200).json({ contentType, id, receivedBody: body, test: this.testField });
   }
 }
 
@@ -112,7 +113,7 @@ describe('E2E', () => {
         })
       ));
 
-  it('read', () =>
+  it('read without "step"', () =>
     request(server)
       .get('/?id=my-id&redirect=true')
       .set('Content-Type', 'application/json')
@@ -220,6 +221,18 @@ describe('E2E', () => {
               dateOfBirth: '1815-12-10'
             }
           }
+        })
+      ));
+
+  it('should throw express style 404 for an undefined http verb', () =>
+    request(server)
+      .patch('/')
+      .set('Content-Type', 'application/json')
+      .expect(404)
+      .then(res =>
+        expect(res.body).toMatchObject({
+          statusCode: 404,
+          error: 'Not Found'
         })
       ));
 });

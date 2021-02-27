@@ -4,25 +4,18 @@ import type { ClassConstructor } from 'class-transformer';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { HEADER_TOKEN, HttpVerb, HTTP_CODE_TOKEN, MetaParameter, PARAMETER_TOKEN } from '../decorators';
 import { HttpException } from '../exceptions';
-import { validateObject } from './classValidator';
 import { notFound } from './notFound';
 
-async function getParameterValue(
+function getParameterValue(
   req: NextApiRequest,
   res: NextApiResponse,
-  bodyParamType: ClassConstructor<any>[],
-  { location, name, index }: MetaParameter
-): Promise<string | object | undefined> {
+  { location, name }: MetaParameter
+): string | object | undefined {
   switch (location) {
     case 'query':
       return name ? req.query[name] : req.query;
-    case 'body': {
-      if (index < bodyParamType.length && typeof bodyParamType[index] === 'function') {
-        return validateObject(bodyParamType[index], req.body);
-      }
-
+    case 'body':
       return req.body;
-    }
     case 'header':
       return name ? req.headers[name.toLowerCase()] : req.headers;
     case 'method':
@@ -58,23 +51,24 @@ export function Handler(method?: HttpVerb): MethodDecorator {
         target.constructor,
         propertyKey
       );
-      const bodyParamType: ClassConstructor<any>[] =
-        Reflect.getMetadata('design:paramtypes', target, propertyKey) ?? [];
+      const paramTypes: ClassConstructor<any>[] = Reflect.getMetadata('design:paramtypes', target, propertyKey) ?? [];
 
       try {
         const parameters = await Promise.all(
           metaParameters.map(async ({ location, name, pipes, index }) => {
-            let returnValue = await getParameterValue(req, res, bodyParamType, { location, name, index });
+            const paramType =
+              index < paramTypes.length && typeof paramTypes[index] === 'function' ? paramTypes[index] : undefined;
+
+            let returnValue = getParameterValue(req, res, { location, name, index });
 
             if (pipes && pipes.length) {
-              pipes.forEach(
-                pipeFn =>
-                  (returnValue = pipeFn.name
-                    ? // Bare pipe function. i.e: `ParseNumberPipe`
-                      (pipeFn as Function).call(null, null).call(null, returnValue, name)
-                    : // Pipe with options. i.e: `ParseNumberPipe({ nullable: false })`
-                      pipeFn.call(null, returnValue, name))
-              );
+              for (const pipeFn of pipes) {
+                returnValue = pipeFn.name
+                  ? // Bare pipe function. i.e: `ParseNumberPipe`
+                    await pipeFn.call(null, null).call(null, returnValue, { name, metaType: paramType })
+                  : // Pipe with options. i.e: `ParseNumberPipe({ nullable: false })`
+                    await pipeFn.call(null, returnValue, { name, metaType: paramType });
+              }
             }
 
             return returnValue;
@@ -86,7 +80,7 @@ export function Handler(method?: HttpVerb): MethodDecorator {
 
         const returnValue = await originalHandler.call(this, ...parameters);
 
-        if (returnValue instanceof ServerResponse || res.headersSent) {
+        if (returnValue instanceof ServerResponse || res.writableEnded || res.finished) {
           return;
         }
 
