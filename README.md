@@ -5,6 +5,8 @@
   <h1 align="center">@storyofams/next-api-decorators</h1>
 </p>
 
+[![codecov](https://codecov.io/gh/storyofams/nextjs-api-decorators/branch/master/graph/badge.svg?token=AXW3QH19YI)](https://codecov.io/gh/storyofams/nextjs-api-decorators)
+
 <p align="center">Collection of decorators to create typed Next.js API routes, with easy request validation and transformation.</p>
 
 ---
