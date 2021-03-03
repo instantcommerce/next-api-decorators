@@ -8,8 +8,15 @@
 <p align="center">Collection of decorators to create typed Next.js API routes, with easy request validation and transformation.</p>
 
 <p align="center">
-  <img src="https://github.com/storyofams/next-api-decorators/workflows/Release/badge.svg">
-  <img src="https://img.shields.io/npm/v/@storyofams/next-api-decorators">
+  <a aria-label="releases" href="https://GitHub.com/storyofams/next-api-decorators/releases/">
+    <img src="https://github.com/storyofams/next-api-decorators/workflows/Release/badge.svg">
+  </a>
+  <a aria-label="npm" href="https://www.npmjs.com/package/@storyofams/next-api-decorators">
+    <img src="https://img.shields.io/npm/v/@storyofams/next-api-decorators">
+  </a>
+  <a aria-label="stars" href="https://github.com/storyofams/next-api-decorators/stargazers/">
+    <img src="https://img.shields.io/github/stars/storyofams/next-api-decorators.svg?style=social&label=Star&maxAge=86400" />
+  </a>
 </p>
 
 ---
