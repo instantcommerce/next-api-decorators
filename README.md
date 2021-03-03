@@ -3,7 +3,6 @@
     <img src="https://storyofams.com/public/story-of-ams-logo-small@3x.png" alt="Story of AMS" width="120">
   </a>
   <h1 align="center">@storyofams/next-api-decorators</h1>
-  <p align="center">Collection of decorators to create typed Next.js API routes, with easy request validation and transformation.</p>
   <p align="center">
     <a aria-label="releases" href="https://GitHub.com/storyofams/next-api-decorators/releases/" target="_blank">
       <img src="https://github.com/storyofams/next-api-decorators/workflows/Release/badge.svg">
@@ -21,6 +20,8 @@
 </div>
 
 ---
+
+Collection of decorators to create typed Next.js API routes, with easy request validation and transformation.
 
 ## Installation
 
