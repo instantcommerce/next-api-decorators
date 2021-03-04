@@ -1,13 +1,27 @@
-<p align="center">
+<div align="center">
   <a aria-label="Story of AMS logo" href="https://storyofams.com/" target="_blank" align="center">
     <img src="https://storyofams.com/public/story-of-ams-logo-small@3x.png" alt="Story of AMS" width="120">
   </a>
   <h1 align="center">@storyofams/next-api-decorators</h1>
-</p>
-
-<p align="center">Collection of decorators to create typed Next.js API routes, with easy request validation and transformation.</p>
+  <p align="center">
+    <a aria-label="releases" href="https://GitHub.com/storyofams/next-api-decorators/releases/" target="_blank">
+      <img src="https://github.com/storyofams/next-api-decorators/workflows/Release/badge.svg">
+    </a>
+    <a aria-label="npm" href="https://www.npmjs.com/package/@storyofams/next-api-decorators" target="_blank">
+      <img src="https://img.shields.io/npm/v/@storyofams/next-api-decorators">
+    </a>
+    <a aria-label="codecov" href="https://codecov.io/gh/storyofams/nextjs-api-decorators" target="_blank">
+      <img src="https://codecov.io/gh/storyofams/next-api-decorators/branch/master/graph/badge.svg?token=ZV0YT4HU5H">
+    </a>
+    <a aria-label="stars" href="https://github.com/storyofams/next-api-decorators/stargazers/" target="_blank">
+      <img src="https://img.shields.io/github/stars/storyofams/next-api-decorators.svg?style=social&label=Star&maxAge=86400" />
+    </a>
+  </p>
+</div>
 
 ---
+
+Collection of decorators to create typed Next.js API routes, with easy request validation and transformation.
 
 ## Installation
 
@@ -23,11 +37,17 @@ Since decorators are still in proposal state, you need to add the following plug
 $ yarn add -D babel-plugin-transform-typescript-metadata @babel/plugin-proposal-decorators babel-plugin-parameter-decorator
 ```
 
+Make sure to add the following lines to the `plugins` section in your babel configuration file:
+```json
+"babel-plugin-transform-typescript-metadata",
+["@babel/plugin-proposal-decorators", { "legacy": true }],
+"babel-plugin-parameter-decorator",
+```
+
 Your `tsconfig.json` needs the following flags:
 
 ```json
-"experimentalDecorators": true,
-"emitDecoratorMetadata": true
+"experimentalDecorators": true
 ```
 
 ## Usage
@@ -103,14 +123,14 @@ export default createHandler(User);
 
 ### Method decorators
 
-|                                           | Description                                        |
-| ----------------------------------------- | -------------------------------------------------- |
-| `@Get()`                                  | Marks the method as `GET` handler.                 |
-| `@Post()`                                 | Marks the method as `POST` handler.                |
-| `@Put()`                                  | Marks the method as `PUT` handler.                 |
-| `@Delete()`                               | Marks the method as `DELETE` handler.              |
-| `@SetHeader(name: string, value: string)` | Sets a header name/value into the route response.  |
-| `@HttpCode(code: number)`                 | Sets the http code in the route response.          |
+|                                           | Description                                       |
+| ----------------------------------------- | ------------------------------------------------- |
+| `@Get()`                                  | Marks the method as `GET` handler.                |
+| `@Post()`                                 | Marks the method as `POST` handler.               |
+| `@Put()`                                  | Marks the method as `PUT` handler.                |
+| `@Delete()`                               | Marks the method as `DELETE` handler.             |
+| `@SetHeader(name: string, value: string)` | Sets a header name/value into the route response. |
+| `@HttpCode(code: number)`                 | Sets the http code in the route response.         |
 
 ### Parameter decorators
 
@@ -133,8 +153,8 @@ Pipes are being used to validate and transform incoming values. The pipes can be
 
 ⚠️ Beware that they throw when the value is invalid.
 
-|                    | Description                                  | Remarks                                       |
-| ------------------ | -------------------------------------------- | --------------------------------------------- |
+|                    | Description                                 | Remarks                                       |
+| ------------------ | ------------------------------------------- | --------------------------------------------- |
 | `ParseNumberPipe`  | Validates and transforms `Number` strings.  | Uses `parseFloat` under the hood              |
 | `ParseBooleanPipe` | Validates and transforms `Boolean` strings. | Allows `'true'` and `'false'` as valid values |
 
