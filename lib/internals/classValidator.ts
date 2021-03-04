@@ -1,9 +1,14 @@
 import type { ClassConstructor } from 'class-transformer';
 import { BadRequestException } from '../exceptions';
+import type { ValidationPipeOptions } from '../pipes';
 import { flattenValidationErrors } from './getClassValidatorError';
 import { loadPackage } from './loadPackage';
 
-export async function validateObject(cls: ClassConstructor<any>, value: Record<string, string>): Promise<any> {
+export async function validateObject(
+  cls: ClassConstructor<any>,
+  value: Record<string, string>,
+  validatorOptions?: ValidationPipeOptions
+): Promise<any> {
   const classValidator = loadPackage('class-validator');
   if (!classValidator) {
     return value;
@@ -15,10 +20,12 @@ export async function validateObject(cls: ClassConstructor<any>, value: Record<s
   }
 
   const bodyValue = classTransformer.plainToClass(cls, value, {
-    enableImplicitConversion: true
+    enableImplicitConversion: true,
+    ...validatorOptions?.transformOptions
   });
   const validationErrors = await classValidator.validate(bodyValue, {
-    enableDebugMessages: process.env.NODE_ENV === 'development'
+    enableDebugMessages: process.env.NODE_ENV === 'development',
+    ...validatorOptions
   });
 
   if (validationErrors.length) {

@@ -1,13 +1,21 @@
 import { BadRequestException } from '../exceptions';
+import type { ParameterPipe, PipeOptions, PipeMetadata } from './ParameterPipe';
+import { validatePipeOptions } from './validatePipeOptions';
 
-export function ParseBooleanPipe(value: any): boolean {
-  if (value === true || value === 'true') {
-    return true;
-  }
+export function ParseBooleanPipe(options?: PipeOptions): ParameterPipe<boolean> {
+  return (value: any, metadata?: PipeMetadata) => {
+    validatePipeOptions(value, metadata?.name, options);
 
-  if (value === false || value === 'false') {
-    return false;
-  }
+    if (value === true || value === 'true') {
+      return true;
+    }
 
-  throw new BadRequestException('Validation failed (boolean string is expected)');
+    if (value === false || value === 'false') {
+      return false;
+    }
+
+    throw new BadRequestException(
+      `Validation failed${metadata?.name ? ` for ${metadata.name}` : ''} (boolean string is expected)`
+    );
+  };
 }

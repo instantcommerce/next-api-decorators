@@ -4,8 +4,10 @@ import express from 'express';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import request from 'supertest';
 import { createHandler } from './createHandler';
-import { Body, Delete, Get, Header, HttpCode, Post, Put, Query, Req, Response, SetHeader } from './decorators';
+import { Body, Delete, Get, Header, HttpCode, Post, Put, Query, Req, Res, Response, SetHeader } from './decorators';
+import { ValidationPipe } from './pipes';
 import { ParseBooleanPipe } from './pipes/parseBoolean.pipe';
+import { ParseDatePipe } from './pipes/parseDate.pipe';
 import { ParseNumberPipe } from './pipes/parseNumber.pipe';
 
 enum CreateSource {
@@ -47,23 +49,36 @@ class TestHandler {
   public read(
     @Header('Content-Type') contentType: string,
     @Query('id') id: string,
-    @Query('step', ParseNumberPipe) step: number,
-    @Query('redirect', ParseBooleanPipe) redirect: boolean
+    @Query('step', ParseNumberPipe({ nullable: false })) step: number,
+    @Query('redirect', ParseBooleanPipe) redirect: boolean,
+    @Query('startAt', ParseDatePipe) startAt: Date
   ) {
-    return { contentType, id, step, redirect, test: this.testField };
+    return {
+      contentType,
+      id,
+      step,
+      redirect,
+      test: this.testField,
+      startAt,
+      isStartAtDateInstance: startAt instanceof Date
+    };
   }
 
   @HttpCode(201)
   @Post()
   @SetHeader('X-Method', 'create')
-  public create(@Header('Content-Type') contentType: string, @Body() body: CreateDto) {
+  public create(@Header('Content-Type') contentType: string, @Body(ValidationPipe) body: CreateDto) {
     return { contentType, receivedBody: body, test: this.testField, instanceOf: body instanceof CreateDto };
   }
 
   @Put()
   @SetHeader('X-Method', 'update')
-  public update(@Header('Content-Type') contentType: string, @Query('id') id: string, @Body() body: any) {
-    return { contentType, id, receivedBody: body, test: this.testField };
+  public update(@Req() req: NextApiRequest, @Res() res: NextApiResponse) {
+    const { headers, query, body } = req;
+    const { 'content-type': contentType } = headers;
+    const { id } = query;
+
+    res.status(200).json({ contentType, id, receivedBody: body, test: this.testField });
   }
 
   @Delete()
@@ -89,7 +104,7 @@ describe('E2E', () => {
 
   it('read', () =>
     request(server)
-      .get('/?id=my-id&step=1&redirect=true')
+      .get('/?id=my-id&step=1&redirect=true&startAt=2021-01-01T22:00:00')
       .set('Content-Type', 'application/json')
       .expect(200)
       .then(res =>
@@ -103,7 +118,21 @@ describe('E2E', () => {
             contentType: 'application/json',
             id: 'my-id',
             step: 1,
-            redirect: true
+            redirect: true,
+            isStartAtDateInstance: true
+          }
+        })
+      ));
+
+  it('read without "step"', () =>
+    request(server)
+      .get('/?id=my-id&redirect=true')
+      .set('Content-Type', 'application/json')
+      .expect(400)
+      .then(res =>
+        expect(res).toMatchObject({
+          body: {
+            message: 'step is a required parameter.'
           }
         })
       ));
@@ -203,6 +232,18 @@ describe('E2E', () => {
               dateOfBirth: '1815-12-10'
             }
           }
+        })
+      ));
+
+  it('should throw express style 404 for an undefined http verb', () =>
+    request(server)
+      .patch('/')
+      .set('Content-Type', 'application/json')
+      .expect(404)
+      .then(res =>
+        expect(res.body).toMatchObject({
+          statusCode: 404,
+          error: 'Not Found'
         })
       ));
 });
