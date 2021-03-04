@@ -7,6 +7,7 @@ import { createHandler } from './createHandler';
 import { Body, Delete, Get, Header, HttpCode, Post, Put, Query, Req, Res, Response, SetHeader } from './decorators';
 import { ValidationPipe } from './pipes';
 import { ParseBooleanPipe } from './pipes/parseBoolean.pipe';
+import { ParseDatePipe } from './pipes/parseDate.pipe';
 import { ParseNumberPipe } from './pipes/parseNumber.pipe';
 
 enum CreateSource {
@@ -49,9 +50,18 @@ class TestHandler {
     @Header('Content-Type') contentType: string,
     @Query('id') id: string,
     @Query('step', ParseNumberPipe({ nullable: false })) step: number,
-    @Query('redirect', ParseBooleanPipe) redirect: boolean
+    @Query('redirect', ParseBooleanPipe) redirect: boolean,
+    @Query('startAt', ParseDatePipe) startAt: Date
   ) {
-    return { contentType, id, step, redirect, test: this.testField };
+    return {
+      contentType,
+      id,
+      step,
+      redirect,
+      test: this.testField,
+      startAt,
+      isStartAtDateInstance: startAt instanceof Date
+    };
   }
 
   @HttpCode(201)
@@ -94,7 +104,7 @@ describe('E2E', () => {
 
   it('read', () =>
     request(server)
-      .get('/?id=my-id&step=1&redirect=true')
+      .get('/?id=my-id&step=1&redirect=true&startAt=2021-01-01T22:00:00')
       .set('Content-Type', 'application/json')
       .expect(200)
       .then(res =>
@@ -108,7 +118,8 @@ describe('E2E', () => {
             contentType: 'application/json',
             id: 'my-id',
             step: 1,
-            redirect: true
+            redirect: true,
+            isStartAtDateInstance: true
           }
         })
       ));
