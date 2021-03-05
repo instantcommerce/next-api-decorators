@@ -40,9 +40,9 @@ describe('HttpException', () => {
     });
 
     it('Should set the default error messages', () => {
-      expect(new BadRequestException()).toHaveProperty('message', 'Bad request');
-      expect(new InternalServerErrorException()).toHaveProperty('message', 'Internal server error');
-      expect(new NotFoundException()).toHaveProperty('message', 'Not found');
+      expect(new BadRequestException()).toHaveProperty('message', 'Bad Request');
+      expect(new InternalServerErrorException()).toHaveProperty('message', 'Internal Server Error');
+      expect(new NotFoundException()).toHaveProperty('message', 'Not Found');
       expect(new UnauthorizedException()).toHaveProperty('message', 'Unauthorized');
       expect(new UnprocessableEntityException()).toHaveProperty('message', 'Unprocessable Entity');
     });
