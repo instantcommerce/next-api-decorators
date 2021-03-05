@@ -58,7 +58,7 @@ Your `tsconfig.json` needs the following flags:
 
 ```ts
 // pages/api/user.ts
-import { createHandler, Get, Post, Query, Body, NotFoundException } from '@storyofams/next-api-decorators';
+import { createHandler, Get, Query, NotFoundException } from '@storyofams/next-api-decorators';
 
 class User {
   // GET /api/user
@@ -71,12 +71,6 @@ class User {
     }
 
     return user;
-  }
-
-  // POST /api/user
-  @Post()
-  public createUser(@Body() body: any) {
-    return DB.createUser(body);
   }
 }
 
@@ -94,7 +88,8 @@ $ yarn add class-validator class-transformer
 Then you can define your DTOs like:
 
 ```ts
-import { createHandler, Post, Body } from '@storyofams/next-api-decorators';
+// pages/api/user.ts
+import { createHandler, Post, HttpCode, Body } from '@storyofams/next-api-decorators';
 import { IsNotEmpty, IsEmail } from 'class-validator';
 
 class CreateUserDto {
@@ -106,7 +101,9 @@ class CreateUserDto {
 }
 
 class User {
+  // POST /api/user
   @Post()
+  @HttpCode(201)
   public createUser(@Body() body: CreateUserDto) {
     return User.create(body);
   }
