@@ -20,7 +20,8 @@ import {
   ValidationPipe,
   ParseBooleanPipe,
   ParseDatePipe,
-  ParseNumberPipe
+  ParseNumberPipe,
+  NotFoundException
 } from '../lib';
 
 enum CreateSource {
@@ -66,6 +67,10 @@ class TestHandler {
     @Query('redirect', ParseBooleanPipe) redirect: boolean,
     @Query('startAt', ParseDatePipe) startAt: Date
   ) {
+    if (id !== 'my-id') {
+      throw new NotFoundException('Invalid ID');
+    }
+
     return {
       contentType,
       id,
@@ -133,6 +138,19 @@ describe('E2E', () => {
             step: 1,
             redirect: true,
             isStartAtDateInstance: true
+          }
+        })
+      ));
+
+  it('read', () =>
+    request(server)
+      .get('/?id=invalid-id&step=1&redirect=true&startAt=2021-01-01T22:00:00')
+      .set('Content-Type', 'application/json')
+      .expect(404)
+      .then(res =>
+        expect(res).toMatchObject({
+          body: {
+            message: 'Invalid ID'
           }
         })
       ));
