@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import 'reflect-metadata';
-import { HEADER_TOKEN, SetHeader } from './setHeader.decorator';
+import { HEADER_TOKEN, SetHeader } from '../../lib/decorators';
 
 @SetHeader('X-Api', 'true')
 class Test {

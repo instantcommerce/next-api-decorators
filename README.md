@@ -23,6 +23,7 @@
 
 Collection of decorators to create typed Next.js API routes, with easy request validation and transformation.
 
+
 ## Installation
 
 Add the package to your project:
@@ -50,13 +51,14 @@ Your `tsconfig.json` needs the following flags:
 "experimentalDecorators": true
 ```
 
+
 ## Usage
 
 ### Basic example
 
 ```ts
 // pages/api/user.ts
-import { createHandler, Get, Post, Query, Body, NotFoundException } from '@storyofams/next-api-decorators';
+import { createHandler, Get, Query, NotFoundException } from '@storyofams/next-api-decorators';
 
 class User {
   // GET /api/user
@@ -69,12 +71,6 @@ class User {
     }
 
     return user;
-  }
-
-  // POST /api/user
-  @Post()
-  public createUser(@Body() body: any) {
-    return DB.createUser(body);
   }
 }
 
@@ -92,7 +88,8 @@ $ yarn add class-validator class-transformer
 Then you can define your DTOs like:
 
 ```ts
-import { createHandler, Post, Body } from '@storyofams/next-api-decorators';
+// pages/api/user.ts
+import { createHandler, Post, HttpCode, Body } from '@storyofams/next-api-decorators';
 import { IsNotEmpty, IsEmail } from 'class-validator';
 
 class CreateUserDto {
@@ -104,7 +101,9 @@ class CreateUserDto {
 }
 
 class User {
+  // POST /api/user
   @Post()
+  @HttpCode(201)
   public createUser(@Body() body: CreateUserDto) {
     return User.create(body);
   }
@@ -112,6 +111,7 @@ class User {
 
 export default createHandler(User);
 ```
+
 
 ## Available decorators
 
@@ -141,8 +141,6 @@ export default createHandler(User);
 | `@Header(name: string)` | Gets a header value by name.                |
 
 
-
-
 ## Built-in pipes
 
 Pipes are being used to validate and transform incoming values. The pipes can be added to the `@Query` decorator like:
@@ -153,19 +151,25 @@ Pipes are being used to validate and transform incoming values. The pipes can be
 
 ⚠️ Beware that they throw when the value is invalid.
 
-|                    | Description                                 | Remarks                                       |
-| ------------------ | ------------------------------------------- | --------------------------------------------- |
-| `ParseNumberPipe`  | Validates and transforms `Number` strings.  | Uses `parseFloat` under the hood              |
-| `ParseBooleanPipe` | Validates and transforms `Boolean` strings. | Allows `'true'` and `'false'` as valid values |
+|                    | Description                                 | Remarks                                           |
+| ------------------ | ------------------------------------------- | ------------------------------------------------- |
+| `ParseBooleanPipe` | Validates and transforms `Boolean` strings. | Allows `'true'` and `'false'` as valid values     |
+| `ParseDatePipe`    | Validates and transforms `Date` strings.    | Allows valid `ISO 8601` formatted date strings    |
+| `ParseEnumPipe`    | Validates and transforms `Enum` strings.    | Allows strings that are present in the given enum |
+| `ParseNumberPipe`  | Validates and transforms `Number` strings.  | Uses `parseFloat` under the hood                  |
 
 
 ## Exceptions
 
-The following built-in exceptions are provided by this package:
+The following common exceptions are provided by this package.
 
-* `NotFoundException`
-* `BadRequestException`
-
+|                                | Status code | Default message           |
+| ------------------------------ | ----------- | ------------------------- |
+| `BadRequestException`          | `400`       | `'Bad Request'`           |
+| `UnauthorizedException`        | `401`       | `'Unauthorized'`          |
+| `NotFoundException`            | `404`       | `'Not Found'`             |
+| `UnprocessableEntityException` | `422`       | `'Unprocessable Entity'`  |
+| `InternalServerErrorException` | `500`       | `'Internal Server Error'` |
 
 ### Custom exceptions
 
@@ -175,7 +179,7 @@ Any exception class that extends the base `HttpException` will be handled by the
 import { HttpException } from '@storyofams/next-api-decorators';
 
 export class ForbiddenException extends HttpException {
-  public constructor(message?: string) {
+  public constructor(message?: string = 'Forbidden') {
     super(403, message);
   }
 }

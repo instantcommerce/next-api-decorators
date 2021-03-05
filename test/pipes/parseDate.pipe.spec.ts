@@ -1,4 +1,4 @@
-import { ParseDatePipe } from './parseDate.pipe';
+import { ParseDatePipe } from '../../lib/pipes';
 
 describe('ParseDatePipe', () => {
   it('Should parse the given date', () => {
