@@ -161,10 +161,18 @@ Pipes are being used to validate and transform incoming values. The pipes can be
 
 ## Exceptions
 
-The following built-in exceptions are provided by this package:
+### Built-in exceptions
 
-* `NotFoundException`
-* `BadRequestException`
+The following common HTTP exceptions are provided by this package.
+
+|                                | Status code | Default message           |
+| ------------------------------ | ----------- | ------------------------- |
+| `BadRequestException`          | `400`       | `'Bad request'`           |
+| `UnauthorizedException`        | `401`       | `'Unauthorized'`          |
+| `NotFoundException`            | `404`       | `'Not found'`             |
+| `InternalServerErrorException` | `500`       | `'Internal server error'` |
+
+
 
 
 ### Custom exceptions
@@ -175,7 +183,7 @@ Any exception class that extends the base `HttpException` will be handled by the
 import { HttpException } from '@storyofams/next-api-decorators';
 
 export class ForbiddenException extends HttpException {
-  public constructor(message?: string) {
+  public constructor(message?: string = 'Forbidden') {
     super(403, message);
   }
 }
