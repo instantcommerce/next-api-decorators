@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { HttpCode, HTTP_CODE_TOKEN } from '../../decorators';
+import { HttpCode, HTTP_CODE_TOKEN } from '../../lib/decorators';
 
 class Test {
   @HttpCode(201)

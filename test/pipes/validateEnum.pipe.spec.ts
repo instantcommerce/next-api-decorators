@@ -1,4 +1,4 @@
-import { ValidateEnumPipe } from '../../pipes';
+import { ValidateEnumPipe } from '../../lib/pipes';
 
 enum UserStatus {
   ACTIVE = 'active',

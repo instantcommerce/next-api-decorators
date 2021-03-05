@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import 'reflect-metadata';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { Body, PARAMETER_TOKEN, Req, Request, Res, Response, Header, Query } from '../../decorators';
+import { Body, PARAMETER_TOKEN, Req, Request, Res, Response, Header, Query } from '../../lib/decorators';
 
 describe('Parameter decorators', () => {
   it('Body should be set.', () => {
