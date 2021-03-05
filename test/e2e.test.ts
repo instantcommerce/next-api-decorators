@@ -142,7 +142,7 @@ describe('E2E', () => {
         })
       ));
 
-  it('read', () =>
+  it('read with invalid "id"', () =>
     request(server)
       .get('/?id=invalid-id&step=1&redirect=true&startAt=2021-01-01T22:00:00')
       .set('Content-Type', 'application/json')
