@@ -165,11 +165,11 @@ The following common exceptions are provided by this package.
 
 |                                | Status code | Default message           |
 | ------------------------------ | ----------- | ------------------------- |
-| `BadRequestException`          | `400`       | `'Bad request'`           |
+| `BadRequestException`          | `400`       | `'Bad Request'`           |
 | `UnauthorizedException`        | `401`       | `'Unauthorized'`          |
-| `NotFoundException`            | `404`       | `'Not found'`             |
+| `NotFoundException`            | `404`       | `'Not Found'`             |
 | `UnprocessableEntityException` | `422`       | `'Unprocessable Entity'`  |
-| `InternalServerErrorException` | `500`       | `'Internal server error'` |
+| `InternalServerErrorException` | `500`       | `'Internal Server Error'` |
 
 ### Custom exceptions
 
