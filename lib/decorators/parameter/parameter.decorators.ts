@@ -1,4 +1,4 @@
-import type { ParameterPipe } from '../pipes/ParameterPipe';
+import type { ParameterPipe } from '../../pipes/ParameterPipe';
 
 export interface MetaParameter {
   index: number;

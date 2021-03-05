@@ -1,6 +1,6 @@
-import { BadRequestException } from '../exceptions';
-import type { ParameterPipe, PipeOptions, PipeMetadata } from './ParameterPipe';
-import { validatePipeOptions } from './validatePipeOptions';
+import { BadRequestException } from '../../exceptions';
+import type { ParameterPipe, PipeOptions, PipeMetadata } from '../ParameterPipe';
+import { validatePipeOptions } from '../validatePipeOptions';
 
 export function ParseNumberPipe(options?: PipeOptions): ParameterPipe<number> {
   return (value: any, metadata?: PipeMetadata) => {

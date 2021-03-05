@@ -1,4 +1,4 @@
-import { Handler } from '../internals/handler';
+import { Handler } from '../../internals/handler';
 
 export enum HttpVerb {
   GET = 'GET',

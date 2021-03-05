@@ -1,6 +1,6 @@
-import { BadRequestException } from '../exceptions';
-import type { ParameterPipe, PipeOptions, PipeMetadata } from './ParameterPipe';
-import { validatePipeOptions } from './validatePipeOptions';
+import { BadRequestException } from '../../exceptions';
+import type { ParameterPipe, PipeOptions, PipeMetadata } from '../ParameterPipe';
+import { validatePipeOptions } from '../validatePipeOptions';
 
 interface ValidateEnumPipeOptions<T extends Record<string, unknown>> extends PipeOptions {
   type: T;

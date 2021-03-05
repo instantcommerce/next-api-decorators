@@ -1,6 +1,6 @@
-import { BadRequestException } from '../exceptions';
-import type { ParameterPipe, PipeOptions, PipeMetadata } from './ParameterPipe';
-import { validatePipeOptions } from './validatePipeOptions';
+import { BadRequestException } from '../../exceptions';
+import type { ParameterPipe, PipeOptions, PipeMetadata } from '../ParameterPipe';
+import { validatePipeOptions } from '../validatePipeOptions';
 
 export function ParseBooleanPipe(options?: PipeOptions): ParameterPipe<boolean> {
   return (value: any, metadata?: PipeMetadata) => {

@@ -5,7 +5,7 @@ import {
   NotFoundException,
   UnauthorizedException,
   UnprocessableEntityException
-} from '../../lib/exceptions';
+} from '.';
 
 describe('HttpException', () => {
   it(`Should use 'HttpException' as name`, () =>
