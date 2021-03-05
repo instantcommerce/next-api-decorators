@@ -23,6 +23,7 @@
 
 Collection of decorators to create typed Next.js API routes, with easy request validation and transformation.
 
+
 ## Installation
 
 Add the package to your project:
@@ -49,6 +50,7 @@ Your `tsconfig.json` needs the following flags:
 ```json
 "experimentalDecorators": true
 ```
+
 
 ## Usage
 
@@ -113,6 +115,7 @@ class User {
 export default createHandler(User);
 ```
 
+
 ## Available decorators
 
 ### Class decorators
@@ -141,8 +144,6 @@ export default createHandler(User);
 | `@Header(name: string)` | Gets a header value by name.                |
 
 
-
-
 ## Built-in pipes
 
 Pipes are being used to validate and transform incoming values. The pipes can be added to the `@Query` decorator like:
@@ -153,17 +154,17 @@ Pipes are being used to validate and transform incoming values. The pipes can be
 
 ⚠️ Beware that they throw when the value is invalid.
 
-|                    | Description                                 | Remarks                                       |
-| ------------------ | ------------------------------------------- | --------------------------------------------- |
-| `ParseNumberPipe`  | Validates and transforms `Number` strings.  | Uses `parseFloat` under the hood              |
-| `ParseBooleanPipe` | Validates and transforms `Boolean` strings. | Allows `'true'` and `'false'` as valid values |
+|                    | Description                                 | Remarks                                           |
+| ------------------ | ------------------------------------------- | ------------------------------------------------- |
+| `ParseBooleanPipe` | Validates and transforms `Boolean` strings. | Allows `'true'` and `'false'` as valid values     |
+| `ParseDatePipe`    | Validates and transforms `Date` strings.    | Allows valid `ISO 8601` formatted date strings    |
+| `ParseEnumPipe`    | Validates and transforms `Enum` strings.    | Allows strings that are present in the given enum |
+| `ParseNumberPipe`  | Validates and transforms `Number` strings.  | Uses `parseFloat` under the hood                  |
 
 
 ## Exceptions
 
-### Built-in exceptions
-
-The following common HTTP exceptions are provided by this package.
+The following common exceptions are provided by this package.
 
 |                                | Status code | Default message           |
 | ------------------------------ | ----------- | ------------------------- |
