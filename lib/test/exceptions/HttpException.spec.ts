@@ -3,7 +3,8 @@ import {
   BadRequestException,
   InternalServerErrorException,
   NotFoundException,
-  UnauthorizedException
+  UnauthorizedException,
+  UnprocessableEntityException
 } from '../../exceptions';
 
 describe('HttpException', () => {
@@ -35,6 +36,7 @@ describe('HttpException', () => {
       expect(new InternalServerErrorException()).toHaveProperty('statusCode', 500);
       expect(new NotFoundException()).toHaveProperty('statusCode', 404);
       expect(new UnauthorizedException()).toHaveProperty('statusCode', 401);
+      expect(new UnprocessableEntityException()).toHaveProperty('statusCode', 422);
     });
 
     it('Should set the default error messages', () => {
@@ -42,6 +44,7 @@ describe('HttpException', () => {
       expect(new InternalServerErrorException()).toHaveProperty('message', 'Internal server error');
       expect(new NotFoundException()).toHaveProperty('message', 'Not found');
       expect(new UnauthorizedException()).toHaveProperty('message', 'Unauthorized');
+      expect(new UnprocessableEntityException()).toHaveProperty('message', 'Unprocessable Entity');
     });
   });
 });
