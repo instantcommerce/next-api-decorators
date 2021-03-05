@@ -3,12 +3,12 @@ import { IsBoolean, IsDate, IsEnum, IsInt, IsNotEmpty, IsOptional } from 'class-
 import express from 'express';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import request from 'supertest';
-import { createHandler } from './createHandler';
-import { Body, Delete, Get, Header, HttpCode, Post, Put, Query, Req, Res, Response, SetHeader } from './decorators';
-import { ValidationPipe } from './pipes';
-import { ParseBooleanPipe } from './pipes/parseBoolean.pipe';
-import { ParseDatePipe } from './pipes/parseDate.pipe';
-import { ParseNumberPipe } from './pipes/parseNumber.pipe';
+import { createHandler } from '../createHandler';
+import { Body, Delete, Get, Header, HttpCode, Post, Put, Query, Req, Res, Response, SetHeader } from '../decorators';
+import { ValidationPipe } from '../pipes';
+import { ParseBooleanPipe } from '../pipes/parseBoolean.pipe';
+import { ParseDatePipe } from '../pipes/parseDate.pipe';
+import { ParseNumberPipe } from '../pipes/parseNumber.pipe';
 
 enum CreateSource {
   ONLINE = 'online',

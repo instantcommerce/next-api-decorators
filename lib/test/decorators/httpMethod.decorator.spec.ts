@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Delete, Get, HTTP_METHOD_TOKEN, HttpVerb, Post, Put } from './httpMethod.decorators';
+import { Delete, Get, HTTP_METHOD_TOKEN, HttpVerb, Post, Put } from '../../decorators';
 
 class Test {
   @Get()
