@@ -18,8 +18,6 @@ function getParameterValue(
       return req.body;
     case 'header':
       return name ? req.headers[name.toLowerCase()] : req.headers;
-    case 'method':
-      return req.method;
     case 'request':
       return req;
     case 'response':
@@ -29,18 +27,10 @@ function getParameterValue(
   }
 }
 
-export function Handler(method?: HttpVerb): MethodDecorator {
-  if (!method) {
-    method = HttpVerb.GET;
-  }
-
+export function Handler(): MethodDecorator {
   return function (target: object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>) {
     const originalHandler = descriptor.value;
     descriptor.value = async function (req: NextApiRequest, res: NextApiResponse) {
-      if (req.method !== method) {
-        return notFound(req, res);
-      }
-
       const httpCode: number | undefined = Reflect.getMetadata(HTTP_CODE_TOKEN, target.constructor, propertyKey);
       const metaParameters: Array<MetaParameter> = (
         Reflect.getMetadata(PARAMETER_TOKEN, target.constructor, propertyKey) ?? []
