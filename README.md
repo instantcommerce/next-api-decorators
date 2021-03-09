@@ -45,7 +45,7 @@ $ yarn add -D babel-plugin-transform-typescript-metadata @babel/plugin-proposal-
 ```
 
 Make sure to add the following lines to the start of the `plugins` section in your babel configuration file:
-```json
+```json5
 {
   "plugins": [
     "babel-plugin-transform-typescript-metadata",
@@ -58,7 +58,7 @@ Make sure to add the following lines to the start of the `plugins` section in yo
 
 Your `tsconfig.json` needs the following flags:
 
-```json
+```json5
 "experimentalDecorators": true
 ```
 
