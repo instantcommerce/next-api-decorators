@@ -137,11 +137,12 @@ export default createHandler(User);
 |                         | Description                                 |
 | ----------------------- | ------------------------------------------- |
 | `@Req()`                | Gets the request object.                    |
-| `@Res()`                | Gets the response object.                   |
+| `@Res()`*               | Gets the response object.                   |
 | `@Body()`               | Gets the request body.                      |
 | `@Query(key: string)`   | Gets a query string parameter value by key. |
 | `@Header(name: string)` | Gets a header value by name.                |
 
+\* When using `@Res()`, you are in charge of sending the response to the client. Therefore, the return statement won't be handled by this package and the response won't be served.
 
 ## Built-in pipes
 
