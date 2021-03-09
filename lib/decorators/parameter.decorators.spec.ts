@@ -2,10 +2,10 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import 'reflect-metadata';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { Body, PARAMETER_TOKEN, Req, Request, Res, Response, Header, Query } from '../../lib/decorators';
+import { Body, PARAMETER_TOKEN, Req, Request, Res, Response, Header, Query } from './parameter.decorators';
 
 describe('Parameter decorators', () => {
-  it('Body should be set.', () => {
+  it('Should set the Body decorator.', () => {
     class Test {
       public index(@Body() body: any) {}
     }
@@ -16,7 +16,7 @@ describe('Parameter decorators', () => {
     expect(meta).toMatchObject(expect.arrayContaining([expect.objectContaining({ index: 0, location: 'body' })]));
   });
 
-  it('Header should be set.', () => {
+  it('Should set the Header decorator for the given names.', () => {
     class Test {
       public index(@Header('Content-Type') contentType: string, @Header('Referer') referer: string): void {}
     }
@@ -32,7 +32,7 @@ describe('Parameter decorators', () => {
     );
   });
 
-  it('Query should be set for the whole query string.', () => {
+  it('Should set the Query decorator for the whole query string.', () => {
     class Test {
       public index(@Query() query: any) {}
     }
@@ -45,7 +45,7 @@ describe('Parameter decorators', () => {
     );
   });
 
-  it('Query parameters should be set.', () => {
+  it('Should set the Query decorator for the given keys.', () => {
     class Test {
       public index(
         @Query('firstName') firstName: string,
@@ -66,7 +66,7 @@ describe('Parameter decorators', () => {
     );
   });
 
-  it('Req should be set.', () => {
+  it('Should set the Req decorator.', () => {
     class Test {
       public index(@Req() req: NextApiRequest) {}
     }
@@ -77,7 +77,7 @@ describe('Parameter decorators', () => {
     expect(meta).toMatchObject(expect.arrayContaining([expect.objectContaining({ index: 0, location: 'request' })]));
   });
 
-  it('Res should be set.', () => {
+  it('Should set the Res decorator.', () => {
     class Test {
       public index(@Res() res: NextApiResponse) {}
     }
@@ -88,7 +88,7 @@ describe('Parameter decorators', () => {
     expect(meta).toMatchObject(expect.arrayContaining([expect.objectContaining({ index: 0, location: 'response' })]));
   });
 
-  it('Request and Response should be set.', () => {
+  it('Should set the Request and Response decoractors (aliases).', () => {
     class Test {
       public index(@Request() req: NextApiRequest, @Response() res: NextApiResponse) {}
     }

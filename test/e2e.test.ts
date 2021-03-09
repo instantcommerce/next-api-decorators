@@ -1,5 +1,6 @@
 import 'reflect-metadata';
-import { IsBoolean, IsDate, IsEnum, IsInt, IsNotEmpty, IsOptional } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsBoolean, IsDate, IsEnum, IsInt, IsNotEmpty, IsOptional, ValidateNested } from 'class-validator';
 import express from 'express';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import request from 'supertest';
@@ -29,6 +30,14 @@ enum CreateSource {
   OFFLINE = 'offline'
 }
 
+class Address {
+  @IsNotEmpty()
+  public city!: string;
+
+  @IsNotEmpty()
+  public country!: string;
+}
+
 class CreateDto {
   @IsNotEmpty()
   public firstName!: string;
@@ -51,6 +60,17 @@ class CreateDto {
 
   @IsEnum(CreateSource)
   @IsOptional()
+  public source?: CreateSource;
+
+  @Type(() => Address)
+  @ValidateNested()
+  @IsOptional()
+  public addresses?: Address[];
+}
+
+class QueryDto {
+  @IsOptional()
+  @IsEnum(CreateSource)
   public source?: CreateSource;
 }
 
@@ -82,11 +102,15 @@ class TestHandler {
     };
   }
 
-  @HttpCode(201)
   @Post()
+  @HttpCode(201)
   @SetHeader('X-Method', 'create')
-  public create(@Header('Content-Type') contentType: string, @Body(ValidationPipe) body: CreateDto) {
-    return { contentType, receivedBody: body, test: this.testField, instanceOf: body instanceof CreateDto };
+  public create(
+    @Query(ValidationPipe) query: QueryDto,
+    @Header('Content-Type') contentType: string,
+    @Body(ValidationPipe) body: CreateDto
+  ) {
+    return { ...query, contentType, receivedBody: body, test: this.testField, instanceOf: body instanceof CreateDto };
   }
 
   @Put()
@@ -120,7 +144,7 @@ describe('E2E', () => {
     server.all('/', createHandler(TestHandler));
   });
 
-  it('read', () =>
+  it('Should successfully `GET` the request with a 200 status code.', () =>
     request(server)
       .get('/?id=my-id&step=1&redirect=true&startAt=2021-01-01T22:00:00')
       .set('Content-Type', 'application/json')
@@ -142,7 +166,7 @@ describe('E2E', () => {
         })
       ));
 
-  it('read with invalid "id"', () =>
+  it('Should throw a 404 error when an invalid ID is given.', () =>
     request(server)
       .get('/?id=invalid-id&step=1&redirect=true&startAt=2021-01-01T22:00:00')
       .set('Content-Type', 'application/json')
@@ -155,7 +179,7 @@ describe('E2E', () => {
         })
       ));
 
-  it('read without "step"', () =>
+  it('Should return a 400 error when a required parameter is missing.', () =>
     request(server)
       .get('/?id=my-id&redirect=true')
       .set('Content-Type', 'application/json')
@@ -168,9 +192,9 @@ describe('E2E', () => {
         })
       ));
 
-  it('create', () =>
+  it('Should successfully `POST` the request with a 201 status code.', () =>
     request(server)
-      .post('/')
+      .post('/?source=online')
       .send({
         firstName: 'Ada',
         lastName: 'Lovelace',
@@ -186,6 +210,7 @@ describe('E2E', () => {
             'x-method': 'create'
           },
           body: {
+            source: CreateSource.ONLINE,
             contentType: 'application/json',
             test: 'test',
             instanceOf: true,
@@ -198,7 +223,27 @@ describe('E2E', () => {
         })
       ));
 
-  it('Returns error for create', () =>
+  it('Should return a 400 error when "addresses[0].country" is not set.', () =>
+    request(server)
+      .post('/')
+      .send({
+        firstName: 'Ada',
+        lastName: 'Lovelace',
+        dateOfBirth: new Date('1815-12-10'),
+        birthYear: 1815,
+        isActive: true,
+        addresses: [{ city: 'Amsterdam' }]
+      } as CreateDto)
+      .expect(400)
+      .then(res =>
+        expect(res).toMatchObject({
+          body: {
+            errors: expect.arrayContaining([expect.stringContaining('addresses.0.country should not be empty')])
+          }
+        })
+      ));
+
+  it('Should return a 400 error when the an invalid enum is given.', () =>
     request(server)
       .post('/')
       .send({
@@ -218,7 +263,7 @@ describe('E2E', () => {
         })
       ));
 
-  it('update', () =>
+  it('Should successfully `PUT` the request with a 200 status code.', () =>
     request(server)
       .put('/?id=user-id')
       .send({ firstName: 'Ada', lastName: 'Lovelace', dateOfBirth: '1815-12-10' })
@@ -242,7 +287,7 @@ describe('E2E', () => {
         })
       ));
 
-  it('delete', () =>
+  it('Should successfully `DELETE` the request with a 200 status code.', () =>
     request(server)
       .delete('/?id=user-id')
       .send({ firstName: 'Ada', lastName: 'Lovelace', dateOfBirth: '1815-12-10' })
@@ -266,7 +311,7 @@ describe('E2E', () => {
         })
       ));
 
-  it('should throw express style 404 for an undefined http verb', () =>
+  it('Should return a express style 404 for an undefined HTTP verb.', () =>
     request(server)
       .patch('/')
       .set('Content-Type', 'application/json')

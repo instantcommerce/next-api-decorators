@@ -136,10 +136,13 @@ export default createHandler(User);
 
 |                         | Description                                 |
 | ----------------------- | ------------------------------------------- |
+| `@Req()`                | Gets the request object.                    |
+| `@Res()`*               | Gets the response object.                   |
 | `@Body()`               | Gets the request body.                      |
 | `@Query(key: string)`   | Gets a query string parameter value by key. |
 | `@Header(name: string)` | Gets a header value by name.                |
 
+\* When using `@Res()`, you are in charge of sending the response to the client. Therefore, the return statement won't be handled by this package and the response won't be served.
 
 ## Built-in pipes
 
@@ -151,13 +154,12 @@ Pipes are being used to validate and transform incoming values. The pipes can be
 
 ⚠️ Beware that they throw when the value is invalid.
 
-|                    | Description                                 | Remarks                                           |
-| ------------------ | ------------------------------------------- | ------------------------------------------------- |
-| `ParseBooleanPipe` | Validates and transforms `Boolean` strings. | Allows `'true'` and `'false'` as valid values     |
-| `ParseDatePipe`    | Validates and transforms `Date` strings.    | Allows valid `ISO 8601` formatted date strings    |
-| `ParseEnumPipe`    | Validates and transforms `Enum` strings.    | Allows strings that are present in the given enum |
-| `ParseNumberPipe`  | Validates and transforms `Number` strings.  | Uses `parseFloat` under the hood                  |
-
+|                    | Description                                 | Remarks                                            |
+| ------------------ | ------------------------------------------- | -------------------------------------------------- |
+| `ParseBooleanPipe` | Validates and transforms `Boolean` strings. | Allows `'true'` and `'false'` as valid values.     |
+| `ParseDatePipe`    | Validates and transforms `Date` strings.    | Allows valid `ISO 8601` formatted date strings.    |
+| `ParseNumberPipe`  | Validates and transforms `Number` strings.  | Uses `parseFloat` under the hood.                  |
+| `ValidateEnumPipe` | Validates string based on `Enum` values.    | Allows strings that are present in the given enum. |
 
 ## Exceptions
 

@@ -1,4 +1,4 @@
-import { ParseBooleanPipe } from '../../lib/pipes';
+import { ParseBooleanPipe } from './parseBoolean.pipe';
 
 describe('ParseBooleanPipe', () => {
   it('Should parse the given string as boolean (true)', () => expect(ParseBooleanPipe()('true')).toStrictEqual(true));

@@ -1,4 +1,4 @@
-import { ParseNumberPipe } from '../../lib/pipes';
+import { ParseNumberPipe } from './parseNumber.pipe';
 
 describe('ParseNumberPipe', () => {
   it('Should parse the given string as number', () => expect(ParseNumberPipe()('10')).toStrictEqual(10));

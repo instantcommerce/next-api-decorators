@@ -1,6 +1,6 @@
-import { BadRequestException } from '../exceptions';
-import type { PipeMetadata, PipeOptions } from './ParameterPipe';
-import { validatePipeOptions } from './validatePipeOptions';
+import { BadRequestException } from '../../exceptions';
+import type { PipeMetadata, PipeOptions } from '../ParameterPipe';
+import { validatePipeOptions } from '../validatePipeOptions';
 
 // The following variables and functions are taken from the validator.js (https://github.com/validatorjs/validator.js/blob/master/src/lib/isISO8601.js)
 
