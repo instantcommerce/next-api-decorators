@@ -44,11 +44,16 @@ Since decorators are still in proposal state, you need to add the following plug
 $ yarn add -D babel-plugin-transform-typescript-metadata @babel/plugin-proposal-decorators babel-plugin-parameter-decorator
 ```
 
-Make sure to add the following lines to the `plugins` section in your babel configuration file:
+Make sure to add the following lines to the start of the `plugins` section in your babel configuration file:
 ```json
-"babel-plugin-transform-typescript-metadata",
-["@babel/plugin-proposal-decorators", { "legacy": true }],
-"babel-plugin-parameter-decorator",
+{
+  "plugins": [
+    "babel-plugin-transform-typescript-metadata",
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    "babel-plugin-parameter-decorator",
+    // ... other plugins
+  ]
+}
 ```
 
 Your `tsconfig.json` needs the following flags:
