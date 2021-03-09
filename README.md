@@ -21,7 +21,13 @@
 
 ---
 
-Collection of decorators to create typed Next.js API routes, with easy request validation and transformation.
+This package contains a collection of decorators to create typed Next.js API routes, with easy request validation and transformation.
+
+## Motivation
+
+Building serverless functions declaratively with classes and decorators makes dealing with Next.js API routes easier and brings order and sanity to your `/pages/api` codebase.
+
+The structure is heavily inspired by NestJS, which is an amazing framework for a lot of use cases. Having said that, a separate NestJS repo for your backend can also bring unneeded overhead and complexity to projects with a smaller set of backend requirements. Combining the structure of NestJS, with the ease of use of Next.js, brings the best of both worlds for the right use case.
 
 
 ## Installation
