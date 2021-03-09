@@ -30,7 +30,7 @@ describe('HttpException', () => {
       errors: ['Invalid email address']
     }));
 
-  describe('Common errors', () => {
+  describe('Default errors', () => {
     it('Should set the default status codes', () => {
       expect(new BadRequestException()).toHaveProperty('statusCode', 400);
       expect(new InternalServerErrorException()).toHaveProperty('statusCode', 500);
