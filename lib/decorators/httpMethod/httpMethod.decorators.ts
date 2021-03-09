@@ -18,7 +18,7 @@ function applyHttpMethod(verb: HttpVerb) {
 
     Reflect.defineMetadata(HTTP_METHOD_TOKEN, methods, target.constructor);
 
-    Handler(verb)(target, propertyKey, descriptor);
+    Handler()(target, propertyKey, descriptor);
   };
 }
 
