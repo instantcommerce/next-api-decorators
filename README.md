@@ -27,7 +27,7 @@ This package contains a collection of decorators to create typed Next.js API rou
 
 Building serverless functions declaratively with classes and decorators makes dealing with Next.js API routes easier and brings order and sanity to your `/pages/api` codebase.
 
-The structure is heavily inspired by NestJS, which is an amazing framework for a lot of use cases. Having said that, a separate NestJS repo for your backend can also bring unneeded overhead and complexity to projects with a smaller set of backend requirements. Combining the structure of NestJS, with the ease of use of Next.js, brings the best of both worlds for the right use case.
+The structure is heavily inspired by NestJS, which is an amazing framework for a lot of use cases. On the other hand, a separate NestJS repo for your backend can also bring unneeded overhead and complexity to projects with a smaller set of backend requirements. Combining the structure of NestJS, with the ease of use of Next.js, brings the best of both worlds for the right use case.
 
 
 ## Installation
@@ -41,7 +41,7 @@ $ yarn add @storyofams/next-api-decorators
 Since decorators are still in proposal state, you need to add the following plugins to your `devDependencies` in order to use them:
 
 ```bash
-$ yarn add -D babel-plugin-transform-typescript-metadata @babel/plugin-proposal-decorators babel-plugin-parameter-decorator
+$ yarn add -D @babel/core babel-plugin-transform-typescript-metadata @babel/plugin-proposal-decorators babel-plugin-parameter-decorator
 ```
 
 Make sure to add the following lines to the start of the `plugins` section in your babel configuration file:
