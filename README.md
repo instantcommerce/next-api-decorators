@@ -21,7 +21,13 @@
 
 ---
 
-Collection of decorators to create typed Next.js API routes, with easy request validation and transformation.
+This package contains a collection of decorators to create typed Next.js API routes, with easy request validation and transformation.
+
+## Motivation
+
+Building serverless functions declaratively with classes and decorators makes dealing with Next.js API routes easier and brings order and sanity to your `/pages/api` codebase.
+
+The structure is heavily inspired by NestJS, which is an amazing framework for a lot of use cases. On the other hand, a separate NestJS repo for your backend can also bring unneeded overhead and complexity to projects with a smaller set of backend requirements. Combining the structure of NestJS, with the ease of use of Next.js, brings the best of both worlds for the right use case.
 
 
 ## Installation
@@ -35,19 +41,24 @@ $ yarn add @storyofams/next-api-decorators
 Since decorators are still in proposal state, you need to add the following plugins to your `devDependencies` in order to use them:
 
 ```bash
-$ yarn add -D babel-plugin-transform-typescript-metadata @babel/plugin-proposal-decorators babel-plugin-parameter-decorator
+$ yarn add -D @babel/core babel-plugin-transform-typescript-metadata @babel/plugin-proposal-decorators babel-plugin-parameter-decorator
 ```
 
-Make sure to add the following lines to the `plugins` section in your babel configuration file:
-```json
-"babel-plugin-transform-typescript-metadata",
-["@babel/plugin-proposal-decorators", { "legacy": true }],
-"babel-plugin-parameter-decorator",
+Make sure to add the following lines to the start of the `plugins` section in your babel configuration file:
+```json5
+{
+  "plugins": [
+    "babel-plugin-transform-typescript-metadata",
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    "babel-plugin-parameter-decorator",
+    // ... other plugins
+  ]
+}
 ```
 
 Your `tsconfig.json` needs the following flags:
 
-```json
+```json5
 "experimentalDecorators": true
 ```
 
@@ -142,7 +153,7 @@ export default createHandler(User);
 | `@Query(key: string)`   | Gets a query string parameter value by key. |
 | `@Header(name: string)` | Gets a header value by name.                |
 
-\* When using `@Res()`, you are in charge of sending the response to the client. Therefore, the return statement won't be handled by this package and the response won't be served.
+\* Note that when you inject `@Res()` in a method handler you become responsible for managing the response. When doing so, you must issue some kind of response by making a call on the response object (e.g., `res.json(...)` or `res.send(...)`), or the HTTP server will hang.
 
 ## Built-in pipes
 
