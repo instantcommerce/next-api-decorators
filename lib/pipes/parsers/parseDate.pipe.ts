@@ -1,5 +1,6 @@
 import { BadRequestException } from '../../exceptions';
 import type { PipeMetadata, PipeOptions } from '../ParameterPipe';
+import { validateNullable } from '../validateNullable';
 import { validatePipeOptions } from '../validatePipeOptions';
 
 // The following variables and functions are taken from the validator.js (https://github.com/validatorjs/validator.js/blob/master/src/lib/isISO8601.js)
@@ -42,6 +43,10 @@ function isISO8601(str: string, options: { strictSeparator?: boolean; strict?: b
 export function ParseDatePipe(options?: PipeOptions) {
   return (value: any, metadata?: PipeMetadata) => {
     validatePipeOptions(value, metadata?.name, options);
+
+    if (validateNullable(value, options?.nullable)) {
+      return undefined;
+    }
 
     if (value && !isISO8601(value, { strict: true })) {
       throw new BadRequestException(
