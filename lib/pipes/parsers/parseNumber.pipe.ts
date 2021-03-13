@@ -1,10 +1,15 @@
-import { BadRequestException } from '../exceptions';
-import type { ParameterPipe, PipeOptions, PipeMetadata } from './ParameterPipe';
-import { validatePipeOptions } from './validatePipeOptions';
+import { BadRequestException } from '../../exceptions';
+import type { ParameterPipe, PipeOptions, PipeMetadata } from '../ParameterPipe';
+import { validateNullable } from '../validateNullable';
+import { validatePipeOptions } from '../validatePipeOptions';
 
 export function ParseNumberPipe(options?: PipeOptions): ParameterPipe<number> {
   return (value: any, metadata?: PipeMetadata) => {
     validatePipeOptions(value, metadata?.name, options);
+
+    if (validateNullable(value, options?.nullable)) {
+      return undefined;
+    }
 
     const isNumeric = ['string', 'number'].includes(typeof value) && !isNaN(parseFloat(value)) && isFinite(value);
     if (!isNumeric) {

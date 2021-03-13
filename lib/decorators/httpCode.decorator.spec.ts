@@ -7,5 +7,5 @@ class Test {
   public create(): void {}
 }
 
-it('HttpCode decorator should be set.', () =>
+it('Should set the HttpCode decorator.', () =>
   expect(Reflect.getMetadata(HTTP_CODE_TOKEN, Test, 'create')).toStrictEqual(201));

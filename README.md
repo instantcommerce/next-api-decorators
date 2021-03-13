@@ -21,7 +21,14 @@
 
 ---
 
-Collection of decorators to create typed Next.js API routes, with easy request validation and transformation.
+This package contains a collection of decorators to create typed Next.js API routes, with easy request validation and transformation.
+
+## Motivation
+
+Building serverless functions declaratively with classes and decorators makes dealing with Next.js API routes easier and brings order and sanity to your `/pages/api` codebase.
+
+The structure is heavily inspired by NestJS, which is an amazing framework for a lot of use cases. On the other hand, a separate NestJS repo for your backend can also bring unneeded overhead and complexity to projects with a smaller set of backend requirements. Combining the structure of NestJS, with the ease of use of Next.js, brings the best of both worlds for the right use case.
+
 
 ## Installation
 
@@ -34,21 +41,27 @@ $ yarn add @storyofams/next-api-decorators
 Since decorators are still in proposal state, you need to add the following plugins to your `devDependencies` in order to use them:
 
 ```bash
-$ yarn add -D babel-plugin-transform-typescript-metadata @babel/plugin-proposal-decorators babel-plugin-parameter-decorator
+$ yarn add -D @babel/core babel-plugin-transform-typescript-metadata @babel/plugin-proposal-decorators babel-plugin-parameter-decorator
 ```
 
-Make sure to add the following lines to the `plugins` section in your babel configuration file:
-```json
-"babel-plugin-transform-typescript-metadata",
-["@babel/plugin-proposal-decorators", { "legacy": true }],
-"babel-plugin-parameter-decorator",
+Make sure to add the following lines to the start of the `plugins` section in your babel configuration file:
+```json5
+{
+  "plugins": [
+    "babel-plugin-transform-typescript-metadata",
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    "babel-plugin-parameter-decorator",
+    // ... other plugins
+  ]
+}
 ```
 
 Your `tsconfig.json` needs the following flags:
 
-```json
+```json5
 "experimentalDecorators": true
 ```
+
 
 ## Usage
 
@@ -56,7 +69,7 @@ Your `tsconfig.json` needs the following flags:
 
 ```ts
 // pages/api/user.ts
-import { createHandler, Get, Post, Query, Body, NotFoundException } from '@storyofams/next-api-decorators';
+import { createHandler, Get, Query, NotFoundException } from '@storyofams/next-api-decorators';
 
 class User {
   // GET /api/user
@@ -69,12 +82,6 @@ class User {
     }
 
     return user;
-  }
-
-  // POST /api/user
-  @Post()
-  public createUser(@Body() body: any) {
-    return DB.createUser(body);
   }
 }
 
@@ -92,7 +99,8 @@ $ yarn add class-validator class-transformer
 Then you can define your DTOs like:
 
 ```ts
-import { createHandler, Post, Body } from '@storyofams/next-api-decorators';
+// pages/api/user.ts
+import { createHandler, Post, HttpCode, Body } from '@storyofams/next-api-decorators';
 import { IsNotEmpty, IsEmail } from 'class-validator';
 
 class CreateUserDto {
@@ -104,7 +112,9 @@ class CreateUserDto {
 }
 
 class User {
+  // POST /api/user
   @Post()
+  @HttpCode(201)
   public createUser(@Body() body: CreateUserDto) {
     return User.create(body);
   }
@@ -112,6 +122,7 @@ class User {
 
 export default createHandler(User);
 ```
+
 
 ## Available decorators
 
@@ -136,12 +147,13 @@ export default createHandler(User);
 
 |                         | Description                                 |
 | ----------------------- | ------------------------------------------- |
+| `@Req()`                | Gets the request object.                    |
+| `@Res()`*               | Gets the response object.                   |
 | `@Body()`               | Gets the request body.                      |
 | `@Query(key: string)`   | Gets a query string parameter value by key. |
 | `@Header(name: string)` | Gets a header value by name.                |
 
-
-
+\* Note that when you inject `@Res()` in a method handler you become responsible for managing the response. When doing so, you must issue some kind of response by making a call on the response object (e.g., `res.json(...)` or `res.send(...)`), or the HTTP server will hang.
 
 ## Built-in pipes
 
@@ -153,19 +165,24 @@ Pipes are being used to validate and transform incoming values. The pipes can be
 
 ⚠️ Beware that they throw when the value is invalid.
 
-|                    | Description                                 | Remarks                                       |
-| ------------------ | ------------------------------------------- | --------------------------------------------- |
-| `ParseNumberPipe`  | Validates and transforms `Number` strings.  | Uses `parseFloat` under the hood              |
-| `ParseBooleanPipe` | Validates and transforms `Boolean` strings. | Allows `'true'` and `'false'` as valid values |
-
+|                    | Description                                 | Remarks                                            |
+| ------------------ | ------------------------------------------- | -------------------------------------------------- |
+| `ParseBooleanPipe` | Validates and transforms `Boolean` strings. | Allows `'true'` and `'false'` as valid values.     |
+| `ParseDatePipe`    | Validates and transforms `Date` strings.    | Allows valid `ISO 8601` formatted date strings.    |
+| `ParseNumberPipe`  | Validates and transforms `Number` strings.  | Uses `parseFloat` under the hood.                  |
+| `ValidateEnumPipe` | Validates string based on `Enum` values.    | Allows strings that are present in the given enum. |
 
 ## Exceptions
 
-The following built-in exceptions are provided by this package:
+The following common exceptions are provided by this package.
 
-* `NotFoundException`
-* `BadRequestException`
-
+|                                | Status code | Default message           |
+| ------------------------------ | ----------- | ------------------------- |
+| `BadRequestException`          | `400`       | `'Bad Request'`           |
+| `UnauthorizedException`        | `401`       | `'Unauthorized'`          |
+| `NotFoundException`            | `404`       | `'Not Found'`             |
+| `UnprocessableEntityException` | `422`       | `'Unprocessable Entity'`  |
+| `InternalServerErrorException` | `500`       | `'Internal Server Error'` |
 
 ### Custom exceptions
 
@@ -175,7 +192,7 @@ Any exception class that extends the base `HttpException` will be handled by the
 import { HttpException } from '@storyofams/next-api-decorators';
 
 export class ForbiddenException extends HttpException {
-  public constructor(message?: string) {
+  public constructor(message?: string = 'Forbidden') {
     super(403, message);
   }
 }

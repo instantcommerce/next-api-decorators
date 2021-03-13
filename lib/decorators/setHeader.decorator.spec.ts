@@ -8,7 +8,7 @@ class Test {
   public index(): void {}
 }
 
-it('SetHeader should be set.', () => {
+it('Should set the SetHeader decorator for the given name.', () => {
   const meta = Reflect.getMetadata(HEADER_TOKEN, Test);
   const methodMeta = Reflect.getMetadata(HEADER_TOKEN, Test, 'index');
 

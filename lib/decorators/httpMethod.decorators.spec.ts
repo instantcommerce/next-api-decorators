@@ -19,7 +19,7 @@ class Test {
   public delete(): void {}
 }
 
-it('HttpMethod decorator should be set.', () => {
+it('Should set the HttpMethod decorator.', () => {
   const meta = Reflect.getMetadata(HTTP_METHOD_TOKEN, Test);
   expect(meta).toBeInstanceOf(Map);
   expect(meta).toMatchObject(

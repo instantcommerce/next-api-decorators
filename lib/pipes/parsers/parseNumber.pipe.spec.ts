@@ -9,6 +9,9 @@ describe('ParseNumberPipe', () => {
   it('Should throw required error the given value is empty', () =>
     expect(() => ParseNumberPipe({ nullable: false })('')).toThrow());
 
+  it('Should pass without a value when nullable', () =>
+    expect(ParseNumberPipe({ nullable: true })(undefined)).toStrictEqual(undefined));
+
   it('Should throw when the given string is not a numeric string', () =>
     expect(() => ParseNumberPipe()('test')).toThrow());
 });
