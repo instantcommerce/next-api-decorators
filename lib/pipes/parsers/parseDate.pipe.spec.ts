@@ -33,4 +33,7 @@ describe('ParseDatePipe', () => {
   it('Should throw when the given value is `null`.', () => {
     expect(() => ParseDatePipe()(null)).toThrow();
   });
+
+  it('Should pass without a value when nullable', () =>
+    expect(ParseDatePipe({ nullable: true })(undefined)).toStrictEqual(undefined));
 });
