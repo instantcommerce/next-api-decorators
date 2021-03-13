@@ -9,6 +9,9 @@ describe('ParseBooleanPipe', () => {
   it('Should throw required error the given value is empty', () =>
     expect(() => ParseBooleanPipe({ nullable: false })('')).toThrow());
 
+  it('Should pass without a value when nullable', () =>
+    expect(ParseBooleanPipe({ nullable: true })(undefined)).toStrictEqual(undefined));
+
   it('Should throw when the given string is not a boolean string', () =>
     expect(() => ParseBooleanPipe()('test')).toThrow());
 });
