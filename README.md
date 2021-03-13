@@ -10,7 +10,7 @@
     <a aria-label="npm" href="https://www.npmjs.com/package/@storyofams/next-api-decorators" target="_blank">
       <img src="https://img.shields.io/npm/v/@storyofams/next-api-decorators">
     </a>
-    <a aria-label="codecov" href="https://codecov.io/gh/storyofams/nextjs-api-decorators" target="_blank">
+    <a aria-label="codecov" href="https://codecov.io/gh/storyofams/next-api-decorators" target="_blank">
       <img src="https://codecov.io/gh/storyofams/next-api-decorators/branch/master/graph/badge.svg?token=ZV0YT4HU5H">
     </a>
     <a aria-label="stars" href="https://github.com/storyofams/next-api-decorators/stargazers/" target="_blank">
