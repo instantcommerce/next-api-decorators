@@ -87,8 +87,8 @@ class TestHandler {
     @Query('step', ParseNumberPipe({ nullable: false })) step: number,
     @Query('redirect', ParseBooleanPipe) redirect: boolean,
     @Query('startAt', ParseDatePipe) startAt: Date,
-    @Query('skip', DefaultValuePipe({ defaultValue: 0 }), ParseNumberPipe({ nullable: true })) skip: number = 0,
-    @Query('limit', DefaultValuePipe({ defaultValue: 20 }), ParseNumberPipe({ nullable: true })) limit: number = 20
+    @Query('skip', DefaultValuePipe(0), ParseNumberPipe({ nullable: true })) skip: number = 0,
+    @Query('limit', DefaultValuePipe(20), ParseNumberPipe({ nullable: true })) limit: number = 20
   ) {
     if (id !== 'my-id') {
       throw new NotFoundException('Invalid ID');

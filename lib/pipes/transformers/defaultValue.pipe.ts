@@ -1,13 +1,9 @@
 import { ParameterPipe } from '../ParameterPipe';
 
-interface DefaultValuePipeOptions {
-  defaultValue: any;
-}
-
-export function DefaultValuePipe(options: DefaultValuePipeOptions): ParameterPipe<any> {
+export function DefaultValuePipe<T>(defaultValue: T): ParameterPipe<T> {
   return (value: any) => {
     if (value == null || (typeof value === 'number' && Number.isNaN(value))) {
-      return options.defaultValue;
+      return defaultValue;
     }
 
     return value;
