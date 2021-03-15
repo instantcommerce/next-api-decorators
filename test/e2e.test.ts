@@ -22,7 +22,8 @@ import {
   ParseBooleanPipe,
   ParseDatePipe,
   ParseNumberPipe,
-  NotFoundException
+  NotFoundException,
+  DefaultValuePipe
 } from '../lib';
 
 enum CreateSource {
@@ -85,7 +86,9 @@ class TestHandler {
     @Query('id') id: string,
     @Query('step', ParseNumberPipe({ nullable: false })) step: number,
     @Query('redirect', ParseBooleanPipe) redirect: boolean,
-    @Query('startAt', ParseDatePipe) startAt: Date
+    @Query('startAt', ParseDatePipe) startAt: Date,
+    @Query('skip', DefaultValuePipe({ defaultValue: 0 }), ParseNumberPipe({ nullable: true })) skip: number = 0,
+    @Query('limit', DefaultValuePipe({ defaultValue: 20 }), ParseNumberPipe({ nullable: true })) limit: number = 20
   ) {
     if (id !== 'my-id') {
       throw new NotFoundException('Invalid ID');
@@ -98,7 +101,9 @@ class TestHandler {
       redirect,
       test: this.testField,
       startAt,
-      isStartAtDateInstance: startAt instanceof Date
+      isStartAtDateInstance: startAt instanceof Date,
+      skip,
+      limit
     };
   }
 
@@ -146,7 +151,7 @@ describe('E2E', () => {
 
   it('Should successfully `GET` the request with a 200 status code.', () =>
     request(server)
-      .get('/?id=my-id&step=1&redirect=true&startAt=2021-01-01T22:00:00')
+      .get('/?id=my-id&step=1&redirect=true&startAt=2021-01-01T22:00:00&skip=10')
       .set('Content-Type', 'application/json')
       .expect(200)
       .then(res =>
@@ -161,7 +166,9 @@ describe('E2E', () => {
             id: 'my-id',
             step: 1,
             redirect: true,
-            isStartAtDateInstance: true
+            isStartAtDateInstance: true,
+            skip: 10,
+            limit: 20
           }
         })
       ));
