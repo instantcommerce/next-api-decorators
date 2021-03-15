@@ -40,7 +40,7 @@
     "next": "10.0.5"
   },
   "devDependencies": {
-    "@babel/cli": "7.12.10",
+    "@babel/cli": "7.13.10",
     "@babel/core": "7.12.10",
     "@babel/plugin-proposal-decorators": "7.12.13",
     "@babel/runtime-corejs2": "7.12.5",
