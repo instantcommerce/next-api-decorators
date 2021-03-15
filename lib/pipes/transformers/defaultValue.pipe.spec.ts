@@ -7,6 +7,11 @@ describe('DefaultValuePipe', () => {
 
   it('Should return the default value.', () => expect(DefaultValuePipe('test')(undefined)).toStrictEqual('test'));
 
-  it('Should return the default value when the value is NaN.', () =>
-    expect(DefaultValuePipe('test')(NaN)).toStrictEqual('test'));
+  it('Should return the default value when the value is NaN.', () => expect(DefaultValuePipe(0)(NaN)).toStrictEqual(0));
+
+  it('Should return `null` when the value is `undefined`.', () =>
+    expect(DefaultValuePipe(null)(undefined)).toStrictEqual(null));
+
+  it('Should return `undefined` when the value is `null`.', () =>
+    expect(DefaultValuePipe(undefined)(null)).toBeUndefined());
 });
