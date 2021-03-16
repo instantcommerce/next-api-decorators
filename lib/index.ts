@@ -4,6 +4,7 @@ export * from './createHandler';
 export {
   Body,
   Delete,
+  Download,
   Get,
   Header,
   HttpCode,
