@@ -23,6 +23,82 @@
 
 This package contains a collection of decorators to create typed Next.js API routes, with easy request validation and transformation.
 
+---
+
+Writing request handlers in a single function is straight forward but can be tedious, more prone to human error and can easily become difficult to manage.
+
+```ts
+import type { NextApiRequest, NextApiResponse } from 'next';
+
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+  if (req.method === 'GET') {
+    const user = await DB.findUserById(req.query.id);
+    if (!user) {
+      return res.status(404).json({
+        statusCode: 404,
+        message: 'User not found'
+      })
+    }
+
+    return res.json(user);
+  } else if (req.method === 'POST') {
+    const user = await DB.createUser(req.body.email);
+    return res.status(201).json(user);
+  }
+
+  res.status(404).json({
+    statusCode: 404,
+    message: 'Not Found'
+  });
+}
+```
+
+Instead we can write our handlers in a more structured and cleaner way.
+
+```ts
+// pages/api/user.ts
+import { createHandler, Get, Post, Query, HttpCode, NotFoundException } from '@storyofams/next-api-decorators';
+
+class User {
+  // GET /api/user
+  @Get()
+  async fetchUser(@Query('id') id: string) {
+    const user = await DB.findUserById(id);
+
+    if (!user) {
+      throw new NotFoundException('User not found.');
+    }
+
+    return user;
+  }
+
+  // POST /api/user
+  @Post()
+  @HttpCode(201)
+  async createUser(@Body() body: CreateUserDto) {
+    return await DB.createUser(body.email);
+  }
+}
+
+export default createHandler(User);
+```
+
+---
+
+## Table of Contents
+
+- [Motivation](#motivation)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Basic example](#basic-example)
+  - [Data transfer object (DTO)](#data-transfer-object)
+- [Available decorators](#available-decorators)
+  - [Class decorators](#class-decorators)
+  - [Method decorators](#method-decorators)
+  - [Parameter decorators](#parameter-decorators)
+- [Built-in pipes](#built-in-pipes)
+- [Exceptions](#exceptions)
+
 ## Motivation
 
 Building serverless functions declaratively with classes and decorators makes dealing with Next.js API routes easier and brings order and sanity to your `/pages/api` codebase.
@@ -67,26 +143,7 @@ Your `tsconfig.json` needs the following flags:
 
 ### Basic example
 
-```ts
-// pages/api/user.ts
-import { createHandler, Get, Query, NotFoundException } from '@storyofams/next-api-decorators';
 
-class User {
-  // GET /api/user
-  @Get()
-  public async fetchUser(@Query('id') id: string) {
-    const user = await DB.findUserById(id);
-
-    if (!user) {
-      throw new NotFoundException('User not found.');
-    }
-
-    return user;
-  }
-}
-
-export default createHandler(User);
-```
 
 ### Data transfer object
 
