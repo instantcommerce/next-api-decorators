@@ -53,7 +53,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 }
 ```
 
-Instead we can write our handlers in a more structured and cleaner way.
+Instead, we can write our handlers in a more structured and cleaner way.
 
 ```ts
 // pages/api/user.ts
