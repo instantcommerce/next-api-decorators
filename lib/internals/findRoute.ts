@@ -23,6 +23,7 @@ export function findRoute(
 
     if (!condition) {
       keys.length = 0;
+      match = undefined;
     }
 
     return condition;
