@@ -1,6 +1,9 @@
 version: 2
 updates:
-  - package-ecosystem: "npm"
+  - package-ecosystem: "yarn"
     directory: "/"
+    allowed_updates:
+      - match:
+          update_type: "security"
     schedule:
-      interval: "daily"
+      interval: "live"
