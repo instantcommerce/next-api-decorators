@@ -16,7 +16,7 @@ export function findRoute(
 
   const keys: Key[] = [];
   let match: RegExpExecArray | null | undefined;
-  const method = methods.find((f: any) => {
+  const method = methods.find(f => {
     match = pathToRegexp(f.path, keys).exec(path);
 
     const condition = f.verb === verb && match?.length;
