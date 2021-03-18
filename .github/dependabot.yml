@@ -1,9 +1,8 @@
-version: 2
-updates:
-  - package-ecosystem: "yarn"
+version: 1
+update_configs:
+  - package_manager: "javascript"
     directory: "/"
     allowed_updates:
       - match:
           update_type: "security"
-    schedule:
-      interval: "live"
+    update_schedule: "live"
