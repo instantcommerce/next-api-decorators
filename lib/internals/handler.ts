@@ -2,7 +2,7 @@ import { ServerResponse } from 'http';
 import { Stream } from 'stream';
 import type { ClassConstructor } from 'class-transformer';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { HEADER_TOKEN, HTTP_CODE_TOKEN, MetaParameter, PARAMETER_TOKEN } from '../decorators';
+import { HEADER_TOKEN, HTTP_DOWNLOAD_TOKEN, HTTP_CODE_TOKEN, MetaParameter, PARAMETER_TOKEN } from '../decorators';
 import { HttpException } from '../exceptions';
 
 function getParameterValue(
@@ -51,7 +51,11 @@ export function Handler(): MethodDecorator {
             const paramType =
               index < paramTypes.length && typeof paramTypes[index] === 'function' ? paramTypes[index] : undefined;
 
-            let returnValue = getParameterValue(req, res, { location, name, index });
+            let returnValue = getParameterValue(req, res, {
+              location,
+              name,
+              index
+            });
 
             if (pipes && pipes.length) {
               for (const pipeFn of pipes) {
@@ -59,7 +63,10 @@ export function Handler(): MethodDecorator {
                   ? // Bare pipe function. i.e: `ParseNumberPipe`
                     await pipeFn.call(null, null).call(null, returnValue, { name, metaType: paramType })
                   : // Pipe with options. i.e: `ParseNumberPipe({ nullable: false })`
-                    await pipeFn.call(null, returnValue, { name, metaType: paramType });
+                    await pipeFn.call(null, returnValue, {
+                      name,
+                      metaType: paramType
+                    });
               }
             }
 
