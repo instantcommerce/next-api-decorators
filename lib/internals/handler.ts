@@ -2,7 +2,14 @@ import { ServerResponse } from 'http';
 import { Stream } from 'stream';
 import type { ClassConstructor } from 'class-transformer';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { HEADER_TOKEN, HttpVerb, HTTP_CODE_TOKEN, MetaParameter, PARAMETER_TOKEN } from '../decorators';
+import {
+  HEADER_TOKEN,
+  HttpVerb,
+  HTTP_CODE_TOKEN,
+  HTTP_DOWNLOAD_TOKEN,
+  MetaParameter,
+  PARAMETER_TOKEN
+} from '../decorators';
 import { HttpException } from '../exceptions';
 import { notFound } from './notFound';
 
@@ -42,6 +49,7 @@ export function Handler(): MethodDecorator {
         propertyKey
       );
       const paramTypes: ClassConstructor<any>[] = Reflect.getMetadata('design:paramtypes', target, propertyKey) ?? [];
+      const isDownloadable = Reflect.getMetadata(HTTP_DOWNLOAD_TOKEN, target.constructor, propertyKey);
 
       try {
         const parameters = await Promise.all(
@@ -78,6 +86,23 @@ export function Handler(): MethodDecorator {
 
         if (returnValue instanceof Stream) {
           returnValue.pipe(res);
+        } else if (
+          isDownloadable &&
+          typeof returnValue === 'object' &&
+          'filename' in returnValue &&
+          'contents' in returnValue
+        ) {
+          res.setHeader('Content-Disposition', `attachment; filename="${returnValue.filename}"`);
+
+          if ('contentType' in returnValue) {
+            res.setHeader('Content-Type', returnValue.contentType);
+          }
+
+          if (returnValue.contents instanceof Stream) {
+            returnValue.contents.pipe(res);
+          } else {
+            res.send(returnValue.contents);
+          }
         } else {
           res.json(returnValue ?? null);
         }
