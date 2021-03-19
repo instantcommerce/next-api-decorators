@@ -2,13 +2,13 @@ import 'reflect-metadata';
 import fs from 'fs';
 import express from 'express';
 import request from 'supertest';
-import { createHandler, Download, Get, Post, Query, SetHeader } from '../lib';
+import { createHandler, Download, DownloadFileResult, Get, Query, SetHeader } from '../lib';
 
 class TestHandler {
   @Get()
   @Download()
   @SetHeader('Content-Type', 'text/html')
-  public getStream(@Query('type') type: string) {
+  public downloadFile(@Query('type') type: string): DownloadFileResult | undefined {
     fs.writeFileSync('./test-stream.txt', 'hello stream!');
 
     switch (type) {
@@ -29,6 +29,8 @@ class TestHandler {
           contents: 'hello string!',
           contentType: 'text/plain'
         };
+      default:
+        return undefined;
     }
   }
 }
