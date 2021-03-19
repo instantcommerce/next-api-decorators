@@ -1,4 +1,9 @@
-export const sampleUserData = [
+export interface User {
+  id: number;
+  name: string;
+}
+
+export const sampleUserData: User[] = [
   { id: 101, name: 'Valry' },
   { id: 102, name: 'Paulie' },
   { id: 103, name: 'Daryl' },

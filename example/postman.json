@@ -1,16 +1,16 @@
 {
 	"info": {
-		"name": "next-api-decorators-example",
+		"name": "@storyofams/next-api-decorators/example",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "GET /api/users (list users)",
+			"name": "Users > Read many",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/users",
+					"raw": "http://localhost:3000/api/users?limit=5&skip=0",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -19,6 +19,37 @@
 					"path": [
 						"api",
 						"users"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "5"
+						},
+						{
+							"key": "skip",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Users > Read one",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/users/101",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"users",
+						"101"
 					]
 				}
 			},
