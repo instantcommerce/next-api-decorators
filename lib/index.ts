@@ -4,6 +4,7 @@ export * from './createHandler';
 export {
   Body,
   Delete,
+  Download,
   Get,
   Header,
   HttpCode,
@@ -20,3 +21,4 @@ export {
 } from './decorators';
 export * from './exceptions';
 export * from './pipes';
+export * from './interfaces';
