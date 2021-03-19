@@ -1,19 +1,20 @@
-import {
-  createHandler,
-  Get,
-  ParseNumberPipe,
-  Query,
-} from '@storyofams/next-api-decorators';
 import { sampleUserData } from '../../../data/users';
+import {
+  Get,
+  Query,
+  createHandler,
+  ParseNumberPipe,
+  DefaultValuePipe,
+} from '@storyofams/next-api-decorators';
 
 class User {
   // GET /api/users
   @Get()
   public async listUsers(
-    @Query('skip', ParseNumberPipe({ nullable: true })) skip: number = 0,
+    @Query('skip', DefaultValuePipe(0), ParseNumberPipe) skip: number,
     @Query('limit', ParseNumberPipe({ nullable: true })) limit?: number,
   ) {
-    return { users: sampleUserData.slice(skip ?? 0, limit) };
+    return { users: sampleUserData.slice(skip, limit) };
   }
 }
 
