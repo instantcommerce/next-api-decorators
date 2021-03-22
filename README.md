@@ -180,6 +180,45 @@ class User {
 export default createHandler(User);
 ```
 
+### Route matching
+
+It is possible to use Express.js style route matching within your handlers. To enable the functionality add the `path-to-regexp` package to your project by running:
+```bash
+$ yarn add path-to-regexp
+```
+
+Then you can define your routes in your handler like:
+```ts
+// pages/api/user/[[...api]].ts
+class User {
+  @Get()
+  public list() {
+    return DB.findAllUsers();
+  }
+
+  @Get('/:id')
+  public details(@Param('id') id: string) {
+    return DB.findUserById(id);
+  }
+
+  @Get('/:userId/comments')
+  public comments(@Param('userId') userId: string) {
+    return DB.findUserComments(userId);
+  }
+
+  @Get('/:userId/comments/:commentId')
+  public commentDetails(@Param('userId') userId: string, @Param('commentId') commentId: string) {
+    return DB.findUserCommentById(userId, commentId);
+  }
+}
+```
+
+💡 It is possible to use pipes with `@Param`. e.g: `@Param('userId', ParseNumberPipe) userId: number`
+
+⚠️ When `path-to-regexp` package is not installed and route matching is being used in handlers, the request will be handled by the method defined with the `/` path (keep in mind that using `@Get()` and `@Get('/')` do exactly the same thing).
+
+For the above example, a request to `api/user/123` will be handled by the `list` method if `path-to-regexp` package is not installed in your project.
+
 
 ## Available decorators
 
@@ -193,10 +232,10 @@ export default createHandler(User);
 
 |                                           | Description                                       |
 | ----------------------------------------- | ------------------------------------------------- |
-| `@Get()`                                  | Marks the method as `GET` handler.                |
-| `@Post()`                                 | Marks the method as `POST` handler.               |
-| `@Put()`                                  | Marks the method as `PUT` handler.                |
-| `@Delete()`                               | Marks the method as `DELETE` handler.             |
+| `@Get(path?: string)`                                  | Marks the method as `GET` handler.                |
+| `@Post(path?: string)`                                 | Marks the method as `POST` handler.               |
+| `@Put(path?: string)`                                  | Marks the method as `PUT` handler.                |
+| `@Delete(path?: string)`                               | Marks the method as `DELETE` handler.             |
 | `@SetHeader(name: string, value: string)` | Sets a header name/value into the route response. |
 | `@HttpCode(code: number)`                 | Sets the http code in the route response.         |
 
@@ -209,6 +248,7 @@ export default createHandler(User);
 | `@Body()`               | Gets the request body.                      |
 | `@Query(key: string)`   | Gets a query string parameter value by key. |
 | `@Header(name: string)` | Gets a header value by name.                |
+| `@Param(key: string)`   | Gets a route parameter value by key.        |
 
 \* Note that when you inject `@Res()` in a method handler you become responsible for managing the response. When doing so, you must issue some kind of response by making a call on the response object (e.g., `res.json(...)` or `res.send(...)`), or the HTTP server will hang.
 

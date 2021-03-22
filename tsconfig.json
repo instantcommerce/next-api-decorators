@@ -15,5 +15,5 @@
     "moduleResolution": "node"
   },
   "exclude": ["node_modules"],
-  "include": ["lib/**/*.ts", "test/**/*.ts"]
+  "include": ["lib/**/*.ts", "test/**/*.ts", "global.d.ts"]
 }

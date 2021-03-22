@@ -2,7 +2,7 @@ import type { ParameterPipe } from '../pipes/ParameterPipe';
 
 export interface MetaParameter {
   index: number;
-  location: 'query' | 'body' | 'header' | 'method' | 'request' | 'response';
+  location: 'query' | 'body' | 'header' | 'method' | 'request' | 'response' | 'params';
   name?: string;
   pipes?: ParameterPipe<any>[];
 }
@@ -41,6 +41,12 @@ export function Query(nameOrPipes?: string | ParameterPipe<any>, ...pipes: Param
   } else {
     return addParameter('query', undefined);
   }
+}
+
+export function Param(name: string): ParameterDecorator;
+export function Param(name: string, ...pipes: ParameterPipe<any>[]): ParameterDecorator;
+export function Param(name: string, ...pipes: ParameterPipe<any>[]): ParameterDecorator {
+  return addParameter('params', name, pipes);
 }
 
 /** Returns the request body. */
