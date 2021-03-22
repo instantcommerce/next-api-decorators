@@ -2,16 +2,8 @@ import { ServerResponse } from 'http';
 import { Stream } from 'stream';
 import type { ClassConstructor } from 'class-transformer';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import {
-  HEADER_TOKEN,
-  HttpVerb,
-  HTTP_CODE_TOKEN,
-  HTTP_DOWNLOAD_TOKEN,
-  MetaParameter,
-  PARAMETER_TOKEN
-} from '../decorators';
+import { HEADER_TOKEN, HTTP_CODE_TOKEN, HTTP_DOWNLOAD_TOKEN, MetaParameter, PARAMETER_TOKEN } from '../decorators';
 import { HttpException } from '../exceptions';
-import { notFound } from './notFound';
 
 function getParameterValue(
   req: NextApiRequest,
@@ -25,6 +17,8 @@ function getParameterValue(
       return req.body;
     case 'header':
       return name ? req.headers[name.toLowerCase()] : req.headers;
+    case 'params':
+      return name ? req.params[name] : req.params;
     case 'request':
       return req;
     case 'response':

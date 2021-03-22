@@ -13,6 +13,7 @@ export {
   Put,
   Query,
   SetHeader,
+  Param,
   Req,
   Request,
   Res,
