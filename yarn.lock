@@ -3220,9 +3220,10 @@ cyclist@^1.0.1:
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
   integrity sha1-WW6WmP0MgOEgOMK4LW6xs1tiJNk=
 
-"cz-customizable@git+https://github.com/storyofams/cz-customizable.git#6.3.1":
+"cz-customizable@git+https://github.com/storyofams/cz-customizable.git#v6.3.2":
   version "0.0.0-development"
-  resolved "git+https://github.com/storyofams/cz-customizable.git#5519fa316b9b97421a6a9ac383c304c0bfb8391a"
+  uid "3c79275369193d98ca98c1aa113c9cc0e0fbdb12"
+  resolved "git+https://github.com/storyofams/cz-customizable.git#3c79275369193d98ca98c1aa113c9cc0e0fbdb12"
   dependencies:
     editor "1.0.0"
     find-config "1.0.0"
