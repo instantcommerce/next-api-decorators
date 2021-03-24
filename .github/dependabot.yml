@@ -1,8 +1,8 @@
-version: 1
-update_configs:
-  - package_manager: "javascript"
+version: 2
+updates:
+  - package-ecosystem: "npm"
     directory: "/"
-    allowed_updates:
-      - match:
-          update_type: "security"
-    update_schedule: "live"
+    schedule:
+      interval: "daily"
+    target-branch: "beta"
+    versioning-strategy: increase-if-necessary
