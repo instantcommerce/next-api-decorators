@@ -30,7 +30,9 @@
     "lint": "eslint \"**/*.+(js|jsx|ts|tsx|mdx)\"",
     "ts-coverage": "typescript-coverage-report",
     "semantic-release": "semantic-release",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "pinst --disable && npm run build",
+    "postInstall": "husky install",
+    "postpublish": "pinst --enable"
   },
   "files": [
     "dist"
@@ -74,6 +76,7 @@
     "lint-staged": "10.5.4",
     "next": "10.0.9",
     "path-to-regexp": "^6.2.0",
+    "pinst": "^2.1.6",
     "prettier": "2.2.1",
     "semantic-release": "17.4.2",
     "supertest": "^6.1.3",
@@ -96,12 +99,6 @@
   "config": {
     "commitizen": {
       "path": "node_modules/cz-customizable"
-    }
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
   "lint-staged": {
