@@ -31,7 +31,7 @@
     "ts-coverage": "typescript-coverage-report",
     "semantic-release": "semantic-release",
     "prepublishOnly": "pinst --disable && npm run build",
-    "postinstall": "husky install && chmod +x .husky/pre-commit .husky/commit-msg",
+    "postinstall": "husky install",
     "postpublish": "pinst --enable"
   },
   "files": [
