@@ -100,7 +100,7 @@ Then you can define your DTOs like:
 
 ```ts
 // pages/api/user.ts
-import { createHandler, Post, HttpCode, Body } from '@storyofams/next-api-decorators';
+import { createHandler, Post, HttpCode, Body, ValidationPipe } from '@storyofams/next-api-decorators';
 import { IsNotEmpty, IsEmail } from 'class-validator';
 
 class CreateUserDto {
@@ -115,7 +115,7 @@ class User {
   // POST /api/user
   @Post()
   @HttpCode(201)
-  public createUser(@Body() body: CreateUserDto) {
+  public createUser(@Body(ValidationPipe) body: CreateUserDto) {
     return User.create(body);
   }
 }
@@ -205,12 +205,13 @@ Pipes are being used to validate and transform incoming values. The pipes can be
 
 ⚠️ Beware that they throw when the value is invalid.
 
-|                    | Description                                 | Remarks                                            |
-| ------------------ | ------------------------------------------- | -------------------------------------------------- |
-| `ParseBooleanPipe` | Validates and transforms `Boolean` strings. | Allows `'true'` and `'false'` as valid values.     |
-| `ParseDatePipe`    | Validates and transforms `Date` strings.    | Allows valid `ISO 8601` formatted date strings.    |
-| `ParseNumberPipe`  | Validates and transforms `Number` strings.  | Uses `parseFloat` under the hood.                  |
-| `ValidateEnumPipe` | Validates string based on `Enum` values.    | Allows strings that are present in the given enum. |
+|                    | Description                                       | Remarks                                                                           |
+| ------------------ | ------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `ParseBooleanPipe` | Validates and transforms `Boolean` strings.       | Allows `'true'` and `'false'` as valid values.                                    |
+| `ParseDatePipe`    | Validates and transforms `Date` strings.          | Allows valid `ISO 8601` formatted date strings.                                   |
+| `ParseNumberPipe`  | Validates and transforms `Number` strings.        | Uses `parseFloat` under the hood.                                                 |
+| `ValidateEnumPipe` | Validates string based on `Enum` values.          | Allows strings that are present in the given enum.                                |
+| `ValidationPipe`   | Validates the request body via `class-validator`. | Works only when `class-validator` and `class-transformer` packages are installed. |
 
 ## Exceptions
 
