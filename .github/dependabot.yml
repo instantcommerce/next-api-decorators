@@ -5,6 +5,3 @@ updates:
     schedule:
       interval: "weekly"
     target-branch: "beta"
-    ignore:
-      - dependency-name: "husky"
-        versions: ["5.x"]
