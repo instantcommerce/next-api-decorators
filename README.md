@@ -89,19 +89,7 @@ export default createHandler(User);
   ```
 </details>
 
-## Table of Contents
-
-- [Motivation](#motivation)
-- [Installation](#installation)
-- [Usage](#usage)
-  - [Basic example](#basic-example)
-  - [Data transfer object (DTO)](#data-transfer-object)
-- [Available decorators](#available-decorators)
-  - [Class decorators](#class-decorators)
-  - [Method decorators](#method-decorators)
-  - [Parameter decorators](#parameter-decorators)
-- [Built-in pipes](#built-in-pipes)
-- [Exceptions](#exceptions)
+---
 
 ## Motivation
 
