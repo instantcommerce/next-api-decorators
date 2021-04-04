@@ -23,6 +23,76 @@
 
 This package contains a collection of decorators to create typed Next.js API routes, with easy request validation and transformation.
 
+---
+
+## Basic usage
+
+```ts
+// pages/api/user.ts
+class User {
+  // GET /api/user
+  @Get()
+  async fetchUser(@Query('id') id: string) {
+    const user = await DB.findUserById(id);
+
+    if (!user) {
+      throw new NotFoundException('User not found.');
+    }
+
+    return user;
+  }
+
+  // POST /api/user
+  @Post()
+  @HttpCode(201)
+  async createUser(@Body(ValidationPipe) body: CreateUserDto) {
+    return await DB.createUser(body.email);
+  }
+}
+
+export default createHandler(User);
+```
+
+💡 Read more about validation [here](#data-transfer-object)
+
+<details>
+  <summary>The code above without next-api-decorators</summary>
+
+  ```ts
+  export default async (req: NextApiRequest, res: NextApiResponse) => {
+    if (req.method === 'GET') {
+      const user = await DB.findUserById(req.query.id);
+      if (!user) {
+        return res.status(404).json({
+          statusCode: 404,
+          message: 'User not found'
+        })
+      }
+
+      return res.json(user);
+    } else if (req.method === 'POST') {
+      // Very primitive e-mail address validation.
+      if (!req.body.email || (req.body.email && !req.body.email.includes('@'))) {
+        return res.status(400).json({
+          statusCode: 400,
+          message: 'Invalid e-mail address.'
+        })
+      }
+
+      const user = await DB.createUser(req.body.email);
+      return res.status(201).json(user);
+    }
+
+    res.status(404).json({
+      statusCode: 404,
+      message: 'Not Found'
+    });
+  }
+  ```
+</details>
+
+---
+
 ## Motivation
 
 Building serverless functions declaratively with classes and decorators makes dealing with Next.js API routes easier and brings order and sanity to your `/pages/api` codebase.
@@ -64,29 +134,6 @@ Your `tsconfig.json` needs the following flags:
 
 
 ## Usage
-
-### Basic example
-
-```ts
-// pages/api/user.ts
-import { createHandler, Get, Query, NotFoundException } from '@storyofams/next-api-decorators';
-
-class User {
-  // GET /api/user
-  @Get()
-  public async fetchUser(@Query('id') id: string) {
-    const user = await DB.findUserById(id);
-
-    if (!user) {
-      throw new NotFoundException('User not found.');
-    }
-
-    return user;
-  }
-}
-
-export default createHandler(User);
-```
 
 ### Data transfer object
 
@@ -155,6 +202,8 @@ class User {
   }
 }
 ```
+
+📖 File names are important for route matching. Read more at https://nextjs.org/docs/routing/dynamic-routes#optional-catch-all-routes
 
 💡 It is possible to use pipes with `@Param`. e.g: `@Param('userId', ParseNumberPipe) userId: number`
 
