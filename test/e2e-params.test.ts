@@ -74,5 +74,5 @@ describe('E2E - Params', () => {
     request(server)
       .get('/api/user/2/lastName')
       .expect(200)
-      .then(res => expect(res.body).toStrictEqual({ lastName: 'Liskov' })));
+      .then(res => expect(res.body).toStrictEqual({ lastName: DATA[1].lastName })));
 });
