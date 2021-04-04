@@ -7,7 +7,6 @@ import { apiResolver } from 'next/dist/next-server/server/api-utils';
 
 export function setupServer(handler: NextApiHandler): http.Server | express.Express {
   if (process.env.TEST_SERVER === 'nextjs') {
-    console.log('[i] Using the Next.js server.');
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     handler.config = { api: { bodyParser: true } };
