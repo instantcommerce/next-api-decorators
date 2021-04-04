@@ -3,9 +3,5 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     target-branch: "beta"
-    versioning-strategy: increase-if-necessary
-    ignore:
-      - dependency-name: "husky"
-        versions: ["5.x"]
