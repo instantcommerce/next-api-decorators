@@ -1,7 +1,7 @@
 import 'reflect-metadata';
-import express from 'express';
 import request from 'supertest';
 import { createHandler, Get, NotFoundException, Param, ParseNumberPipe, Query } from '../lib';
+import { setupServer } from './setupServer';
 
 const DATA: Array<Record<string, any>> = [
   { id: 1, firstName: 'Ada', lastName: 'Lovelace' },
@@ -34,20 +34,17 @@ class UserHandler {
       throw new NotFoundException();
     }
 
-    return obj[prop];
+    return { [prop]: obj[prop] };
   }
 }
 
 describe('E2E - Params', () => {
-  let server: express.Express;
-  beforeAll(() => {
-    server = express();
-    server.use(express.json());
-    const router = express.Router({ strict: true });
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    router.all('*', createHandler(UserHandler));
-    server.use(router);
+  let server: ReturnType<typeof setupServer>;
+  beforeAll(() => (server = setupServer(createHandler(UserHandler))));
+  afterAll(() => {
+    if ('close' in server && typeof server.close === 'function') {
+      server.close();
+    }
   });
 
   it('Should return the list.', () =>
@@ -77,5 +74,5 @@ describe('E2E - Params', () => {
     request(server)
       .get('/api/user/2/lastName')
       .expect(200)
-      .then(res => expect(res.body).toStrictEqual('Liskov')));
+      .then(res => expect(res.body).toStrictEqual({ lastName: 'Liskov' })));
 });
