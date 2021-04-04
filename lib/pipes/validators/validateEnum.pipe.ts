@@ -3,6 +3,7 @@ import type { ParameterPipe, PipeOptions, PipeMetadata } from '../ParameterPipe'
 import { validatePipeOptions } from '../validatePipeOptions';
 
 interface ValidateEnumPipeOptions<T extends Record<string, unknown>> extends PipeOptions {
+  /** Enum object to validate the value against. */
   type: T;
 }
 
