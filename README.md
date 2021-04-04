@@ -25,6 +25,8 @@ This package contains a collection of decorators to create typed Next.js API rou
 
 ---
 
+## Basic usage
+
 ```ts
 // pages/api/user.ts
 class User {
