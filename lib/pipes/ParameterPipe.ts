@@ -10,7 +10,7 @@ export interface PipeMetadata<T = any> {
 }
 
 export interface PipeOptions {
-  /* Determines whether field is nullable. */
+  /** Determines whether the field is nullable. */
   readonly nullable?: boolean;
 }
 
