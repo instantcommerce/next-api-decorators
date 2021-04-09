@@ -252,7 +252,7 @@ Pipes are being used to validate and transform incoming values. The pipes can be
 @Query('isActive', ParseBooleanPipe) isActive: boolean
 ```
 
-⚠️ Beware that they throw when the value is invalid.
+⚠️ Beware that pipes throw when the value is `undefined` or invalid. Read about optional values [here](#handling-optional-values-in-conjunction-with-pipes)
 
 |                    | Description                                       | Remarks                                                                           |
 | ------------------ | ------------------------------------------------- | --------------------------------------------------------------------------------- |
@@ -261,6 +261,21 @@ Pipes are being used to validate and transform incoming values. The pipes can be
 | `ParseNumberPipe`  | Validates and transforms `Number` strings.        | Uses `parseFloat` under the hood.                                                 |
 | `ValidateEnumPipe` | Validates string based on `Enum` values.          | Allows strings that are present in the given enum.                                |
 | `ValidationPipe`   | Validates the request body via `class-validator`. | Works only when `class-validator` and `class-transformer` packages are installed. |
+
+
+### Handling optional values in conjunction with pipes
+
+Pipes are non-nullable by default. However, the following pipes allow options to be passed as an argument and have the `nullable` property in their options:
+
+- `ParseBooleanPipe`
+- `ParseDatePipe`
+- `ParseNumberPipe`
+- `ValidateEnumPipe`
+
+Usage:
+```ts
+@Query('isActive', ParseBooleanPipe({ nullable: true })) isActive?: boolean
+```
 
 ## Exceptions
 
