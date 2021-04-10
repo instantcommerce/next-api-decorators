@@ -25,7 +25,7 @@
     "build:types": "tsc -p ./tsconfig.build.json --emitDeclarationOnly",
     "build:js": "babel lib --out-dir dist --extensions \".ts\"",
     "commit": "./node_modules/cz-customizable/standalone.js",
-    "test": "jest --coverage",
+    "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint \"**/*.+(js|jsx|ts|tsx|mdx)\"",
     "ts-coverage": "typescript-coverage-report",

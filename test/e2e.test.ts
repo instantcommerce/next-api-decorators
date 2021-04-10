@@ -1,7 +1,6 @@
 import 'reflect-metadata';
 import { Type } from 'class-transformer';
 import { IsBoolean, IsDate, IsEnum, IsInt, IsNotEmpty, IsOptional, ValidateNested } from 'class-validator';
-import express from 'express';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import request from 'supertest';
 import {
@@ -25,6 +24,7 @@ import {
   NotFoundException,
   DefaultValuePipe
 } from '../lib';
+import { setupServer } from './setupServer';
 
 enum CreateSource {
   ONLINE = 'online',
@@ -140,13 +140,12 @@ class TestHandler {
 }
 
 describe('E2E', () => {
-  let server: express.Express;
-  beforeAll(() => {
-    server = express();
-    server.use(express.json());
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    server.all('/', createHandler(TestHandler));
+  let server: ReturnType<typeof setupServer>;
+  beforeAll(() => (server = setupServer(createHandler(TestHandler))));
+  afterAll(() => {
+    if ('close' in server && typeof server.close === 'function') {
+      server.close();
+    }
   });
 
   it('Should successfully `GET` the request with a 200 status code.', () =>

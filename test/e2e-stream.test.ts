@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 import fs from 'fs';
-import express from 'express';
 import request from 'supertest';
 import { createHandler, Get } from '../lib';
+import { setupServer } from './setupServer';
 
 class TestHandler {
   @Get()
@@ -13,16 +13,17 @@ class TestHandler {
 }
 
 describe('E2E', () => {
-  let server: express.Express;
+  let server: ReturnType<typeof setupServer>;
   beforeAll(() => {
-    server = express();
-    server.use(express.json());
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    server.all('/', createHandler(TestHandler));
+    server = setupServer(createHandler(TestHandler));
   });
 
-  afterAll(() => fs.unlinkSync('./test-stream.txt'));
+  afterAll(() => {
+    fs.unlinkSync('./test-stream.txt');
+    if ('close' in server && typeof server.close === 'function') {
+      server.close();
+    }
+  });
 
   it('Should return file contents from Stream object.', () =>
     request(server)
