@@ -42,6 +42,9 @@ jobs:
       - name: Run tests
         run: yarn test --silent --coverage
 
+      - name: Run E2E tests on Next.js server
+        run: TEST_SERVER=nextjs yarn test /test --silent
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:

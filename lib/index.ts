@@ -4,6 +4,7 @@ export * from './createHandler';
 export {
   Body,
   Delete,
+  Download,
   Get,
   Header,
   HttpCode,
@@ -12,6 +13,7 @@ export {
   Put,
   Query,
   SetHeader,
+  Param,
   Req,
   Request,
   Res,
@@ -19,3 +21,4 @@ export {
 } from './decorators';
 export * from './exceptions';
 export * from './pipes';
+export * from './interfaces';

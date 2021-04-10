@@ -4,6 +4,7 @@ import { validateObject } from '../../internals/classValidator';
 import type { ParameterPipe, PipeMetadata } from '../ParameterPipe';
 
 export interface ValidationPipeOptions extends ValidatorOptions {
+  /** Options for the `class-transformer` package. */
   transformOptions?: ClassTransformOptions;
 }
 

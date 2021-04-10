@@ -1,7 +1,6 @@
 import 'reflect-metadata';
 import { Type } from 'class-transformer';
 import { IsBoolean, IsDate, IsEnum, IsInt, IsNotEmpty, IsOptional, ValidateNested } from 'class-validator';
-import express from 'express';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import request from 'supertest';
 import {
@@ -22,8 +21,10 @@ import {
   ParseBooleanPipe,
   ParseDatePipe,
   ParseNumberPipe,
-  NotFoundException
+  NotFoundException,
+  DefaultValuePipe
 } from '../lib';
+import { setupServer } from './setupServer';
 
 enum CreateSource {
   ONLINE = 'online',
@@ -85,7 +86,9 @@ class TestHandler {
     @Query('id') id: string,
     @Query('step', ParseNumberPipe({ nullable: false })) step: number,
     @Query('redirect', ParseBooleanPipe) redirect: boolean,
-    @Query('startAt', ParseDatePipe) startAt: Date
+    @Query('startAt', ParseDatePipe) startAt: Date,
+    @Query('skip', DefaultValuePipe(0), ParseNumberPipe) skip: number,
+    @Query('limit', DefaultValuePipe(20), ParseNumberPipe) limit: number
   ) {
     if (id !== 'my-id') {
       throw new NotFoundException('Invalid ID');
@@ -98,7 +101,9 @@ class TestHandler {
       redirect,
       test: this.testField,
       startAt,
-      isStartAtDateInstance: startAt instanceof Date
+      isStartAtDateInstance: startAt instanceof Date,
+      skip,
+      limit
     };
   }
 
@@ -135,18 +140,17 @@ class TestHandler {
 }
 
 describe('E2E', () => {
-  let server: express.Express;
-  beforeAll(() => {
-    server = express();
-    server.use(express.json());
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    server.all('/', createHandler(TestHandler));
+  let server: ReturnType<typeof setupServer>;
+  beforeAll(() => (server = setupServer(createHandler(TestHandler))));
+  afterAll(() => {
+    if ('close' in server && typeof server.close === 'function') {
+      server.close();
+    }
   });
 
   it('Should successfully `GET` the request with a 200 status code.', () =>
     request(server)
-      .get('/?id=my-id&step=1&redirect=true&startAt=2021-01-01T22:00:00')
+      .get('/?id=my-id&step=1&redirect=true&startAt=2021-01-01T22:00:00&skip=10')
       .set('Content-Type', 'application/json')
       .expect(200)
       .then(res =>
@@ -161,7 +165,9 @@ describe('E2E', () => {
             id: 'my-id',
             step: 1,
             redirect: true,
-            isStartAtDateInstance: true
+            isStartAtDateInstance: true,
+            skip: 10,
+            limit: 20
           }
         })
       ));

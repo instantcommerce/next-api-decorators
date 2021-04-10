@@ -14,6 +14,6 @@
     "skipLibCheck": true,
     "moduleResolution": "node"
   },
-  "exclude": ["node_modules"],
-  "include": ["lib/**/*.ts", "test/**/*.ts"]
+  "exclude": ["node_modules", "example"],
+  "include": ["lib/**/*.ts", "test/**/*.ts", "global.d.ts"]
 }
