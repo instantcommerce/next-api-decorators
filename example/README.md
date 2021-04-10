@@ -9,4 +9,4 @@ $ yarn
 $ yarn dev
 ```
 
-Import the `postman.json` in Postman to try out the API routes.
+Import the `postman.json` collection in Postman to try out the API routes.
