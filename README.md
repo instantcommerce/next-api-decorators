@@ -179,7 +179,7 @@ $ yarn add path-to-regexp
 
 Then you can define your routes in your handler like:
 ```ts
-// pages/api/user/[[...api]].ts
+// pages/api/user/[[...params]].ts
 class User {
   @Get()
   public list() {
