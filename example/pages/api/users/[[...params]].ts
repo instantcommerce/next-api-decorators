@@ -17,15 +17,13 @@ import { User, sampleUserData } from '../../../data';
 import { CreateUserInput, UpdateUserInput } from '../../../dto';
 
 class UserRouter {
-  // Fake database with sample data for example purposes
+  // Mimic database for example purposes
   private users = sampleUserData;
   private lastUserId = sampleUserData[sampleUserData.length - 1].id;
 
-  // Find user in collection by ID
   private findUserById(id: number): User {
     const user = this.users.find(({ id: uid }) => uid === id);
 
-    // Assert if user has been found
     if (!user) {
       throw new NotFoundException(`No user found with ID '${id}'.`);
     }
@@ -33,7 +31,7 @@ class UserRouter {
     return user;
   }
 
-  // GET /api/users (LIST)
+  // GET /api/users (read many)
   @Get()
   public listUsers(
     @Query('skip', DefaultValuePipe(0), ParseNumberPipe) skip: number,
@@ -42,7 +40,7 @@ class UserRouter {
     return this.users.slice(skip, limit);
   }
 
-  // POST /api/users (CREATE)
+  // POST /api/users (create one)
   @Post()
   @HttpCode(201)
   public createUser(@Body(ValidationPipe) body: CreateUserInput): User {
@@ -51,13 +49,13 @@ class UserRouter {
     return user;
   }
 
-  // GET /api/users/:id (READ)
+  // GET /api/users/:id (read one)
   @Get('/:id')
   public fetchUser(@Param('id', ParseNumberPipe) id: number): User {
     return this.findUserById(id);
   }
 
-  // PUT /api/users/:id (UPDATE)
+  // PUT /api/users/:id (update one)
   @Put('/:id')
   public updateUser(
     @Param('id', ParseNumberPipe) id: number,
@@ -65,14 +63,13 @@ class UserRouter {
   ): User {
     const user = this.findUserById(id);
 
-    // Update fields (if set)
     user.name = body.name ?? user.name;
     user.email = body.email ?? user.email;
 
     return user;
   }
 
-  // POST /api/users/:id (DELETE)
+  // POST /api/users/:id (delete one)
   @Delete('/:id')
   @HttpCode(204)
   public deleteUser(@Param('id', ParseNumberPipe) id: number): void {
