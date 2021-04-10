@@ -261,6 +261,7 @@ Pipes are being used to validate and transform incoming values. The pipes can be
 | `ParseNumberPipe`  | Validates and transforms `Number` strings.        | Uses `parseFloat` under the hood.                                                 |
 | `ValidateEnumPipe` | Validates string based on `Enum` values.          | Allows strings that are present in the given enum.                                |
 | `ValidationPipe`   | Validates the request body via `class-validator`. | Works only when `class-validator` and `class-transformer` packages are installed. |
+| `DefaultValuePipe` | Assigns a default value to the parameter when its value is `null` or `undefined`. | Bare function usage has no effect. In other words, always use  `@Query('step', DefaultValuePipe(1))` rather than `@Query('step', DefaultValuePipe)`. |
 
 
 ### Handling optional values in conjunction with pipes
