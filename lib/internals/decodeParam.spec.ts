@@ -2,7 +2,7 @@ import { decodeParam } from './decodeParam';
 
 describe('decodeParam', () => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+  // @ts-expect-error
   it('Should return as is when the value type is not string.', () => expect(decodeParam(0)).toStrictEqual(0));
 
   it('Should return as is when the value is an empty string.', () => expect(decodeParam('')).toStrictEqual(''));
