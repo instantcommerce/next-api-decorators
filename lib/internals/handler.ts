@@ -2,7 +2,7 @@ import { ServerResponse } from 'http';
 import { Stream } from 'stream';
 import type { ClassConstructor } from 'class-transformer';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { HEADER_TOKEN, HTTP_DOWNLOAD_TOKEN, HTTP_CODE_TOKEN, MetaParameter, PARAMETER_TOKEN } from '../decorators';
+import { HEADER_TOKEN, HTTP_CODE_TOKEN, HTTP_DOWNLOAD_TOKEN, MetaParameter, PARAMETER_TOKEN } from '../decorators';
 import { HttpException } from '../exceptions';
 
 function getParameterValue(

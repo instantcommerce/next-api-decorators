@@ -26,12 +26,14 @@
     "build:types": "tsc -p ./tsconfig.build.json --emitDeclarationOnly",
     "build:js": "babel lib --out-dir dist --extensions \".ts\"",
     "commit": "./node_modules/cz-customizable/standalone.js",
-    "test": "jest --coverage",
+    "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint \"**/*.+(js|jsx|ts|tsx|mdx)\"",
     "ts-coverage": "typescript-coverage-report",
     "semantic-release": "semantic-release",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "pinst --disable && npm run build",
+    "postinstall": "husky install",
+    "postpublish": "pinst --enable"
   },
   "files": [
     "dist"
@@ -42,22 +44,22 @@
   "peerDependencies": {
     "@babel/plugin-proposal-decorators": "7.12.13",
     "babel-plugin-parameter-decorator": "1.0.16",
-    "next": "10.0.9"
+    "next": "10.1.3"
   },
   "devDependencies": {
-    "@babel/cli": "7.13.10",
-    "@babel/core": "7.13.10",
+    "@babel/cli": "7.13.14",
+    "@babel/core": "7.13.14",
     "@babel/plugin-proposal-decorators": "7.12.13",
     "@babel/runtime-corejs2": "7.13.10",
-    "@commitlint/cli": "12.0.1",
-    "@commitlint/config-conventional": "12.0.1",
+    "@commitlint/cli": "12.1.1",
+    "@commitlint/config-conventional": "12.1.1",
     "@semantic-release/changelog": "5.0.1",
     "@storyofams/eslint-config-ams": "1.1.2",
     "@types/express": "^4.17.11",
     "@types/jest": "^26.0.20",
     "@types/supertest": "^2.0.10",
-    "@typescript-eslint/eslint-plugin": "4.13.0",
-    "@typescript-eslint/parser": "4.18.0",
+    "@typescript-eslint/eslint-plugin": "4.20.0",
+    "@typescript-eslint/parser": "4.20.0",
     "babel-eslint": "10.1.0",
     "babel-loader": "8.2.2",
     "babel-plugin-parameter-decorator": "1.0.16",
@@ -70,11 +72,12 @@
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-prettier": "3.3.1",
     "express": "^4.17.1",
-    "husky": "4.3.8",
+    "husky": "6.0.0",
     "jest": "26.6.3",
     "lint-staged": "10.5.4",
-    "next": "10.0.9",
+    "next": "10.1.3",
     "path-to-regexp": "^6.2.0",
+    "pinst": "^2.1.6",
     "prettier": "2.2.1",
     "semantic-release": "17.4.2",
     "supertest": "^6.1.3",
@@ -97,12 +100,6 @@
   "config": {
     "commitizen": {
       "path": "node_modules/cz-customizable"
-    }
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
   "lint-staged": {

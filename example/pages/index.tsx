@@ -8,7 +8,9 @@ const IndexPage = () => {
         <meta charSet="utf-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <button>Download Postman collection (WIP)</button>
+      <a href="/api/postman" download>
+        <button>Download Postman collection</button>
+      </a>
     </div>
   );
 };
