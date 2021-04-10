@@ -256,10 +256,10 @@ Pipes are being used to validate and transform incoming values. The pipes can be
 
 |                     | Description                                                                                                                         |
 | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `ParseBooleanPipe`  | Validates and transforms `Boolean` strings. Allows `'true'` and `'false'` as valid values.                                          |
+| `ParseBooleanPipe`  | Validates and transforms `Boolean` strings. Allows `'true'` and `'false'`.                                                          |
 | `ParseDatePipe`     | Validates and transforms `Date` strings. Allows valid `ISO 8601` formatted date strings.                                            |
 | `ParseNumberPipe`   | Validates and transforms `Number` strings. Uses `parseFloat` under the hood.                                                        |
-| `ValidateEnumPipe`* | Validates string based on `Enum` values. Allows strings that are present in the given enum.                                         |
+| `ValidateEnumPipe`* | Validates string based on `Enum` values. Allows strings that are present in the enum.                                               |
 | `ValidationPipe`    | Validates the request body via `class-validator`. Works only when `class-validator` and `class-transformer` packages are installed. |
 | `DefaultValuePipe`* | Assigns a default value to the parameter when its value is `null` or `undefined`.                                                   |
 
