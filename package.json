@@ -23,7 +23,7 @@
   ],
   "scripts": {
     "build": "rm -rf dist && npm run build:types && npm run build:js",
-    "build:types": "tsc -p ./tsconfig.build.json --emitDeclarationOnly",
+    "build:types": "tsc -p ./tsconfig.build.json --rootDir lib --emitDeclarationOnly",
     "build:js": "babel lib --out-dir dist --extensions \".ts\"",
     "commit": "./node_modules/cz-customizable/standalone.js",
     "test": "jest",
