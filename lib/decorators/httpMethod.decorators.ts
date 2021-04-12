@@ -29,6 +29,16 @@ function applyHttpMethod(verb: HttpVerb, path: string) {
 
 /** Makes the method a GET request handler. */
 export function Get(): MethodDecorator;
+/**
+ * Makes the method for the defined path a GET request handler.
+ *
+ * @param path Route path. Supports Express.js style [route matching](https://github.com/storyofams/next-api-decorators#route-matching)
+ * including route parameters (e.g. `'/:id'`) and regular expressions.
+ *
+ * @remarks
+ * `path-to-regexp` needs to be installed, otherwise request handlers with non-empty path parameters will not be handled.
+ * More information: [route matching](https://github.com/storyofams/next-api-decorators#route-matching)
+ */
 export function Get(path: string): MethodDecorator;
 export function Get(path: string = '/'): MethodDecorator {
   return applyHttpMethod(HttpVerb.GET, path);
@@ -36,6 +46,16 @@ export function Get(path: string = '/'): MethodDecorator {
 
 /** Makes the method a POST request handler. */
 export function Post(): MethodDecorator;
+/**
+ * Makes the method for the defined path a POST request handler.
+ *
+ * @param path Route path. Supports Express.js style [route matching](https://github.com/storyofams/next-api-decorators#route-matching)
+ * including route parameters (e.g. `'/:id'`) and regular expressions.
+ *
+ * @remarks
+ * `path-to-regexp` needs to be installed, otherwise request handlers with non-empty path parameters will not be handled.
+ * More information: [route matching](https://github.com/storyofams/next-api-decorators#route-matching)
+ */
 export function Post(path: string): MethodDecorator;
 export function Post(path: string = '/'): MethodDecorator {
   return applyHttpMethod(HttpVerb.POST, path);
@@ -43,6 +63,16 @@ export function Post(path: string = '/'): MethodDecorator {
 
 /** Makes the method a PUT request handler. */
 export function Put(): MethodDecorator;
+/**
+ * Makes the method for the defined path a PUT request handler.
+ *
+ * @param path Route path. Supports Express.js style [route matching](https://github.com/storyofams/next-api-decorators#route-matching)
+ * including route parameters (e.g. `'/:id'`) and regular expressions.
+ *
+ * @remarks
+ * `path-to-regexp` needs to be installed, otherwise request handlers with non-empty path parameters will not be handled.
+ * More information: [route matching](https://github.com/storyofams/next-api-decorators#route-matching)
+ */
 export function Put(path: string): MethodDecorator;
 export function Put(path: string = '/'): MethodDecorator {
   return applyHttpMethod(HttpVerb.PUT, path);
@@ -50,6 +80,16 @@ export function Put(path: string = '/'): MethodDecorator {
 
 /** Makes the method a DELETE request handler. */
 export function Delete(): MethodDecorator;
+/**
+ * Makes the method for the defined path a DELETE request handler.
+ *
+ * @param path Route path. Supports Express.js style [route matching](https://github.com/storyofams/next-api-decorators#route-matching)
+ * including route parameters (e.g. `'/:id'`) and regular expressions.
+ *
+ * @remarks
+ * `path-to-regexp` needs to be installed, otherwise request handlers with non-empty path parameters will not be handled.
+ * More information: [route matching](https://github.com/storyofams/next-api-decorators#route-matching)
+ */
 export function Delete(path: string): MethodDecorator;
 export function Delete(path: string = '/'): MethodDecorator {
   return applyHttpMethod(HttpVerb.DELETE, path);
