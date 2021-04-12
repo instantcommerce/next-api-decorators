@@ -9,7 +9,7 @@ export interface ValidationPipeOptions extends ValidatorOptions {
 }
 
 /**
- * Validates request bodies and gets them as DTOs.
+ * Validates request body values and gets them as DTOs.
  *
  * @remarks
  * `class-validator` and `class-transformer` need to be installed.

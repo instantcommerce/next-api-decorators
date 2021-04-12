@@ -7,6 +7,7 @@ export class BadRequestException extends HttpException {
    * Instantiates a `BadRequestException` Exception with status code 400.
    *
    * @param message Error message (default: 'Bad Request')
+   * @param errors Additional errors
    *
    * @example
    * `throw new BadRequestException()`

@@ -4,9 +4,10 @@ export class InternalServerErrorException extends HttpException {
   public name = 'InternalServerErrorException';
 
   /**
-   * Instantiates a `InternalServerErrorException` Exception with status code 500.
+   * Instantiates an `InternalServerErrorException` Exception with status code 500.
    *
    * @param message Error message (default: 'Internal Server Error')
+   * @param errors Additional errors
    *
    * @example
    * `throw new InternalServerErrorException()`

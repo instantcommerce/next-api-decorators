@@ -4,9 +4,10 @@ export class UnauthorizedException extends HttpException {
   public name = 'UnauthorizedException';
 
   /**
-   * Instantiates a `UnauthorizedException` Exception with status code 401.
+   * Instantiates an `UnauthorizedException` Exception with status code 401.
    *
    * @param message Error message (default: 'Unauthorized')
+   * @param errors Additional errors
    *
    * @example
    * `throw new UnauthorizedException()`

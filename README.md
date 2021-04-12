@@ -137,7 +137,7 @@ Your `tsconfig.json` needs the following flags:
 
 ### Data transfer object
 
-If you want to use `class-validator` to validate request bodies and get them as DTOs, add it to your project by running:
+If you want to use `class-validator` to validate request body values and get them as DTOs, add it to your project by running:
 
 ```bash
 $ yarn add class-validator class-transformer
