@@ -10,15 +10,12 @@ import { notFound } from './internals/notFound';
  *
  * @example
  * ```ts
- * import { createHandler, Get } from '[at]storyofams/next-api-decorators';
+ * import { createHandler, Get } from '@storyofams/next-api-decorators';
  *
  * class Events {
  *  Get()
  *  public events() {
- *    return [
- *      { id: 1, title: 'Event 1' },
- *      { id: 2, title: 'Event 2' }
- *    ];
+ *    return DB.findEvents();
  *  }
  * }
  *

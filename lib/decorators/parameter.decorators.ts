@@ -26,11 +26,18 @@ export function Query(): ParameterDecorator;
  *
  * @param name Parameter name
  */
+export function Query(name: string): ParameterDecorator;
+/**
+ * Returns a parameter from the query string with pipes applied.
+ *
+ * @param name Parameter name
+ * @param pipes Pipes to be applied
+ */
 export function Query(name: string, ...pipes: ParameterPipe<any>[]): ParameterDecorator;
 /**
  * Returns the query string with pipes applied.
  *
- * @param pipes Pipes to be applied.
+ * @param pipes Pipes to be applied
  */
 export function Query(...pipes: ParameterPipe<any>[]): ParameterDecorator;
 export function Query(nameOrPipes?: string | ParameterPipe<any>, ...pipes: ParameterPipe<any>[]): ParameterDecorator {
@@ -43,13 +50,31 @@ export function Query(nameOrPipes?: string | ParameterPipe<any>, ...pipes: Param
   }
 }
 
+/**
+ * Returns a parameter from the URL path.
+ *
+ * @param name Parameter name
+ */
 export function Param(name: string): ParameterDecorator;
+/**
+ * Returns a parameter from the URL path with pipes applied.
+ *
+ * @param name Parameter name
+ * @param pipes Pipes to be applied
+ */
 export function Param(name: string, ...pipes: ParameterPipe<any>[]): ParameterDecorator;
 export function Param(name: string, ...pipes: ParameterPipe<any>[]): ParameterDecorator {
   return addParameter('params', name, pipes);
 }
 
 /** Returns the request body. */
+export function Body(): ParameterDecorator;
+/**
+ * Returns the request body with pipes applied.
+ *
+ * @param pipes Pipes to be applied
+ */
+export function Body(...pipes: ParameterPipe<any>[]): ParameterDecorator;
 export function Body(...pipes: ParameterPipe<any>[]): ParameterDecorator {
   return addParameter('body', undefined, pipes);
 }
