@@ -4,29 +4,7 @@ import type { ClassConstructor } from 'class-transformer';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { HEADER_TOKEN, HTTP_CODE_TOKEN, HTTP_DOWNLOAD_TOKEN, MetaParameter, PARAMETER_TOKEN } from '../decorators';
 import { HttpException } from '../exceptions';
-
-function getParameterValue(
-  req: NextApiRequest,
-  res: NextApiResponse,
-  { location, name }: MetaParameter
-): string | object | undefined {
-  switch (location) {
-    case 'query':
-      return name ? req.query[name] : req.query;
-    case 'body':
-      return req.body;
-    case 'header':
-      return name ? req.headers[name.toLowerCase()] : req.headers;
-    case 'params':
-      return name ? req.params[name] : req.params;
-    case 'request':
-      return req;
-    case 'response':
-      return res;
-    default:
-      return undefined;
-  }
-}
+import { getParameterValue } from './getParameterValue';
 
 export function Handler(): MethodDecorator {
   return function (target: object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>) {
