@@ -3,6 +3,7 @@ import type { ParameterPipe, PipeOptions, PipeMetadata } from '../ParameterPipe'
 import { validateNullable } from '../validateNullable';
 import { validatePipeOptions } from '../validatePipeOptions';
 
+/** Validates and transforms `Number` strings. Uses `parseFloat` under the hood. */
 export function ParseNumberPipe(options?: PipeOptions): ParameterPipe<number> {
   return (value: any, metadata?: PipeMetadata) => {
     validatePipeOptions(value, metadata?.name, options);

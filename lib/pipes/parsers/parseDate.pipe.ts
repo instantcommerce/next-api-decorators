@@ -40,6 +40,7 @@ function isISO8601(str: string, options: { strictSeparator?: boolean; strict?: b
   return check;
 }
 
+/** Validates and transforms `Date` strings. Allows valid `ISO 8601` formatted date strings. */
 export function ParseDatePipe(options?: PipeOptions) {
   return (value: any, metadata?: PipeMetadata) => {
     validatePipeOptions(value, metadata?.name, options);
