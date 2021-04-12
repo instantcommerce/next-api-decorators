@@ -5,7 +5,7 @@ export class HttpException extends Error {
   public errors?: string[];
 
   /**
-   * Instantiates a `HttpException` Exception.
+   * Instantiates an `HttpException` Exception.
    *
    * @param statusCode HTTP status code
    * @param message Error message
