@@ -23,7 +23,7 @@
   ],
   "scripts": {
     "build": "rm -rf dist && npm run build:types && npm run build:js",
-    "build:types": "tsc -p ./tsconfig.build.json --emitDeclarationOnly",
+    "build:types": "tsc -p ./tsconfig.build.json --rootDir lib --emitDeclarationOnly",
     "build:js": "babel lib --out-dir dist --extensions \".ts\"",
     "commit": "./node_modules/cz-customizable/standalone.js",
     "test": "jest",
@@ -31,9 +31,10 @@
     "lint": "eslint \"**/*.+(js|jsx|ts|tsx|mdx)\"",
     "ts-coverage": "typescript-coverage-report",
     "semantic-release": "semantic-release",
-    "prepublishOnly": "pinst --disable && npm run build",
+    "prepublishOnly": "pinst --disable && npm run build && npm run verify",
     "postinstall": "husky install",
-    "postpublish": "pinst --enable"
+    "postpublish": "pinst --enable",
+    "verify": "if [[ ! -f dist/createHandler.js ]] || [[ ! -f dist/createHandler.d.ts ]]; then echo \"💥 Corrupt distribution.\"; exit 1; fi"
   },
   "files": [
     "dist"
