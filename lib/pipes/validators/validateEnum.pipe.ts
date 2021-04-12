@@ -7,6 +7,12 @@ interface ValidateEnumPipeOptions<T extends Record<string, unknown>> extends Pip
   type: T;
 }
 
+/**
+ * Validates string based on `Enum` values. Allows strings that are present in the enum.
+ *
+ * @remarks
+ * Bare function usage has no effect.
+ */
 export function ValidateEnumPipe<T extends Record<string, unknown>>(
   options?: ValidateEnumPipeOptions<T>
 ): ParameterPipe<number> {

@@ -3,6 +3,7 @@ import type { ParameterPipe, PipeOptions, PipeMetadata } from '../ParameterPipe'
 import { validateNullable } from '../validateNullable';
 import { validatePipeOptions } from '../validatePipeOptions';
 
+/** Validates and transforms `Boolean` strings. Allows `'true'` and `'false'`. */
 export function ParseBooleanPipe(options?: PipeOptions): ParameterPipe<boolean> {
   return (value: any, metadata?: PipeMetadata) => {
     validatePipeOptions(value, metadata?.name, options);
