@@ -246,7 +246,7 @@ For the above example, a request to `api/user/123` will be handled by the `list`
 
 ## Built-in pipes
 
-Pipes are being used to validate and transform incoming values. The pipes can be added to the `@Query` and `@Param` decorators like:
+Pipes are being used to validate and transform incoming values. The pipes can be added to the `@Query`, `@Body` and `@Param` decorators like:
 
 ```ts
 @Query('isActive', ParseBooleanPipe) isActive: boolean
