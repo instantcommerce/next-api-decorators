@@ -34,7 +34,7 @@
     "prepublishOnly": "pinst --disable && npm run build && npm run verify",
     "postinstall": "husky install",
     "postpublish": "pinst --enable",
-    "verify": "if [[ ! -f dist/createHandler.js ]] || [[ ! -f dist/createHandler.d.ts ]]; then echo \"💥 Corrupt distribution.\"; exit 1; fi"
+    "verify": "#!/bin/bash\nif [[ ! -f dist/createHandler.js ]] || [[ ! -f dist/createHandler.d.ts ]]; then echo \"💥 Corrupt distribution.\"; exit 1; fi"
   },
   "files": [
     "dist"
