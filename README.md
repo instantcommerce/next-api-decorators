@@ -137,7 +137,7 @@ Your `tsconfig.json` needs the following flags:
 
 ### Data transfer object
 
-If you want to use `class-validator` to validate request bodies and get them as DTOs, add it to your project by running:
+If you want to use `class-validator` to validate request body values and get them as DTOs, add it to your project by running:
 
 ```bash
 $ yarn add class-validator class-transformer
@@ -179,7 +179,7 @@ $ yarn add path-to-regexp
 
 Then you can define your routes in your handler like:
 ```ts
-// pages/api/user/[[...api]].ts
+// pages/api/user/[[...params]].ts
 class User {
   @Get()
   public list() {
@@ -224,10 +224,10 @@ For the above example, a request to `api/user/123` will be handled by the `list`
 
 |                                           | Description                                       |
 | ----------------------------------------- | ------------------------------------------------- |
-| `@Get(path?: string)`                                  | Marks the method as `GET` handler.                |
-| `@Post(path?: string)`                                 | Marks the method as `POST` handler.               |
-| `@Put(path?: string)`                                  | Marks the method as `PUT` handler.                |
-| `@Delete(path?: string)`                               | Marks the method as `DELETE` handler.             |
+| `@Get(path?: string)`                     | Marks the method as `GET` handler.                |
+| `@Post(path?: string)`                    | Marks the method as `POST` handler.               |
+| `@Put(path?: string)`                     | Marks the method as `PUT` handler.                |
+| `@Delete(path?: string)`                  | Marks the method as `DELETE` handler.             |
 | `@SetHeader(name: string, value: string)` | Sets a header name/value into the route response. |
 | `@HttpCode(code: number)`                 | Sets the http code in the route response.         |
 
@@ -246,7 +246,7 @@ For the above example, a request to `api/user/123` will be handled by the `list`
 
 ## Built-in pipes
 
-Pipes are being used to validate and transform incoming values. The pipes can be added to the `@Query` decorator like:
+Pipes are being used to validate and transform incoming values. The pipes can be added to the `@Query`, `@Body` and `@Param` decorators like:
 
 ```ts
 @Query('isActive', ParseBooleanPipe) isActive: boolean
@@ -254,14 +254,16 @@ Pipes are being used to validate and transform incoming values. The pipes can be
 
 ⚠️ Beware that pipes throw when the value is `undefined` or invalid. Read about optional values [here](#handling-optional-values-in-conjunction-with-pipes)
 
-|                    | Description                                       | Remarks                                                                           |
-| ------------------ | ------------------------------------------------- | --------------------------------------------------------------------------------- |
-| `ParseBooleanPipe` | Validates and transforms `Boolean` strings.       | Allows `'true'` and `'false'` as valid values.                                    |
-| `ParseDatePipe`    | Validates and transforms `Date` strings.          | Allows valid `ISO 8601` formatted date strings.                                   |
-| `ParseNumberPipe`  | Validates and transforms `Number` strings.        | Uses `parseFloat` under the hood.                                                 |
-| `ValidateEnumPipe` | Validates string based on `Enum` values.          | Allows strings that are present in the given enum.                                |
-| `ValidationPipe`   | Validates the request body via `class-validator`. | Works only when `class-validator` and `class-transformer` packages are installed. |
-| `DefaultValuePipe` | Assigns a default value to the parameter when its value is `null` or `undefined`. | Bare function usage has no effect. In other words, always use  `@Query('step', DefaultValuePipe(1))` rather than `@Query('step', DefaultValuePipe)`. |
+|                     | Description                                                                                                                         |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `ParseBooleanPipe`  | Validates and transforms `Boolean` strings. Allows `'true'` and `'false'`.                                                          |
+| `ParseDatePipe`     | Validates and transforms `Date` strings. Allows valid `ISO 8601` formatted date strings.                                            |
+| `ParseNumberPipe`   | Validates and transforms `Number` strings. Uses `parseFloat` under the hood.                                                        |
+| `ValidateEnumPipe`* | Validates string based on `Enum` values. Allows strings that are present in the enum.                                               |
+| `ValidationPipe`    | Validates the request body via `class-validator`. Works only when `class-validator` and `class-transformer` packages are installed. |
+| `DefaultValuePipe`* | Assigns a default value to the parameter when its value is `null` or `undefined`.                                                   |
+
+\* Note that bare function usage has no effect for `ValidateEnumPipe` and `DefaultValuePipe`. In other words, always use  `@Query('step', DefaultValuePipe(1))` rather than `@Query('step', DefaultValuePipe)`.
 
 
 ### Handling optional values in conjunction with pipes

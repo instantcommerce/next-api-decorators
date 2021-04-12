@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 import { Expose } from 'class-transformer';
 import { IsNotEmpty } from 'class-validator';
-import { validateObject } from './classValidator';
 import * as lp from './loadPackage';
+import { validateObject } from './validateObject';
 
 describe('validateObject', () => {
   it('Should return the value if "class-validator" is not being used.', async () => {
