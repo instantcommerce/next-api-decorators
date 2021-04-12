@@ -31,9 +31,10 @@
     "lint": "eslint \"**/*.+(js|jsx|ts|tsx|mdx)\"",
     "ts-coverage": "typescript-coverage-report",
     "semantic-release": "semantic-release",
-    "prepublishOnly": "pinst --disable && npm run build",
+    "prepublishOnly": "pinst --disable && npm run build && npm run verify",
     "postinstall": "husky install",
-    "postpublish": "pinst --enable"
+    "postpublish": "pinst --enable",
+    "verify": "if [[ ! -f dist/createHandler.js ]] || [[ ! -f dist/createHandler.d.ts ]]; then echo \"💥 Corrupt distribution.\"; exit 1; fi"
   },
   "files": [
     "dist"
