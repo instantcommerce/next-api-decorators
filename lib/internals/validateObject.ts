@@ -11,11 +11,15 @@ export async function validateObject(
 ): Promise<any> {
   const classValidator = loadPackage('class-validator');
   if (!classValidator) {
+    console.warn('[validateObject] Missing package `class-validator`.');
+    console.warn('More information: https://github.com/storyofams/next-api-decorators#data-transfer-object');
     return value;
   }
 
   const classTransformer = loadPackage('class-transformer');
   if (!classTransformer) {
+    console.warn('[validateObject] Missing package `class-transformer`.');
+    console.warn('More information: https://github.com/storyofams/next-api-decorators#data-transfer-object');
     return value;
   }
 

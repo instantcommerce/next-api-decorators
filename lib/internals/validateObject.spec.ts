@@ -5,11 +5,13 @@ import * as lp from './loadPackage';
 import { validateObject } from './validateObject';
 
 describe('validateObject', () => {
-  it('Should return the value if "class-validator" is not being used.', async () => {
-    const spy = jest
+  it('Should return the value (and log a warning) if "class-validator" is not being used.', async () => {
+    const spyLp = jest
       .spyOn(lp, 'loadPackage')
       .mockImplementation((name: string) => (name === 'class-validator' ? false : require(name)));
 
+    const spyConsole = jest.spyOn(console, 'warn').mockImplementation();
+
     class Dto {
       @IsNotEmpty()
       public email!: string;
@@ -18,15 +20,19 @@ describe('validateObject', () => {
     const result = await validateObject(Dto, { secondaryEmail: 'dev@storyofams.com' });
 
     expect(result).toHaveProperty('secondaryEmail', 'dev@storyofams.com');
+    expect(spyConsole).toHaveBeenCalledWith(expect.stringMatching(/class-validator/));
 
-    spy.mockRestore();
+    spyLp.mockRestore();
+    spyConsole.mockRestore();
   });
 
-  it('Should return the value if "class-transformer" is not being used.', async () => {
-    const spy = jest
+  it('Should return the value (and log a warning) if "class-transformer" is not being used.', async () => {
+    const spyLp = jest
       .spyOn(lp, 'loadPackage')
       .mockImplementation((name: string) => (name === 'class-transformer' ? false : require(name)));
 
+    const spyConsole = jest.spyOn(console, 'warn').mockImplementation();
+
     class Dto {
       @IsNotEmpty()
       public email!: string;
@@ -35,8 +41,10 @@ describe('validateObject', () => {
     const result = await validateObject(Dto, { secondaryEmail: 'dev@storyofams.com' });
 
     expect(result).toHaveProperty('secondaryEmail', 'dev@storyofams.com');
+    expect(spyConsole).toHaveBeenCalledWith(expect.stringMatching(/class-transformer/));
 
-    spy.mockRestore();
+    spyLp.mockRestore();
+    spyConsole.mockRestore();
   });
 
   it('Should return only exposed properties.', async () => {
