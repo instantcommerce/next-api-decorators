@@ -1,6 +1,6 @@
 import type { ClassTransformOptions } from 'class-transformer';
 import type { ValidatorOptions } from 'class-validator';
-import { loadPackage } from '../../internals/loadPackage';
+import { checkPackage } from '../../internals/checkPackage';
 import { validateObject } from '../../internals/validateObject';
 import type { ParameterPipe, PipeMetadata } from '../ParameterPipe';
 
@@ -17,10 +17,13 @@ export interface ValidationPipeOptions extends ValidatorOptions {
  * More information: [data transfer object](https://github.com/storyofams/next-api-decorators#data-transfer-object)
  */
 export function ValidationPipe(options?: ValidationPipeOptions): ParameterPipe<any> {
-  if (!loadPackage('class-validator') || !loadPackage('class-transformer')) {
-    console.warn('[ValidationPipe] `class-validator` and `class-transformer` need to be installed.');
-    console.warn('More information: https://github.com/storyofams/next-api-decorators#data-transfer-object');
-  }
+  ['class-validator', 'class-transformer'].forEach(requiredPackage =>
+    checkPackage(
+      requiredPackage,
+      'ValidationPipe',
+      'https://github.com/storyofams/next-api-decorators#data-transfer-object'
+    )
+  );
 
   return (value: any, metadata?: PipeMetadata) => {
     if (!metadata?.metaType) {

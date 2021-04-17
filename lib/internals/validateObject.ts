@@ -9,17 +9,13 @@ export async function validateObject(
   value: Record<string, string>,
   validatorOptions?: ValidationPipeOptions
 ): Promise<any> {
-  const classValidator = loadPackage('class-validator');
+  const classValidator = loadPackage('class-validator', 'validateObject');
   if (!classValidator) {
-    console.warn('[validateObject] Missing package `class-validator`.');
-    console.warn('More information: https://github.com/storyofams/next-api-decorators#data-transfer-object');
     return value;
   }
 
-  const classTransformer = loadPackage('class-transformer');
+  const classTransformer = loadPackage('class-transformer', 'validateObject');
   if (!classTransformer) {
-    console.warn('[validateObject] Missing package `class-transformer`.');
-    console.warn('More information: https://github.com/storyofams/next-api-decorators#data-transfer-object');
     return value;
   }
 

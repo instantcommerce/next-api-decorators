@@ -1,24 +1,16 @@
-import * as lp from '../../internals/loadPackage';
+import * as cp from '../../internals/checkPackage';
 import { ValidationPipe } from './validation.pipe';
 
 describe('ValidationPipe', () => {
-  it('Should log a warning if "class-validator" or "class-transformer" is not being used.', async () => {
-    const spyLp = jest
-      .spyOn(lp, 'loadPackage')
-      .mockImplementation((name: string) =>
-        name === 'class-validator' || name === 'class-transformer' ? false : require(name)
-      );
-
-    const spyConsole = jest.spyOn(console, 'warn').mockImplementation();
+  it('Should check if "class-validator" and "class-transformer" are installed.', async () => {
+    const spy = jest.spyOn(cp, 'checkPackage').mockImplementation();
 
     ValidationPipe();
 
-    ['ValidationPipe', 'class-validator', 'class-transformer'].forEach(requiredWord =>
-      expect(spyConsole).toHaveBeenCalledWith(expect.stringMatching(new RegExp(requiredWord)))
-    );
+    expect(spy).toHaveBeenCalledWith('class-validator', 'ValidationPipe', expect.stringContaining('https://'));
+    expect(spy).toHaveBeenCalledWith('class-transformer', 'ValidationPipe', expect.stringContaining('https://'));
 
-    spyLp.mockRestore();
-    spyConsole.mockRestore();
+    spy.mockRestore();
   });
 
   it('Should return the value as is when there is no meta type defined.', () =>

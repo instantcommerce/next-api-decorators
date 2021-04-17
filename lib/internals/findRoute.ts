@@ -9,7 +9,7 @@ export function findRoute(
 ): [Key[], RegExpExecArray | null | undefined, HandlerMethod | undefined] {
   const methods: Array<HandlerMethod> = Reflect.getMetadata(HTTP_METHOD_TOKEN, cls);
 
-  const { pathToRegexp } = loadPackage('path-to-regexp');
+  const { pathToRegexp } = loadPackage('path-to-regexp', 'findRoute');
   if (!pathToRegexp) {
     return [[], undefined, methods.find(f => f.path === '/' && f.verb === verb)];
   }
