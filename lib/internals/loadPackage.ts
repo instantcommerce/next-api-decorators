@@ -1,8 +1,17 @@
-export function loadPackage(name: string, context: string): any {
+interface LoadPackageWarning {
+  context: string;
+  docsUrl: string;
+}
+
+export function loadPackage(name: string, warning?: LoadPackageWarning): any {
   try {
     return require(name);
   } catch {
-    console.warn(`[${context}] Failed to load package "${name}".`);
+    if (warning) {
+      console.warn(`[${warning.context}] Missing required package "${name}".`);
+      console.warn(`[${warning.context}] More information: ${warning.docsUrl}`);
+    }
+
     return false;
   }
 }

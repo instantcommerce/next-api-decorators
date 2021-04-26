@@ -9,12 +9,12 @@ export async function validateObject(
   value: Record<string, string>,
   validatorOptions?: ValidationPipeOptions
 ): Promise<any> {
-  const classValidator = loadPackage('class-validator', 'validateObject');
+  const classValidator = loadPackage('class-validator');
   if (!classValidator) {
     return value;
   }
 
-  const classTransformer = loadPackage('class-transformer', 'validateObject');
+  const classTransformer = loadPackage('class-transformer');
   if (!classTransformer) {
     return value;
   }
