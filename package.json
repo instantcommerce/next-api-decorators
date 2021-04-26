@@ -51,7 +51,7 @@
     "@babel/cli": "7.13.14",
     "@babel/core": "7.13.15",
     "@babel/plugin-proposal-decorators": "7.13.15",
-    "@babel/runtime-corejs2": "7.13.10",
+    "@babel/runtime-corejs2": "7.13.17",
     "@commitlint/cli": "12.1.1",
     "@commitlint/config-conventional": "12.1.1",
     "@semantic-release/changelog": "5.0.1",
