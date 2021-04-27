@@ -1,6 +1,6 @@
 <div align="center">
   <a aria-label="Story of AMS logo" href="https://storyofams.com/" target="_blank" align="center">
-    <img src="https://storyofams.com/public/story-of-ams-logo-small@3x.png" alt="Story of AMS" width="120">
+    <img src="https://avatars.githubusercontent.com/u/19343504" alt="Story of AMS" width="100">
   </a>
   <h1 align="center">@storyofams/next-api-decorators</h1>
   <p align="center">
@@ -208,8 +208,6 @@ class User {
 💡 It is possible to use pipes with `@Param`. e.g: `@Param('userId', ParseNumberPipe) userId: number`
 
 ⚠️ When `path-to-regexp` package is not installed and route matching is being used in handlers, the request will be handled by the method defined with the `/` path (keep in mind that using `@Get()` and `@Get('/')` do exactly the same thing).
-
-For the above example, a request to `api/user/123` will be handled by the `list` method if `path-to-regexp` package is not installed in your project.
 
 
 ## Available decorators

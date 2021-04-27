@@ -1,4 +1,5 @@
 import { Handler } from '../internals/handler';
+import { loadPackage } from '../internals/loadPackage';
 
 export enum HttpVerb {
   GET = 'GET',
@@ -16,6 +17,13 @@ export interface HandlerMethod {
 export const HTTP_METHOD_TOKEN = Symbol('ams:next:httpMethod');
 
 function applyHttpMethod(verb: HttpVerb, path: string) {
+  if (process.env.NODE_ENV === 'development' && path !== '/') {
+    loadPackage('path-to-regexp', {
+      context: '@' + verb.charAt(0).toUpperCase() + verb.slice(1).toLowerCase(),
+      docsUrl: 'https://github.com/storyofams/next-api-decorators#route-matching'
+    });
+  }
+
   return function (target: object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>) {
     const methods: Array<HandlerMethod> = Reflect.getMetadata(HTTP_METHOD_TOKEN, target.constructor) ?? [];
 
