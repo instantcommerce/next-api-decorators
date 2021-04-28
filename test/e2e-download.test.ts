@@ -9,13 +9,13 @@ class TestHandler {
   @Download()
   @SetHeader('Content-Type', 'text/html')
   public downloadFile(@Query('type') type: string): DownloadFileResult | undefined {
-    fs.writeFileSync('./test-stream.txt', 'hello stream!');
+    fs.writeFileSync('./test-stream-2.txt', 'hello stream!');
 
     switch (type) {
       case 'stream':
         return {
           filename: 'stream-test.txt',
-          contents: fs.createReadStream('./test-stream.txt')
+          contents: fs.createReadStream('./test-stream-2.txt')
         };
       case 'buffer':
         return {
@@ -35,14 +35,14 @@ class TestHandler {
   }
 }
 
-describe('E2E', () => {
+describe('E2E - Download', () => {
   let server: ReturnType<typeof setupServer>;
   beforeAll(() => (server = setupServer(createHandler(TestHandler))));
   afterAll(() => {
     if ('close' in server && typeof server.close === 'function') {
       server.close();
     }
-    fs.unlinkSync('./test-stream.txt');
+    fs.unlinkSync('./test-stream-2.txt');
   });
 
   it('Should return file contents from Stream object.', () =>

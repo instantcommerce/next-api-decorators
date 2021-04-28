@@ -12,7 +12,7 @@ class TestHandler {
   }
 }
 
-describe('E2E', () => {
+describe('E2E - Stream', () => {
   let server: ReturnType<typeof setupServer>;
   beforeAll(() => {
     server = setupServer(createHandler(TestHandler));
