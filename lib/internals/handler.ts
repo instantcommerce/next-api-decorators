@@ -69,13 +69,15 @@ async function runMainLayer(
     target.constructor,
     propertyKey
   );
-  const parameterTypes: ClassConstructor<any>[] = Reflect.getMetadata('design:paramtypes', target, propertyKey) ?? [];
+  const parameterTypes: ClassConstructor<any>[] = Reflect.getMetadata('design:paramtypes', target, propertyKey);
   const isDownloadable: boolean = Reflect.getMetadata(HTTP_DOWNLOAD_TOKEN, target.constructor, propertyKey) ?? false;
 
   const parameters = await Promise.all(
     parameterDecorators.map(async ({ location, name, pipes, index }) => {
       const paramType =
-        index < parameterTypes.length && typeof parameterTypes[index] === 'function'
+        index < parameterTypes.length &&
+        typeof parameterTypes[index] === 'function' &&
+        /^class\s/.test(Function.prototype.toString.call(parameterTypes[index]))
           ? parameterTypes[index]
           : undefined;
 
