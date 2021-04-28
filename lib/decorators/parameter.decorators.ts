@@ -2,7 +2,7 @@ import type { ParameterPipe } from '../pipes/ParameterPipe';
 
 export interface MetaParameter {
   index: number;
-  location: 'query' | 'body' | 'header' | 'method' | 'request' | 'response' | 'params';
+  location: 'query' | 'body' | 'header' | 'method' | 'request' | 'response' | 'params' | 'file' | 'files';
   name?: string;
   pipes?: ParameterPipe<any>[];
 }
@@ -106,4 +106,12 @@ export function Res(): ParameterDecorator {
 /** Returns the `res` object. */
 export function Response(): ParameterDecorator {
   return Res();
+}
+
+export function UploadedFile(): ParameterDecorator {
+  return addParameter('file');
+}
+
+export function UploadedFiles(): ParameterDecorator {
+  return addParameter('files');
 }
