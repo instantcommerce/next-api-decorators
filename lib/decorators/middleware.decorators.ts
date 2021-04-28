@@ -21,8 +21,8 @@ export enum MiddlewarePosition {
 }
 
 export function createMiddlewareDecorator(
-  middleware: Middleware,
-  position: MiddlewarePosition
+  position: MiddlewarePosition,
+  middleware: Middleware
 ): ClassDecorator & MethodDecorator {
   return function (target: object, propertyKey?: string | symbol) {
     const definedMiddlewares: MiddlewareLayer = (propertyKey
@@ -42,7 +42,7 @@ export function createMiddlewareDecorator(
 export function UseBefore(...middlewares: Middleware[]): ClassDecorator & MethodDecorator {
   return function (target: object, propertyKey?: string | symbol) {
     middlewares.forEach(middleware =>
-      createMiddlewareDecorator(middleware, MiddlewarePosition.BEFORE)(target, propertyKey as string, {})
+      createMiddlewareDecorator(MiddlewarePosition.BEFORE, middleware)(target, propertyKey as string, {})
     );
   };
 }
@@ -50,7 +50,7 @@ export function UseBefore(...middlewares: Middleware[]): ClassDecorator & Method
 export function UseAfter(...middlewares: Middleware[]): ClassDecorator & MethodDecorator {
   return function (target: object, propertyKey?: string | symbol) {
     middlewares.forEach(middleware =>
-      createMiddlewareDecorator(middleware, MiddlewarePosition.AFTER)(target, propertyKey as string, {})
+      createMiddlewareDecorator(MiddlewarePosition.AFTER, middleware)(target, propertyKey as string, {})
     );
   };
 }
