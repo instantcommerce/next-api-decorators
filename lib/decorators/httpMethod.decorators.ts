@@ -1,4 +1,4 @@
-import { Handler } from '../internals/handler';
+import { applyHandler } from '../internals/handler';
 import { loadPackage } from '../internals/loadPackage';
 
 export enum HttpVerb {
@@ -31,7 +31,7 @@ function applyHttpMethod(verb: HttpVerb, path: string) {
 
     Reflect.defineMetadata(HTTP_METHOD_TOKEN, methods, target.constructor);
 
-    Handler()(target, propertyKey, descriptor);
+    applyHandler(target, propertyKey, descriptor);
   };
 }
 
