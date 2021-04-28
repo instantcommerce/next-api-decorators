@@ -22,35 +22,38 @@ const messages: string[] = [];
 @UseBefore(responseTime())
 class TestHandler {
   @Get('/dashboard')
-  public dashboard(@Res() res: NextApiResponse): NextApiResponse | string {
+  public dashboard(@Res() res: NextApiResponse): NextApiResponse | Record<string, any> {
     if (messages.includes('logged-in')) {
-      return 'Hello!';
+      return { message: 'Hello!' };
     }
 
-    return res.redirect('login');
+    return res.redirect(307, 'login');
   }
 
   @Get('/login')
-  public login(@Res() res: NextApiResponse): NextApiResponse | string {
+  public login(@Res() res: NextApiResponse): NextApiResponse | Record<string, any> {
     if (messages.includes('logged-in')) {
       return res.redirect('/');
     }
 
     messages.push('logged-in');
-    return 'Logging in...';
+    return { message: 'Logging in...' };
   }
 
   @Post('/single')
   @UseBefore(rateLimiter)
   @UseBefore(upload.single('file'))
-  public upload(@UploadedFile() file: Express.Multer.File): string {
-    return `Uploaded file: ${file.originalname}`;
+  public upload(@UploadedFile() file: Express.Multer.File): Record<string, any> {
+    return { filename: file.originalname };
   }
 
   @Post('/multiple')
   @UseBefore(upload.array('files', 2))
-  public multiple(@UploadedFiles() files: Express.Multer.File[]): string {
-    return `Uploaded ${files.length} files: ${files.map(f => f.originalname).join(', ')}`;
+  public multiple(@UploadedFiles() files: Express.Multer.File[]): Record<string, any> {
+    return {
+      count: files.length,
+      files: files.map(f => f.originalname)
+    };
   }
 
   @Post('/fields')
@@ -60,17 +63,20 @@ class TestHandler {
       { name: 'file2', maxCount: 1 }
     ])
   )
-  public fields(@UploadedFiles() files: Record<string, Express.Multer.File[]>): string {
+  public fields(@UploadedFiles() files: Record<string, Express.Multer.File[]>): Record<string, any> {
     const file1 = files.file1[0];
     const file2 = files.file2[0];
 
-    return `Uploaded file ${file1.originalname} and ${file2.originalname}`;
+    return {
+      file1: file1.originalname,
+      file2: file2.originalname
+    };
   }
 }
 
 describe('E2E - Middleware', () => {
   let server: ReturnType<typeof setupServer>;
-  beforeAll(() => (server = setupServer(createHandler(TestHandler))));
+  beforeAll(() => (server = setupServer(createHandler(TestHandler), true)));
   afterAll(() => {
     if ('close' in server && typeof server.close === 'function') {
       server.close();
@@ -81,7 +87,7 @@ describe('E2E - Middleware', () => {
     request(server)
       .post('/api/test/single')
       .attach('file', Buffer.from('hello world!'), { contentType: 'text/plain', filename: 'hello.txt' })
-      .expect(200, '"Uploaded file: hello.txt"')
+      .expect(200, { filename: 'hello.txt' })
       .then(res => expect(res.headers).toHaveProperty('x-response-time')));
 
   it('Should rate limit', () =>
@@ -96,7 +102,7 @@ describe('E2E - Middleware', () => {
       .post('/api/test/multiple')
       .attach('files', Buffer.from('hello world!'), { contentType: 'text/plain', filename: 'hello.txt' })
       .attach('files', Buffer.from('hello world!'), { contentType: 'text/plain', filename: 'hello.txt' })
-      .expect(200, '"Uploaded 2 files: hello.txt, hello.txt"'));
+      .expect(200, { count: 2, files: ['hello.txt', 'hello.txt'] }));
 
   it('Should fail for maxCount upload multiple files.', () =>
     request(server)
@@ -117,7 +123,10 @@ describe('E2E - Middleware', () => {
       .post('/api/test/fields')
       .attach('file1', Buffer.from('hello 1st world!'), { contentType: 'text/plain', filename: 'hello1.txt' })
       .attach('file2', Buffer.from('hello 2nd world!'), { contentType: 'text/plain', filename: 'hello2.txt' })
-      .expect(200, '"Uploaded file hello1.txt and hello2.txt"'));
+      .expect(200, {
+        file1: 'hello1.txt',
+        file2: 'hello2.txt'
+      }));
 
   it('Should fail for multiple files in different fields.', () =>
     request(server)
@@ -138,16 +147,16 @@ describe('E2E - Middleware', () => {
   it('Should redirect properly.', async () => {
     const res = await request(server).get('/api/test/dashboard');
 
-    expect(res.status).toStrictEqual(302);
+    expect(res.status).toStrictEqual(307);
     expect(res.headers).toHaveProperty('location', 'login');
 
     const loginRes = await request(server).get(`/api/test/${res.headers['location']}`);
 
     expect(loginRes.status).toStrictEqual(200);
-    expect(loginRes.body).toStrictEqual('Logging in...');
+    expect(loginRes.body).toStrictEqual({ message: 'Logging in...' });
 
     const dashboardRes = await request(server).get('/api/test/dashboard');
     expect(dashboardRes.status).toStrictEqual(200);
-    expect(dashboardRes.body).toStrictEqual('Hello!');
+    expect(dashboardRes.body).toStrictEqual({ message: 'Hello!' });
   });
 });
