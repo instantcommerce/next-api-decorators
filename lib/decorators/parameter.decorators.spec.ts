@@ -2,7 +2,17 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import 'reflect-metadata';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { Body, PARAMETER_TOKEN, Req, Request, Res, Response, Header, Query } from './parameter.decorators';
+import {
+  Body,
+  PARAMETER_TOKEN,
+  Req,
+  Request,
+  Res,
+  Response,
+  Header,
+  Query,
+  createParamDecorator
+} from './parameter.decorators';
 
 describe('Parameter decorators', () => {
   it('Should set the Body decorator.', () => {
@@ -102,5 +112,24 @@ describe('Parameter decorators', () => {
         expect.objectContaining({ index: 1, location: 'response' })
       ])
     );
+  });
+
+  it('Should set the custom decorator.', () => {
+    /**
+     * Returns the HTTP version.
+     */
+    const HttpVersion = createParamDecorator<string>(req => {
+      return req.httpVersion;
+    });
+
+    class Test {
+      public index(@HttpVersion() version: string) {}
+    }
+
+    const meta = Reflect.getMetadata(PARAMETER_TOKEN, Test, 'index');
+
+    expect(Array.isArray(meta)).toStrictEqual(true);
+    expect(meta).toHaveLength(1);
+    expect(meta).toMatchObject(expect.arrayContaining([expect.objectContaining({ index: 0, location: 'custom' })]));
   });
 });
