@@ -39,13 +39,19 @@ async function runMiddlewares(
       }
 
       await new Promise<void>((resolve, reject) => {
-        (middlewareFn as NextMiddleware).call(this, req, res, err => {
+        // The middleware uses the callback.
+        const fnResult = (middlewareFn as NextMiddleware).call(this, req, res, err => {
           if (err) {
             return reject(handleMulterError(err));
           }
 
           resolve();
         });
+
+        // The middleware is async.
+        if (fnResult instanceof Promise) {
+          fnResult.then(resolve).catch(reject);
+        }
       });
     }
   }
@@ -73,7 +79,11 @@ async function runMainLayer(
   const isDownloadable: boolean = Reflect.getMetadata(HTTP_DOWNLOAD_TOKEN, target.constructor, propertyKey) ?? false;
 
   const parameters = await Promise.all(
-    parameterDecorators.map(async ({ location, name, pipes, index }) => {
+    parameterDecorators.map(async ({ location, name, pipes, index, fn }) => {
+      if (location === 'custom') {
+        return fn?.call(null, req);
+      }
+
       const paramType =
         index < parameterTypes.length &&
         typeof parameterTypes[index] === 'function' &&
