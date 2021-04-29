@@ -22,9 +22,7 @@
     "decorators"
   ],
   "scripts": {
-    "build": "rm -rf dist && npm run build:types && npm run build:js",
-    "build:types": "tsc -p ./tsconfig.build.json --rootDir lib --emitDeclarationOnly",
-    "build:js": "babel lib --out-dir dist --extensions \".ts\"",
+    "build": "rm -rf dist && tsc -p ./tsconfig.build.json --rootDir lib",
     "commit": "./node_modules/cz-customizable/standalone.js",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -43,15 +41,9 @@
     "reflect-metadata": "^0.1.13"
   },
   "peerDependencies": {
-    "@babel/plugin-proposal-decorators": "7.13.15",
-    "babel-plugin-parameter-decorator": "1.0.16",
     "next": "10.1.3"
   },
   "devDependencies": {
-    "@babel/cli": "7.13.14",
-    "@babel/core": "7.13.15",
-    "@babel/plugin-proposal-decorators": "7.13.15",
-    "@babel/runtime-corejs2": "7.13.10",
     "@commitlint/cli": "12.1.1",
     "@commitlint/config-conventional": "12.1.1",
     "@semantic-release/changelog": "5.0.1",
@@ -64,9 +56,6 @@
     "@types/supertest": "^2.0.10",
     "@typescript-eslint/eslint-plugin": "4.22.0",
     "@typescript-eslint/parser": "4.22.0",
-    "babel-eslint": "10.1.0",
-    "babel-loader": "8.2.2",
-    "babel-plugin-parameter-decorator": "1.0.16",
     "class-transformer": "0.4.0",
     "class-validator": "0.13.1",
     "cz-customizable": "git+https://github.com/storyofams/cz-customizable.git#v6.3.2",
