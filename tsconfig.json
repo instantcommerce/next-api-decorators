@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
     "target": "ES6",
+    "module": "CommonJS",
     "lib": ["ES2019"],
     "esModuleInterop": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "declaration": true,
-    "emitDeclarationOnly": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "isolatedModules": true,
