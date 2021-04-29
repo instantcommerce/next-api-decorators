@@ -1,22 +1,25 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import request from 'supertest';
 import { BadRequestException, createHandler, Get, UseBefore } from '../lib';
+import { NextFunction } from '../lib/decorators';
 import { setupServer } from './setupServer';
 
 const messages: string[] = [];
 
 @UseBefore(
-  (req: NextApiRequest, res: NextApiResponse, next: () => void) => {
+  (req: NextApiRequest, res: NextApiResponse, next: NextFunction) => {
     if (req.url?.includes('/will-throw')) {
       throw new Error('An error occurred.');
     } else if (req.url?.includes('/bad-request')) {
       throw new BadRequestException();
+    } else if (req.url?.includes('/return-error')) {
+      return next(new BadRequestException());
     }
 
     res.status(400).end();
     next();
   },
-  (_: any, __: any, next: () => void) => {
+  (_: any, __: any, next: NextFunction) => {
     messages.push('A message.');
     next();
   }
@@ -36,6 +39,11 @@ class TestHandler {
   public badRequest(): string {
     return 'Bad Request';
   }
+
+  @Get('/return-error')
+  public returnError(): null {
+    return null;
+  }
 }
 
 describe('E2E - Middleware - Errors', () => {
@@ -52,7 +60,7 @@ describe('E2E - Middleware - Errors', () => {
     expect(messages).toHaveLength(0);
   });
 
-  it('Should return 500 when a middleware throws with the standard Error.', () =>
+  it('Should return 500 when a middleware throws a standard Error.', () =>
     request(server)
       .get('/api/test/will-throw')
       .expect(500)
@@ -63,9 +71,20 @@ describe('E2E - Middleware - Errors', () => {
         })
       ));
 
-  it('Should have the necessary properties when a middleware throws with a built-in error.', () =>
+  it('Should have the necessary properties when a middleware throws a built-in error.', () =>
     request(server)
       .get('/api/test/bad-request')
+      .expect(400)
+      .then(res =>
+        expect(res.body).toMatchObject({
+          statusCode: 400,
+          message: 'Bad Request'
+        })
+      ));
+
+  it('Should have the necessary properties when a middleware uses the callback with a built-in error.', () =>
+    request(server)
+      .get('/api/test/return-error')
       .expect(400)
       .then(res =>
         expect(res.body).toMatchObject({
