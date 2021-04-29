@@ -3,11 +3,8 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 export const MIDDLEWARE_TOKEN = Symbol('ams:next:middlewares');
 
-export type NextMiddleware = (
-  req: NextApiRequest,
-  res: NextApiResponse,
-  next: (err?: Error) => void
-) => void | Promise<void>;
+export type NextFunction = (err?: Error) => void;
+export type NextMiddleware = (req: NextApiRequest, res: NextApiResponse, next: NextFunction) => void | Promise<void>;
 export type Middleware = NextMiddleware | RequestHandler;
 
 export interface MiddlewareLayer {
@@ -20,11 +17,8 @@ export enum MiddlewarePosition {
   AFTER = 'after'
 }
 
-export function createMiddlewareDecorator(
-  position: MiddlewarePosition,
-  middleware: Middleware
-): ClassDecorator & MethodDecorator {
-  return function (target: object, propertyKey?: string | symbol) {
+export function createMiddlewareDecorator(position: MiddlewarePosition, middleware: Middleware) {
+  return () => (target: object, propertyKey?: string | symbol): void => {
     const definedMiddlewares: MiddlewareLayer = (propertyKey
       ? Reflect.getMetadata(MIDDLEWARE_TOKEN, target.constructor, propertyKey)
       : Reflect.getMetadata(MIDDLEWARE_TOKEN, target)) ?? { before: [], after: [] };
@@ -42,7 +36,7 @@ export function createMiddlewareDecorator(
 export function UseBefore(...middlewares: Middleware[]): ClassDecorator & MethodDecorator {
   return function (target: object, propertyKey?: string | symbol) {
     middlewares.forEach(middleware =>
-      createMiddlewareDecorator(MiddlewarePosition.BEFORE, middleware)(target, propertyKey as string, {})
+      createMiddlewareDecorator(MiddlewarePosition.BEFORE, middleware)()(target, propertyKey as string)
     );
   };
 }
@@ -50,7 +44,7 @@ export function UseBefore(...middlewares: Middleware[]): ClassDecorator & Method
 export function UseAfter(...middlewares: Middleware[]): ClassDecorator & MethodDecorator {
   return function (target: object, propertyKey?: string | symbol) {
     middlewares.forEach(middleware =>
-      createMiddlewareDecorator(MiddlewarePosition.AFTER, middleware)(target, propertyKey as string, {})
+      createMiddlewareDecorator(MiddlewarePosition.AFTER, middleware)()(target, propertyKey as string)
     );
   };
 }
