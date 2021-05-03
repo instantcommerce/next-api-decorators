@@ -11,7 +11,8 @@ export function findRoute(
 
   const { pathToRegexp } = loadPackage('path-to-regexp');
   if (!pathToRegexp) {
-    return [[], undefined, methods.find(f => f.path === '/' && f.verb === verb)];
+    const method = methods.find(f => f.path === path && f.verb === verb);
+    return [[], undefined, method ?? methods.find(f => f.path === '/' && f.verb === verb)];
   }
 
   const keys: Key[] = [];
