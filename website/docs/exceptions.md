@@ -10,6 +10,7 @@ The following common exceptions are provided by this package.
 | `BadRequestException`          | `400`       | `'Bad Request'`           |
 | `UnauthorizedException`        | `401`       | `'Unauthorized'`          |
 | `NotFoundException`            | `404`       | `'Not Found'`             |
+| `PayloadTooLargeException`     | `413`       | `'Payload Too Large'`     |
 | `UnprocessableEntityException` | `422`       | `'Unprocessable Entity'`  |
 | `InternalServerErrorException` | `500`       | `'Internal Server Error'` |
 

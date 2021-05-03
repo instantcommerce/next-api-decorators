@@ -12,6 +12,7 @@ module.exports = {
     },
     'validation',
     'pipes',
+    'middlewares',
     'exceptions',
     {
       type: 'category',
