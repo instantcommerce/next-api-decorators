@@ -7,7 +7,7 @@ import {
   createMiddlewareDecorator,
   NextFunction,
   UnauthorizedException,
-  InternalServerErrorException,
+  SetHeader,
 } from '@storyofams/next-api-decorators';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getToken } from 'next-auth/jwt';
@@ -20,23 +20,20 @@ declare module 'next' {
 }
 
 const NextAuthGuard = createMiddlewareDecorator(async (req: NextApiRequest, _res: NextApiResponse, next: NextFunction) => {
-  try {
-    const token = await getToken({ req, secret: process.env.JWT_SECRET });
-    if (!token || !token.name) {
-      throw new UnauthorizedException();
-    }
-
-    req.user = { name: token.name };
-    next();
-  } catch (err) {
-    throw new InternalServerErrorException(err.message);
+  const token = await getToken({ req, secret: process.env.JWT_SECRET });
+  if (!token || !token.name) {
+    throw new UnauthorizedException();
   }
+
+  req.user = { name: token.name };
+  next();
 });
 
 @NextAuthGuard()
 class UserRouter {
   // GET /api/users
   @Get()
+  @SetHeader('Cache-Control', 'nostore')
   public listUsers(
     @Query('skip', DefaultValuePipe(0), ParseNumberPipe) skip: number,
     @Query('limit', ParseNumberPipe({ nullable: true })) limit?: number,
