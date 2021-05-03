@@ -17,8 +17,14 @@ export {
   Req,
   Request,
   Res,
-  Response
+  Response,
+  UseMiddleware,
+  createMiddlewareDecorator,
+  UploadedFile,
+  UploadedFiles,
+  createParamDecorator
 } from './decorators';
+export type { Middleware, NextFunction, NextMiddleware } from './decorators';
 export * from './exceptions';
 export * from './pipes';
 export * from './interfaces';

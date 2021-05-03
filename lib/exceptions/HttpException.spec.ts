@@ -4,7 +4,8 @@ import {
   InternalServerErrorException,
   NotFoundException,
   UnauthorizedException,
-  UnprocessableEntityException
+  UnprocessableEntityException,
+  PayloadTooLargeException
 } from '.';
 
 describe('HttpException', () => {
@@ -37,6 +38,7 @@ describe('HttpException', () => {
       expect(new NotFoundException()).toHaveProperty('statusCode', 404);
       expect(new UnauthorizedException()).toHaveProperty('statusCode', 401);
       expect(new UnprocessableEntityException()).toHaveProperty('statusCode', 422);
+      expect(new PayloadTooLargeException()).toHaveProperty('statusCode', 413);
     });
 
     it('Should set the default error messages', () => {
@@ -45,6 +47,7 @@ describe('HttpException', () => {
       expect(new NotFoundException()).toHaveProperty('message', 'Not Found');
       expect(new UnauthorizedException()).toHaveProperty('message', 'Unauthorized');
       expect(new UnprocessableEntityException()).toHaveProperty('message', 'Unprocessable Entity');
+      expect(new PayloadTooLargeException()).toHaveProperty('message', 'Payload Too Large');
     });
   });
 });

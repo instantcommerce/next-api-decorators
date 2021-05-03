@@ -209,6 +209,54 @@ class User {
 
 ⚠️ When `path-to-regexp` package is not installed and route matching is being used in handlers, the request will be handled by the method defined with the `/` path (keep in mind that using `@Get()` and `@Get('/')` do exactly the same thing).
 
+## Middlewares
+
+`next-api-decorators` is technically compatible with all Express.js middlewares. However, keep in mind that some middlewares may not be compatible with Next.js API routes. When using a 3rd party middleware in a Next.js API handler, it's advised to test the middleware thoroughly.
+
+We provide the `@UseMiddleware` decorator to run a middleware **_before_** the handler. You can use the decorator either for a class or a class method
+
+### Applying a middleware
+
+```ts
+const rateLimiter = rateLimit();
+
+@UseMiddleware(rateLimiter)
+class ArticleHandler {
+  @Get()
+  public articles() {
+    return 'My articles';
+  }
+}
+```
+
+### Custom middleware decorators
+
+In some cases, it may be beneficial to create a middleware decorator and use it throughout your app.
+
+We provide the `createMiddlewareDecorator` function for you to create a decorator that fulfills your needs.
+
+```ts
+const JwtAuthGuard =
+  createMiddlewareDecorator((req: NextApiRequest, res: NextApiResponse, next: NextFunction) {
+    if (!validateJwt(req)) {
+      throw new UnauthorizedException();
+      // or
+      return next(new UnauthorizedException());
+    }
+
+    next();
+  });
+
+class SecureHandler {
+  @Get()
+  @JwtAuthGuard()
+  public securedData(): string {
+    return 'Secret data';
+  }
+}
+```
+
+💡 `NextFunction` type is exported from `@storyofams/next-api-decorators`.
 
 ## Available decorators
 
@@ -217,6 +265,7 @@ class User {
 |                                           | Description                                                    |
 | ----------------------------------------- | -------------------------------------------------------------- |
 | `@SetHeader(name: string, value: string)` | Sets a header name/value into all routes defined in the class. |
+| `@UseMiddleware(...middlewares: Middleware[])` | Registers one or multiple middlewares for all the routes defined in the class. |
 
 ### Method decorators
 
@@ -228,6 +277,7 @@ class User {
 | `@Delete(path?: string)`                  | Marks the method as `DELETE` handler.             |
 | `@SetHeader(name: string, value: string)` | Sets a header name/value into the route response. |
 | `@HttpCode(code: number)`                 | Sets the http code in the route response.         |
+| `@UseMiddleware(...middlewares: Middleware[])` | Registers one or multiple middlewares for the handler. |
 
 ### Parameter decorators
 
@@ -287,6 +337,7 @@ The following common exceptions are provided by this package.
 | `BadRequestException`          | `400`       | `'Bad Request'`           |
 | `UnauthorizedException`        | `401`       | `'Unauthorized'`          |
 | `NotFoundException`            | `404`       | `'Not Found'`             |
+| `PayloadTooLargeException`     | `413`       | `'Payload Too Large'`     |
 | `UnprocessableEntityException` | `422`       | `'Unprocessable Entity'`  |
 | `InternalServerErrorException` | `500`       | `'Internal Server Error'` |
 
