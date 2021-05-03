@@ -410,7 +410,7 @@
   resolved "https://registry.yarnpkg.com/@storyofams/eslint-config-ams/-/eslint-config-ams-1.1.3.tgz#ee6de44c89c6fabe401e6883f8b08ccc11fdc538"
   integrity sha512-iygvgZQIu8CicKYzXdHfEfrGXf23BeSeHrIDdj+zl0f85Al1lPINTC90y9xtQdbKKgw9iXrlmuiaJIjL1o1Y1w==
 
-"@storyofams/next-api-decorators@../dist":
+"@storyofams/next-api-decorators@../../dist":
   version "0.0.0"
 
 "@types/json5@^0.0.29":
@@ -2948,6 +2948,11 @@ readdirp@~3.5.0:
   integrity sha512-cMhu7c/8rdhkHXWsY+osBhfSy0JikwpHK/5+imo+LpeasTF8ouErHrlYkwT0++njiyuDvc7OFY5T3ukvZ8qmFQ==
   dependencies:
     picomatch "^2.2.1"
+
+reflect-metadata@^0.1.13:
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.13.tgz#67ae3ca57c972a2aa1642b10fe363fe32d49dc08"
+  integrity sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==
 
 regenerator-runtime@^0.13.4:
   version "0.13.7"

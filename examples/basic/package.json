@@ -9,13 +9,14 @@
     "type-check": "tsc"
   },
   "dependencies": {
-    "@storyofams/next-api-decorators": "../dist",
+    "@storyofams/next-api-decorators": "../../dist",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
     "next": "^10.0.5",
     "path-to-regexp": "^6.2.0",
     "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react-dom": "^17.0.1",
+    "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
     "@babel/core": "^7.13.10",
