@@ -8,10 +8,10 @@ slug: /routing/basics
 Defining routes are partially dictated by Next.js and can be read in depth [here](https://nextjs.org/docs/api-routes/introduction).
 
 We provide the following built-in decorators for you to handle the HTTP method that corresponds to each:
-* `Get`
-* `Post`
-* `Put`
-* `Delete`
+* `@Get()`
+* `@Post()`
+* `@Put()`
+* `@Delete()`
 
 Since Next.js expects the default export to be a request handler, we provide the `createHandler` function which accepts a class as the only parameter.
 
@@ -30,10 +30,10 @@ export default createHandler(UserHandler);
 
 ## Request object
 
-In certain cases we may need to access the underlying request (`req`) object. We can access it by using the `@Req` decorator.
+In certain cases we may need to access the underlying request (`req`) object. We can access it by using the `@Req()` decorator.
 
 :::info
-There is the `@Request()` decorator as well, which is an alias to the `@Req` decorator.
+There is the `@Request()` decorator as well, which is an alias to the `@Req()` decorator.
 :::
 
 ```ts
