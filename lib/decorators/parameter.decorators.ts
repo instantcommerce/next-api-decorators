@@ -1,12 +1,14 @@
 import type { NextApiRequest } from 'next';
 import type { ParameterPipe } from '../pipes/ParameterPipe';
 
+type ParamDecorator<T> = (req: NextApiRequest) => T;
+
 export interface MetaParameter {
   index: number;
   location: 'query' | 'body' | 'header' | 'method' | 'request' | 'response' | 'params' | 'file' | 'files' | 'custom';
   name?: string;
   pipes?: ParameterPipe<any>[];
-  fn?: <T>(req: NextApiRequest) => T;
+  fn?: ParamDecorator<any>;
 }
 
 export const PARAMETER_TOKEN = Symbol('ams:next:parameters');
@@ -15,7 +17,7 @@ function addParameter(
   location: MetaParameter['location'],
   name?: MetaParameter['name'],
   pipes?: ParameterPipe<any>[],
-  fn?: (req: NextApiRequest) => any
+  fn?: ParamDecorator<any>
 ) {
   return function (target: object, propertyKey: string | symbol, parameterIndex: number) {
     const params: Array<MetaParameter> = Reflect.getMetadata(PARAMETER_TOKEN, target.constructor, propertyKey) ?? [];
@@ -123,6 +125,6 @@ export function UploadedFiles(): ParameterDecorator {
   return addParameter('files');
 }
 
-export function createParamDecorator<T>(fn: (req: NextApiRequest) => T): () => ParameterDecorator {
+export function createParamDecorator<T = any>(fn: ParamDecorator<T>): () => ParameterDecorator {
   return () => addParameter('custom', undefined, undefined, fn);
 }
