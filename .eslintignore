@@ -5,4 +5,5 @@
 /.next/**
 /coverage/**
 /coverage-ts/**
-/example/**
+/examples/**
+/website
