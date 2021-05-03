@@ -5,7 +5,7 @@ slug: /introduction/basic-comparison
 
 Assuming you have a handler (`pages/api/user.ts`) to get the details of a user, and to create a user in which you also validate the incoming data.
 
-You'd write your function like below, in the basic manner.
+In a naive way, you'd write your function like below:
 
 ```ts
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -39,7 +39,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 }
 ```
 
-But, with `next-api-decorators` you can write the same handler in a declarative manner:
+However, with `next-api-decorators` you can write the same handler in a declarative manner:
 
 ```ts
 class User {
