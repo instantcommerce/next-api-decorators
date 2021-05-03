@@ -4,7 +4,7 @@ Example usage of the `@storyofams/next-api-decorators` with `next-auth`. This ex
 
 ## Getting started
 
-Create your `.env` file by copying the `.env.example` file and modify its content.
+Create your `.env` file by copying the `.example.env` file and modify its content.
 
 ```bash
 $ yarn
