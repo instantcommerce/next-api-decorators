@@ -31,7 +31,7 @@ module.exports = {
           position: 'right',
         },
         {
-          href: '/docs/api/StoryProvider',
+          href: '/docs/api/decorators',
           label: 'API',
           position: 'right',
         },
