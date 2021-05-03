@@ -1,19 +1,28 @@
+import type { NextApiRequest } from 'next';
 import type { ParameterPipe } from '../pipes/ParameterPipe';
+
+type ParamDecorator<T> = (req: NextApiRequest) => T;
 
 export interface MetaParameter {
   index: number;
-  location: 'query' | 'body' | 'header' | 'method' | 'request' | 'response' | 'params';
+  location: 'query' | 'body' | 'header' | 'method' | 'request' | 'response' | 'params' | 'file' | 'files' | 'custom';
   name?: string;
   pipes?: ParameterPipe<any>[];
+  fn?: ParamDecorator<any>;
 }
 
 export const PARAMETER_TOKEN = Symbol('ams:next:parameters');
 
-function addParameter(location: MetaParameter['location'], name?: MetaParameter['name'], pipes?: ParameterPipe<any>[]) {
+function addParameter(
+  location: MetaParameter['location'],
+  name?: MetaParameter['name'],
+  pipes?: ParameterPipe<any>[],
+  fn?: ParamDecorator<any>
+) {
   return function (target: object, propertyKey: string | symbol, parameterIndex: number) {
     const params: Array<MetaParameter> = Reflect.getMetadata(PARAMETER_TOKEN, target.constructor, propertyKey) ?? [];
 
-    params.push({ index: parameterIndex, location, name, pipes });
+    params.push({ index: parameterIndex, location, name, pipes, fn });
 
     Reflect.defineMetadata(PARAMETER_TOKEN, params, target.constructor, propertyKey);
   };
@@ -106,4 +115,16 @@ export function Res(): ParameterDecorator {
 /** Returns the `res` object. */
 export function Response(): ParameterDecorator {
   return Res();
+}
+
+export function UploadedFile(): ParameterDecorator {
+  return addParameter('file');
+}
+
+export function UploadedFiles(): ParameterDecorator {
+  return addParameter('files');
+}
+
+export function createParamDecorator<T = any>(fn: ParamDecorator<T>): () => ParameterDecorator {
+  return () => addParameter('custom', undefined, undefined, fn);
 }
