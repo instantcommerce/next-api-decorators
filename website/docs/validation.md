@@ -7,6 +7,10 @@ slug: /validation
 
 It's best practice to validate the incoming data, therefore you ensure that it complies with the requirements of your application. We provide several built-in pipes to validate incoming values. However, we are only going to focus on the `ValidationPipe` here. You can read about the others in [Pipes](pipes) section.
 
+## `class` vs `interface`
+
+If you're a TypeScript user, in theory you can use interfaces to determine your request body shapes, but since interfaces are removed during compile time, it's not possible to gather information about them. On the other hand, classes are part of the ES6 standard which means they don't get removed during compile time, therefore they exist in the compiled Javascript and we can collect information about them and their properties, which `ValidationPipe` heavily relies on.
+
 ## ValidationPipe
 
 The `ValidationPipe` uses [`class-validator`](https://github.com/typestack/class-validator) to validate and [`class-transformer`](https://github.com/typestack/class-transformer) to transform the incoming request body.
@@ -47,8 +51,8 @@ When your application expects a nested JSON object, you can easily define its sh
 
 ```ts
 import { createHandler, Body, Post, ValidationPipe } from '@storyofams/next-api-decorators';
-import { Type, ValidateNested } from 'class-transformer';
-import { IsNotEmpty, IsNumber, MinLength } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsNotEmpty, IsNumber, MinLength, ValidateNested } from 'class-validator';
 
 class Coordinate {
   @IsNotEmpty()
@@ -84,7 +88,7 @@ export default createHandler(LocationHandler);
 
 ### Configuration
 
-The options you can pass into `ValidationPipe` are inherited from `class-validator` with an additional `transformerOptions` property, which inherits the `class-transformer`'s `plainToClass` options.
+The options you can pass into `ValidationPipe` are inherited from `class-validator` with an additional `transformerOptions` property, which inherits `class-transformer`'s `plainToClass` options.
 
 🔗 [`class-validator` options](https://github.com/typestack/class-validator#passing-options)
 
