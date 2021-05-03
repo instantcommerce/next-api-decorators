@@ -1,7 +1,6 @@
 import 'reflect-metadata';
 import request from 'supertest';
-import { createHandler, Get } from '../lib';
-import { createParamDecorator } from '../lib/decorators';
+import { createParamDecorator, createHandler, Get } from '../lib';
 import { setupServer } from './setupServer';
 
 const HttpVersion = createParamDecorator(req => req.httpVersion);

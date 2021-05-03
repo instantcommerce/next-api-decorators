@@ -7,8 +7,7 @@ import {
   HTTP_CODE_TOKEN,
   HTTP_DOWNLOAD_TOKEN,
   MetaParameter,
-  MiddlewareLayer,
-  MiddlewarePosition,
+  Middleware,
   MIDDLEWARE_TOKEN,
   NextMiddleware,
   PARAMETER_TOKEN
@@ -23,37 +22,30 @@ function isResponseSent(res: ServerResponse): boolean {
 
 async function runMiddlewares(
   this: TypedPropertyDescriptor<any>,
-  layers: [MiddlewareLayer | undefined, MiddlewareLayer | undefined],
-  position: MiddlewarePosition,
+  middlewares: Middleware[],
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> {
-  for (const layer of layers) {
-    if (!layer || !layer[position]) {
-      continue;
+  for (const middleware of middlewares) {
+    if (isResponseSent(res)) {
+      break;
     }
 
-    for (const middlewareFn of layer[position]) {
-      if (position === MiddlewarePosition.BEFORE && isResponseSent(res)) {
-        break;
-      }
-
-      await new Promise<void>((resolve, reject) => {
-        // The middleware uses the callback.
-        const fnResult = (middlewareFn as NextMiddleware).call(this, req, res, err => {
-          if (err) {
-            return reject(handleMulterError(err));
-          }
-
-          resolve();
-        });
-
-        // The middleware is async.
-        if (fnResult instanceof Promise) {
-          fnResult.then(resolve).catch(reject);
+    await new Promise<void>((resolve, reject) => {
+      // The middleware uses the callback.
+      const fnResult = (middleware as NextMiddleware).call(this, req, res, err => {
+        if (err) {
+          return reject(handleMulterError(err));
         }
+
+        resolve();
       });
-    }
+
+      // The middleware is async.
+      if (fnResult instanceof Promise) {
+        fnResult.then(resolve).catch(reject);
+      }
+    });
   }
 }
 
@@ -156,17 +148,16 @@ export function applyHandler(
 ): void {
   const originalHandler = descriptor.value;
   descriptor.value = async function (req: NextApiRequest, res: NextApiResponse) {
-    const classMiddlewares: MiddlewareLayer | undefined = Reflect.getMetadata(MIDDLEWARE_TOKEN, target.constructor);
-    const methodMiddlewares: MiddlewareLayer | undefined = Reflect.getMetadata(
+    const classMiddlewares: Middleware[] | undefined = Reflect.getMetadata(MIDDLEWARE_TOKEN, target.constructor);
+    const methodMiddlewares: Middleware[] | undefined = Reflect.getMetadata(
       MIDDLEWARE_TOKEN,
       target.constructor,
       propertyKey
     );
 
     try {
-      await runMiddlewares.call(this, [classMiddlewares, methodMiddlewares], MiddlewarePosition.BEFORE, req, res);
+      await runMiddlewares.call(this, [...(classMiddlewares ?? []), ...(methodMiddlewares ?? [])], req, res);
       await runMainLayer.call(this, target, propertyKey, originalHandler, req, res);
-      await runMiddlewares.call(this, [methodMiddlewares, classMiddlewares], MiddlewarePosition.AFTER, req, res);
     } catch (err) {
       const statusCode = err instanceof HttpException ? err.statusCode : 500;
       const message = err instanceof HttpException ? err.message : 'An unknown error occurred.';

@@ -18,10 +18,8 @@ export {
   Request,
   Res,
   Response,
-  UseBefore,
-  UseAfter,
+  UseMiddleware,
   createMiddlewareDecorator,
-  MiddlewarePosition,
   UploadedFile,
   UploadedFiles,
   createParamDecorator

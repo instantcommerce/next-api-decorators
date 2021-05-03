@@ -1,33 +1,45 @@
 import 'reflect-metadata';
 import { NextApiResponse } from 'next';
 import request from 'supertest';
-import { createHandler, UseBefore, UseAfter, Get, Res } from '../lib';
+import { createHandler, UseMiddleware, Get, Res, NextFunction } from '../lib';
 import { setupServer } from './setupServer';
 
 const orderedMessages: string[] = [];
 
-@UseAfter((_: any, __: any, next: () => void) => {
-  orderedMessages.push('After: class');
-  next();
-})
-@UseBefore(async (_: any, __: any, next: () => void) => {
-  await new Promise<void>(resolve =>
-    setTimeout(() => {
-      orderedMessages.length = 0;
-      orderedMessages.push('Before: class');
-      resolve();
-    }, 500)
-  );
+@UseMiddleware(
+  async (_: any, __: any, next: () => void) => {
+    await new Promise<void>(resolve =>
+      setTimeout(() => {
+        orderedMessages.length = 0;
+        orderedMessages.push('[1] Before: class');
+        resolve();
+      }, 500)
+    );
+    next();
+  },
+  (_: any, __: any, next: NextFunction) => {
+    orderedMessages.push('[2] Before: class');
+    return next();
+  }
+)
+@UseMiddleware((_: any, __: any, next: NextFunction) => {
+  orderedMessages.push('[3] Before: class');
   next();
 })
 class TestHandler {
   @Get()
-  @UseBefore((_: any, __: any, next: () => void) => {
-    orderedMessages.push('Before: method');
-    next();
-  })
-  @UseAfter((_: any, __: any, next: () => void) => {
-    orderedMessages.push('After: method');
+  @UseMiddleware(
+    (_: any, __: any, next: () => void) => {
+      orderedMessages.push('[4] Before: method');
+      next();
+    },
+    (_: any, __: any, next: NextFunction) => {
+      orderedMessages.push('[5] Before: method');
+      next();
+    }
+  )
+  @UseMiddleware((_: any, __: any, next: NextFunction) => {
+    orderedMessages.push('[6] Before: method');
     next();
   })
   public dashboard(@Res() res: NextApiResponse): NextApiResponse | string {
@@ -48,13 +60,15 @@ describe('E2E - Middleware - Execution order', () => {
   it('Should run the middlewares in correct order.', async () => {
     await request(server).get('/api/test');
 
-    expect(orderedMessages).toHaveLength(5);
+    expect(orderedMessages).toHaveLength(7);
     expect(orderedMessages).toMatchObject([
-      'Before: class',
-      'Before: method',
-      'Handler',
-      'After: method',
-      'After: class'
+      '[1] Before: class',
+      '[2] Before: class',
+      '[3] Before: class',
+      '[4] Before: method',
+      '[5] Before: method',
+      '[6] Before: method',
+      'Handler'
     ]);
   });
 });

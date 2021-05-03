@@ -1,12 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import request from 'supertest';
-import { BadRequestException, createHandler, Get, UseBefore } from '../lib';
-import { NextFunction } from '../lib/decorators';
+import { BadRequestException, createHandler, Get, UseMiddleware, NextFunction } from '../lib';
 import { setupServer } from './setupServer';
 
 const messages: string[] = [];
 
-@UseBefore(
+@UseMiddleware(
   (req: NextApiRequest, res: NextApiResponse, next: NextFunction) => {
     if (req.url?.includes('/will-throw')) {
       throw new Error('An error occurred.');

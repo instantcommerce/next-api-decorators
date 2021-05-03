@@ -4,7 +4,7 @@ import multer from 'multer';
 import { NextApiResponse } from 'next';
 import responseTime from 'response-time';
 import request from 'supertest';
-import { createHandler, Post, UseBefore, UploadedFile, UploadedFiles, UseAfter, Get, Res } from '../lib';
+import { createHandler, Post, UseMiddleware, UploadedFile, UploadedFiles, Get, Res } from '../lib';
 import { setupServer } from './setupServer';
 
 const upload = multer({ storage: multer.memoryStorage() });
@@ -12,14 +12,7 @@ const rateLimiter = rateLimit({ max: 1 });
 
 const messages: string[] = [];
 
-@UseAfter(
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  (_: any, __: any, next: Function) => {
-    messages.push('Request lifecycle ended.');
-    next();
-  }
-)
-@UseBefore(responseTime())
+@UseMiddleware(responseTime())
 class TestHandler {
   @Get('/dashboard')
   public dashboard(@Res() res: NextApiResponse): NextApiResponse | Record<string, any> {
@@ -41,14 +34,14 @@ class TestHandler {
   }
 
   @Post('/single')
-  @UseBefore(rateLimiter)
-  @UseBefore(upload.single('file'))
+  @UseMiddleware(rateLimiter)
+  @UseMiddleware(upload.single('file'))
   public upload(@UploadedFile() file: Express.Multer.File): Record<string, any> {
     return { filename: file.originalname };
   }
 
   @Post('/multiple')
-  @UseBefore(upload.array('files', 2))
+  @UseMiddleware(upload.array('files', 2))
   public multiple(@UploadedFiles() files: Express.Multer.File[]): Record<string, any> {
     return {
       count: files.length,
@@ -57,7 +50,7 @@ class TestHandler {
   }
 
   @Post('/fields')
-  @UseBefore(
+  @UseMiddleware(
     upload.fields([
       { name: 'file1', maxCount: 1 },
       { name: 'file2', maxCount: 1 }
@@ -136,13 +129,12 @@ describe('E2E - Middleware', () => {
       .attach('file2', Buffer.from('hello 2nd world!'), { contentType: 'text/plain', filename: 'hello2.txt' })
       .attach('file2', Buffer.from('hello 2nd world!'), { contentType: 'text/plain', filename: 'hello22.txt' })
       .expect(400)
-      .then(res => {
+      .then(res =>
         expect(res.body).toMatchObject({
           statusCode: 400,
           message: 'Unexpected field: "file1"'
-        });
-        expect(messages).toContain('Request lifecycle ended.');
-      }));
+        })
+      ));
 
   it('Should redirect properly.', async () => {
     const res = await request(server).get('/api/test/dashboard');

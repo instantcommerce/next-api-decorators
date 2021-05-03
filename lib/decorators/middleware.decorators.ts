@@ -7,23 +7,14 @@ export type NextFunction = (err?: Error) => void;
 export type NextMiddleware = (req: NextApiRequest, res: NextApiResponse, next: NextFunction) => void | Promise<void>;
 export type Middleware = NextMiddleware | RequestHandler;
 
-export interface MiddlewareLayer {
-  before: Middleware[];
-  after: Middleware[];
-}
-
-export enum MiddlewarePosition {
-  BEFORE = 'before',
-  AFTER = 'after'
-}
-
-export function createMiddlewareDecorator(position: MiddlewarePosition, middleware: Middleware) {
+export function createMiddlewareDecorator(middleware: Middleware) {
   return () => (target: object, propertyKey?: string | symbol): void => {
-    const definedMiddlewares: MiddlewareLayer = (propertyKey
-      ? Reflect.getMetadata(MIDDLEWARE_TOKEN, target.constructor, propertyKey)
-      : Reflect.getMetadata(MIDDLEWARE_TOKEN, target)) ?? { before: [], after: [] };
+    const definedMiddlewares: Middleware[] =
+      (propertyKey
+        ? Reflect.getMetadata(MIDDLEWARE_TOKEN, target.constructor, propertyKey)
+        : Reflect.getMetadata(MIDDLEWARE_TOKEN, target)) ?? [];
 
-    definedMiddlewares[position]?.push(middleware);
+    definedMiddlewares.unshift(middleware);
 
     if (propertyKey) {
       Reflect.defineMetadata(MIDDLEWARE_TOKEN, definedMiddlewares, target.constructor, propertyKey);
@@ -33,18 +24,8 @@ export function createMiddlewareDecorator(position: MiddlewarePosition, middlewa
   };
 }
 
-export function UseBefore(...middlewares: Middleware[]): ClassDecorator & MethodDecorator {
+export function UseMiddleware(...middlewares: Middleware[]): ClassDecorator & MethodDecorator {
   return function (target: object, propertyKey?: string | symbol) {
-    middlewares.forEach(middleware =>
-      createMiddlewareDecorator(MiddlewarePosition.BEFORE, middleware)()(target, propertyKey as string)
-    );
-  };
-}
-
-export function UseAfter(...middlewares: Middleware[]): ClassDecorator & MethodDecorator {
-  return function (target: object, propertyKey?: string | symbol) {
-    middlewares.forEach(middleware =>
-      createMiddlewareDecorator(MiddlewarePosition.AFTER, middleware)()(target, propertyKey as string)
-    );
+    middlewares.reverse().forEach(middleware => createMiddlewareDecorator(middleware)()(target, propertyKey as string));
   };
 }
