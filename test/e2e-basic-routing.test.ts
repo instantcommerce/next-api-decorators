@@ -41,13 +41,13 @@ describe('E2E - Basic routing', () => {
     }
   });
 
-  it('Should return the articles.', () => request(server).get('/api/articles').expect(200, ARTICLES));
+  it('Should execute "articles".', () => request(server).get('/api/articles').expect(200, ARTICLES));
 
-  it('Should return a single article', () => request(server).get('/api/articles/1').expect(200, ARTICLES[0]));
+  it('Should execute "article".', () => request(server).get('/api/articles/1').expect(200, ARTICLES[0]));
 
-  it('Should return the article comments.', () => request(server).get('/api/articles/comments').expect(200, COMMENTS));
+  it('Should execute "articleComments".', () => request(server).get('/api/articles/comments').expect(200, COMMENTS));
 
-  it('Should return the favorite article comments.', () =>
+  it('Should execute "favoriteArticleComments".', () =>
     request(server).get('/api/articles/comments/favorites').expect(200, [COMMENTS[0]]));
 });
 
@@ -68,15 +68,15 @@ describe('E2E - Basic routing (without "path-to-regexp")', () => {
     }
   });
 
-  it('Should return the articles when "path-to-regexp" is not installed.', () =>
+  it('Should execute "articles" when "path-to-regexp" is not installed.', () =>
     request(server).get('/api/articles').expect(200, ARTICLES));
 
-  it('Should execute "articles" method when "path-to-regexp" is not installed.', () =>
+  it('Should execute "articles" instead of "article" method when "path-to-regexp" is not installed.', () =>
     request(server).get('/api/articles/1').expect(200, ARTICLES));
 
-  it('Should return the article comments when "path-to-regexp" is not installed.', () =>
+  it('Should execute "articleComments" when "path-to-regexp" is not installed.', () =>
     request(server).get('/api/articles/comments').expect(200, COMMENTS));
 
-  it('Should return the favorite article when "path-to-regexp" is not installed.', () =>
+  it('Should execute "favoriteArticleComments" when "path-to-regexp" is not installed.', () =>
     request(server).get('/api/articles/comments/favorites').expect(200, [COMMENTS[0]]));
 });
