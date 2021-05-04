@@ -28,8 +28,8 @@ In some cases, it may be beneficial to create a middleware decorator and use it 
 We provide the `createMiddlewareDecorator` function for you to create a decorator that fulfills your needs.
 
 ```ts
-const JwtAuthGuard =
-  createMiddlewareDecorator((req: NextApiRequest, res: NextApiResponse, next: NextFunction) {
+const JwtAuthGuard = createMiddlewareDecorator(
+  (req: NextApiRequest, res: NextApiResponse, next: NextFunction) => {
     if (!validateJwt(req)) {
       throw new UnauthorizedException();
       // or
@@ -37,7 +37,8 @@ const JwtAuthGuard =
     }
 
     next();
-  });
+  }
+);
 
 class SecureHandler {
   @Get()
