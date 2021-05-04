@@ -3,13 +3,9 @@ module.exports = {
     {
       type: 'category',
       label: 'Introduction',
-      items: ['getting-started', 'basic-comparison'],
+      items: ['getting-started', 'basics'],
     },
-    {
-      type: 'category',
-      label: 'Routing',
-      items: ['routes/basics', 'routes/route-matching']
-    },
+    'route-matching',
     'validation',
     'pipes',
     'middlewares',
@@ -19,7 +15,8 @@ module.exports = {
       label: 'API',
       collapsed: false,
       items: [
-        'api/decorators'
+        'api/decorators',
+        'api/create-param-decorator'
       ],
     },
   ],
