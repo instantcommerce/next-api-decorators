@@ -9,9 +9,19 @@ class Handler {
     return { list: true };
   }
 
-  @Get('/:id')
+  @Get('/:id(\\d+)')
   public details() {
     return { details: true };
+  }
+
+  @Get('/item')
+  public item() {
+    return { item: true };
+  }
+
+  @Get('/item/child-item')
+  public childItem() {
+    return { childItem: true };
   }
 }
 
@@ -21,13 +31,35 @@ describe('findRoute', () => {
 
     expect(keys).toHaveLength(1);
     expect(method).toMatchObject({
-      path: '/:id',
+      path: expect.stringContaining('/:id'),
       propertyKey: 'details',
       verb: 'GET'
     });
   });
 
-  it('Should return the main / route when "path-to-regexp" is not installed.', () => {
+  it('Should return the "item" method', () => {
+    const [keys, , method] = findRoute(Handler, 'GET', '/item');
+
+    expect(keys).toHaveLength(0);
+    expect(method).toMatchObject({
+      path: '/item',
+      propertyKey: 'item',
+      verb: 'GET'
+    });
+  });
+
+  it('Should return the "childItem" method', () => {
+    const [keys, , method] = findRoute(Handler, 'GET', '/item/child-item');
+
+    expect(keys).toHaveLength(0);
+    expect(method).toMatchObject({
+      path: '/item/child-item',
+      propertyKey: 'childItem',
+      verb: 'GET'
+    });
+  });
+
+  it('Should return the main / route instead of "details" method when "path-to-regexp" is not installed.', () => {
     const spy = jest
       .spyOn(lp, 'loadPackage')
       .mockImplementation((name: string) => (name === 'path-to-regexp' ? false : require(name)));
@@ -39,6 +71,40 @@ describe('findRoute', () => {
     expect(method).toMatchObject({
       path: '/',
       propertyKey: 'list',
+      verb: 'GET'
+    });
+  });
+
+  it('Should return the "item" method when "path-to-regexp" is not installed.', () => {
+    const spy = jest
+      .spyOn(lp, 'loadPackage')
+      .mockImplementation((name: string) => (name === 'path-to-regexp' ? false : require(name)));
+
+    const [keys, , method] = findRoute(Handler, 'GET', '/item');
+
+    spy.mockRestore();
+
+    expect(keys).toHaveLength(0);
+    expect(method).toMatchObject({
+      path: '/item',
+      propertyKey: 'item',
+      verb: 'GET'
+    });
+  });
+
+  it('Should return the "child-item" method when "path-to-regexp" is not installed.', () => {
+    const spy = jest
+      .spyOn(lp, 'loadPackage')
+      .mockImplementation((name: string) => (name === 'path-to-regexp' ? false : require(name)));
+
+    const [keys, , method] = findRoute(Handler, 'GET', '/item/child-item');
+
+    spy.mockRestore();
+
+    expect(keys).toHaveLength(0);
+    expect(method).toMatchObject({
+      path: '/item/child-item',
+      propertyKey: 'childItem',
       verb: 'GET'
     });
   });
