@@ -21,7 +21,11 @@
 
 ---
 
-This package contains a collection of decorators to create typed Next.js API routes, with easy request validation and transformation.
+<div align="center">
+  A collection of decorators to create typed Next.js API routes, with easy request validation and transformation.
+
+  [View docs](https://next-api-decorators.vercel.app/)
+</div>
 
 ---
 
@@ -53,7 +57,7 @@ class User {
 export default createHandler(User);
 ```
 
-💡 Read more about validation [here](#data-transfer-object)
+💡 Read more about validation [here](https://next-api-decorators.vercel.app/docs/validation)
 
 <details>
   <summary>The code above without next-api-decorators</summary>
@@ -102,35 +106,7 @@ The structure is heavily inspired by NestJS, which is an amazing framework for a
 
 ## Installation
 
-Add the package to your project:
-
-```bash
-$ yarn add @storyofams/next-api-decorators
-```
-
-Since decorators are still in proposal state, you need to add the following plugins to your `devDependencies` in order to use them:
-
-```bash
-$ yarn add -D @babel/core babel-plugin-transform-typescript-metadata @babel/plugin-proposal-decorators babel-plugin-parameter-decorator
-```
-
-Make sure to add the following lines to the start of the `plugins` section in your babel configuration file:
-```json5
-{
-  "plugins": [
-    "babel-plugin-transform-typescript-metadata",
-    ["@babel/plugin-proposal-decorators", { "legacy": true }],
-    "babel-plugin-parameter-decorator",
-    // ... other plugins
-  ]
-}
-```
-
-Your `tsconfig.json` needs the following flags:
-
-```json5
-"experimentalDecorators": true
-```
+Visit https://next-api-decorators.vercel.app/docs/#installation to get started.
 
 ## Documentation
 
