@@ -1,6 +1,6 @@
 <div align="center">
   <a aria-label="Story of AMS logo" href="https://storyofams.com/" target="_blank" align="center">
-    <img src="https://storyofams.com/public/story-of-ams-logo-small@3x.png" alt="Story of AMS" width="120">
+    <img src="https://avatars.githubusercontent.com/u/19343504" alt="Story of AMS" width="100">
   </a>
   <h1 align="center">@storyofams/next-api-decorators</h1>
   <p align="center">
@@ -21,7 +21,11 @@
 
 ---
 
-This package contains a collection of decorators to create typed Next.js API routes, with easy request validation and transformation.
+<div align="center">
+  A collection of decorators to create typed Next.js API routes, with easy request validation and transformation.
+
+  [View docs](https://next-api-decorators.vercel.app/)
+</div>
 
 ---
 
@@ -53,7 +57,7 @@ class User {
 export default createHandler(User);
 ```
 
-💡 Read more about validation [here](#data-transfer-object)
+💡 Read more about validation [here](https://next-api-decorators.vercel.app/docs/validation)
 
 <details>
   <summary>The code above without next-api-decorators</summary>
@@ -102,115 +106,23 @@ The structure is heavily inspired by NestJS, which is an amazing framework for a
 
 ## Installation
 
-Add the package to your project:
+Visit https://next-api-decorators.vercel.app/docs/#installation to get started.
 
-```bash
-$ yarn add @storyofams/next-api-decorators
-```
+## Documentation
 
-Since decorators are still in proposal state, you need to add the following plugins to your `devDependencies` in order to use them:
+Refer to our docs for usage topics:
 
-```bash
-$ yarn add -D @babel/core babel-plugin-transform-typescript-metadata @babel/plugin-proposal-decorators babel-plugin-parameter-decorator
-```
+[Validation](https://next-api-decorators.vercel.app/docs/validation)
 
-Make sure to add the following lines to the start of the `plugins` section in your babel configuration file:
-```json5
-{
-  "plugins": [
-    "babel-plugin-transform-typescript-metadata",
-    ["@babel/plugin-proposal-decorators", { "legacy": true }],
-    "babel-plugin-parameter-decorator",
-    // ... other plugins
-  ]
-}
-```
+[Route matching](https://next-api-decorators.vercel.app/docs/routing/route-matching)
 
-Your `tsconfig.json` needs the following flags:
+[Using middlewares](https://next-api-decorators.vercel.app/docs/middlewares)
 
-```json5
-"experimentalDecorators": true
-```
+[Custom middlewares](https://next-api-decorators.vercel.app/docs/middlewares#custom-middleware-decorators)
 
+[Pipes](https://next-api-decorators.vercel.app/docs/pipes)
 
-## Usage
-
-### Data transfer object
-
-If you want to use `class-validator` to validate request body values and get them as DTOs, add it to your project by running:
-
-```bash
-$ yarn add class-validator class-transformer
-```
-
-Then you can define your DTOs like:
-
-```ts
-// pages/api/user.ts
-import { createHandler, Post, HttpCode, Body, ValidationPipe } from '@storyofams/next-api-decorators';
-import { IsNotEmpty, IsEmail } from 'class-validator';
-
-class CreateUserDto {
-  @IsNotEmpty()
-  public name: string;
-
-  @IsEmail()
-  public email: string;
-}
-
-class User {
-  // POST /api/user
-  @Post()
-  @HttpCode(201)
-  public createUser(@Body(ValidationPipe) body: CreateUserDto) {
-    return User.create(body);
-  }
-}
-
-export default createHandler(User);
-```
-
-### Route matching
-
-It is possible to use Express.js style route matching within your handlers. To enable the functionality add the `path-to-regexp` package to your project by running:
-```bash
-$ yarn add path-to-regexp
-```
-
-Then you can define your routes in your handler like:
-```ts
-// pages/api/user/[[...params]].ts
-class User {
-  @Get()
-  public list() {
-    return DB.findAllUsers();
-  }
-
-  @Get('/:id')
-  public details(@Param('id') id: string) {
-    return DB.findUserById(id);
-  }
-
-  @Get('/:userId/comments')
-  public comments(@Param('userId') userId: string) {
-    return DB.findUserComments(userId);
-  }
-
-  @Get('/:userId/comments/:commentId')
-  public commentDetails(@Param('userId') userId: string, @Param('commentId') commentId: string) {
-    return DB.findUserCommentById(userId, commentId);
-  }
-}
-```
-
-📖 File names are important for route matching. Read more at https://nextjs.org/docs/routing/dynamic-routes#optional-catch-all-routes
-
-💡 It is possible to use pipes with `@Param`. e.g: `@Param('userId', ParseNumberPipe) userId: number`
-
-⚠️ When `path-to-regexp` package is not installed and route matching is being used in handlers, the request will be handled by the method defined with the `/` path (keep in mind that using `@Get()` and `@Get('/')` do exactly the same thing).
-
-For the above example, a request to `api/user/123` will be handled by the `list` method if `path-to-regexp` package is not installed in your project.
-
+[Exceptions](https://next-api-decorators.vercel.app/docs/exceptions)
 
 ## Available decorators
 
@@ -219,6 +131,7 @@ For the above example, a request to `api/user/123` will be handled by the `list`
 |                                           | Description                                                    |
 | ----------------------------------------- | -------------------------------------------------------------- |
 | `@SetHeader(name: string, value: string)` | Sets a header name/value into all routes defined in the class. |
+| `@UseMiddleware(...middlewares: Middleware[])` | Registers one or multiple middlewares for all the routes defined in the class. |
 
 ### Method decorators
 
@@ -230,6 +143,7 @@ For the above example, a request to `api/user/123` will be handled by the `list`
 | `@Delete(path?: string)`                  | Marks the method as `DELETE` handler.             |
 | `@SetHeader(name: string, value: string)` | Sets a header name/value into the route response. |
 | `@HttpCode(code: number)`                 | Sets the http code in the route response.         |
+| `@UseMiddleware(...middlewares: Middleware[])` | Registers one or multiple middlewares for the handler. |
 
 ### Parameter decorators
 
@@ -243,76 +157,3 @@ For the above example, a request to `api/user/123` will be handled by the `list`
 | `@Param(key: string)`   | Gets a route parameter value by key.        |
 
 \* Note that when you inject `@Res()` in a method handler you become responsible for managing the response. When doing so, you must issue some kind of response by making a call on the response object (e.g., `res.json(...)` or `res.send(...)`), or the HTTP server will hang.
-
-## Built-in pipes
-
-Pipes are being used to validate and transform incoming values. The pipes can be added to the `@Query`, `@Body` and `@Param` decorators like:
-
-```ts
-@Query('isActive', ParseBooleanPipe) isActive: boolean
-```
-
-⚠️ Beware that pipes throw when the value is `undefined` or invalid. Read about optional values [here](#handling-optional-values-in-conjunction-with-pipes)
-
-|                     | Description                                                                                                                         |
-| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `ParseBooleanPipe`  | Validates and transforms `Boolean` strings. Allows `'true'` and `'false'`.                                                          |
-| `ParseDatePipe`     | Validates and transforms `Date` strings. Allows valid `ISO 8601` formatted date strings.                                            |
-| `ParseNumberPipe`   | Validates and transforms `Number` strings. Uses `parseFloat` under the hood.                                                        |
-| `ValidateEnumPipe`* | Validates string based on `Enum` values. Allows strings that are present in the enum.                                               |
-| `ValidationPipe`    | Validates the request body via `class-validator`. Works only when `class-validator` and `class-transformer` packages are installed. |
-| `DefaultValuePipe`* | Assigns a default value to the parameter when its value is `null` or `undefined`.                                                   |
-
-\* Note that bare function usage has no effect for `ValidateEnumPipe` and `DefaultValuePipe`. In other words, always use  `@Query('step', DefaultValuePipe(1))` rather than `@Query('step', DefaultValuePipe)`.
-
-
-### Handling optional values in conjunction with pipes
-
-Pipes are non-nullable by default. However, the following pipes allow options to be passed as an argument and have the `nullable` property in their options:
-
-- `ParseBooleanPipe`
-- `ParseDatePipe`
-- `ParseNumberPipe`
-- `ValidateEnumPipe`
-
-Usage:
-```ts
-@Query('isActive', ParseBooleanPipe({ nullable: true })) isActive?: boolean
-```
-
-## Exceptions
-
-The following common exceptions are provided by this package.
-
-|                                | Status code | Default message           |
-| ------------------------------ | ----------- | ------------------------- |
-| `BadRequestException`          | `400`       | `'Bad Request'`           |
-| `UnauthorizedException`        | `401`       | `'Unauthorized'`          |
-| `NotFoundException`            | `404`       | `'Not Found'`             |
-| `UnprocessableEntityException` | `422`       | `'Unprocessable Entity'`  |
-| `InternalServerErrorException` | `500`       | `'Internal Server Error'` |
-
-### Custom exceptions
-
-Any exception class that extends the base `HttpException` will be handled by the built-in error handler.
-
-```ts
-import { HttpException } from '@storyofams/next-api-decorators';
-
-export class ForbiddenException extends HttpException {
-  public constructor(message?: string = 'Forbidden') {
-    super(403, message);
-  }
-}
-```
-
-Then later in the app, we can use it in our route handler:
-
-```ts
-class Events {
-  @Get()
-  public events() {
-    throw new ForbiddenException();
-  }
-}
-```

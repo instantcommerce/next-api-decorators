@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import 'reflect-metadata';
-import { Delete, Get, HTTP_METHOD_TOKEN, HttpVerb, Post, Put } from './httpMethod.decorators';
+import * as lp from '../internals/loadPackage';
+import { Get, Post, Put, Delete, HttpVerb, HTTP_METHOD_TOKEN } from './httpMethod.decorators';
 
 class Test {
   @Get()
@@ -34,6 +35,17 @@ class TestPath {
 }
 
 describe('HttpMethod decorator', () => {
+  const ENV = process.env;
+
+  beforeEach(() => {
+    jest.resetModules();
+    process.env = { ...ENV };
+  });
+
+  afterAll(() => {
+    process.env = ENV;
+  });
+
   it('Should create all the verbs.', () => {
     const meta = Reflect.getMetadata(HTTP_METHOD_TOKEN, Test);
     expect(meta).toBeInstanceOf(Array);
@@ -58,6 +70,24 @@ describe('HttpMethod decorator', () => {
         { path: '/explore/:id/comments', verb: HttpVerb.GET, propertyKey: 'exploreDetailsComments' },
         { path: '/explore/:id/comments/:commentId', verb: HttpVerb.GET, propertyKey: 'exploreDetailsCommentDetails' }
       ])
+    );
+  });
+
+  it('Should check if "path-to-regexp" is installed if a regex is used.', async () => {
+    process.env.NODE_ENV = 'development';
+
+    const spy = jest.spyOn(lp, 'loadPackage');
+
+    Get('/:id');
+    Put('/:id');
+    Post('/:id');
+    Delete('/:id');
+
+    ['@Get', '@Put', '@Post', '@Delete'].forEach(decoratorName =>
+      expect(spy).toHaveBeenCalledWith('path-to-regexp', {
+        context: decoratorName,
+        docsUrl: expect.stringContaining('https://')
+      })
     );
   });
 });

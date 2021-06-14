@@ -3,6 +3,25 @@ title: Getting Started
 slug: /
 ---
 
+## Basic usage
+
+```ts
+import { createHandler, Get } from '@storyofams/next-api-decorators';
+
+class UserHandler {
+  @Get()
+  public async users() {
+    return await DB.findUsers();
+  }
+}
+
+export default createHandler(UserHandler);
+```
+
+:::note
+The example above is very simple. You can find more in depth usage [here](introduction/basics).
+:::
+
 ## Motivation
 
 Building serverless functions declaratively with classes and decorators makes dealing with Next.js API routes easier and brings order and sanity to your `/pages/api` codebase.

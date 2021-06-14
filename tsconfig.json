@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
-    "target": "ES6",
+    "target": "ES2019",
+    "module": "CommonJS",
     "lib": ["ES2019"],
     "esModuleInterop": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "declaration": true,
-    "emitDeclarationOnly": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "isolatedModules": true,
@@ -14,6 +14,6 @@
     "skipLibCheck": true,
     "moduleResolution": "node"
   },
-  "exclude": ["node_modules", "example"],
+  "exclude": ["node_modules", "examples"],
   "include": ["lib/**/*.ts", "test/**/*.ts", "global.d.ts"]
 }

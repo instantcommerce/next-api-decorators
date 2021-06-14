@@ -19,5 +19,9 @@ export function getParameterValue(
       return req;
     case 'response':
       return res;
+    case 'file':
+      return req.file;
+    case 'files':
+      return req.files;
   }
 }
