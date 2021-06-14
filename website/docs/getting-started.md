@@ -59,6 +59,6 @@ Your tsconfig.json needs the following flag in the `compilerOptions` section:
 "experimentalDecorators": true
 ```
 
-## Example
+## Examples
 
-Please see [the example](https://github.com/storyofams/next-api-decorators/tree/master/example) to see how this library can be used.
+Please see [the examples](https://github.com/storyofams/next-api-decorators/tree/master/examples) to see how this library can be used.
