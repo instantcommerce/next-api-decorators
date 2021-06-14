@@ -26,7 +26,7 @@
     "commit": "./node_modules/cz-customizable/standalone.js",
     "test": "jest",
     "test:watch": "jest --watch",
-    "lint": "eslint \"**/*.+(js|jsx|ts|tsx|mdx)\"",
+    "lint": "eslint \"!(examples|website)/**/*.+(js|jsx|ts|tsx|mdx)\"",
     "ts-coverage": "typescript-coverage-report",
     "semantic-release": "semantic-release",
     "prepublishOnly": "pinst --disable && npm run build && npm run verify",
@@ -101,8 +101,8 @@
     }
   },
   "lint-staged": {
-    "**/*.+(js|jsx|ts|tsx|mdx)": [
-      "eslint --fix"
+    "!(examples|website)/**/*.+(js|jsx|ts|tsx|mdx)": [
+      "eslint  --fix"
     ]
   }
 }

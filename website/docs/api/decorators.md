@@ -6,6 +6,7 @@ slug: /api/decorators
 ## Class decorators
 
 * `@SetHeader(key: string, value: string)` Sets a header key valur pair for all routes in a handler class.
+* `@UseMiddleware(...middlewares: Middleware[])` Registers one or multiple middlewares for all the routes defined in the class.
 * `@Catch(handler: (error: unknown, req: NextApiRequest, res: NextApiResponse) => void | Promise<void>, exceptionType?: ClassConstructor)` Creates an exception handler for a handler class.
 
 ## Method decorators
@@ -13,6 +14,7 @@ slug: /api/decorators
 * `@SetHeader(key: string, value: string)` Sets a header key value pair for the route that the decorator is applied to.
 * `@HttpCode(code: number)` Defines the HTTP response code of the route.
 * `@Download()` Marks the method as a download handler for the client, so the returned file can be downloaded by the browser.
+* `@UseMiddleware(...middlewares: Middleware[])` Registers one or multiple middlewares for the handler.
 * `@Catch(handler: (error: unknown, req: NextApiRequest, res: NextApiResponse) => void | Promise<void>, exceptionType?: ClassConstructor)` Creates an exception handler for a route in a handler class.
 
 ### HTTP method decorators

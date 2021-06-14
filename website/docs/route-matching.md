@@ -3,7 +3,7 @@ title: Route matching
 slug: /routing/route-matching
 ---
 
-It is possible to use Express.js style route matching within your handlers. To enable the functionality add the `path-to-regexp` package to your project by running:
+It is possible to use Express.js style route matching with parameters within your handlers. To enable this functionality add the `path-to-regexp` package to your project by running:
 
 ```bash npm2yarn
 npm install path-to-regexp
@@ -13,7 +13,9 @@ Then you can define your routes in your handler like:
 
 ```ts
 // pages/api/user/[[...params]].ts
-class User {
+import { createHandler, Get, Param } from '@storyofams/next-api-decorators';
+
+class UserHandler {
   @Get()
   public list() {
     return DB.findAllUsers();
@@ -34,6 +36,8 @@ class User {
     return DB.findUserCommentById(userId, commentId);
   }
 }
+
+export default createHandler(UserHandler);
 ```
 
 :::info
