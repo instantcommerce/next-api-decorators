@@ -118,7 +118,7 @@ Refer to our docs for usage topics:
 
 [Using middlewares](https://next-api-decorators.vercel.app/docs/middlewares)
 
-[Custimg middlewares](https://next-api-decorators.vercel.app/docs/middlewares#custom-middleware-decorators)
+[Custom middlewares](https://next-api-decorators.vercel.app/docs/middlewares#custom-middleware-decorators)
 
 [Pipes](https://next-api-decorators.vercel.app/docs/pipes)
 
