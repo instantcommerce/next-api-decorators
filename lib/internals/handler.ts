@@ -12,7 +12,7 @@ import {
   NextMiddleware,
   PARAMETER_TOKEN
 } from '../decorators';
-import { HttpException } from '../exceptions';
+import { handleException } from './exceptionHandler';
 import { getParameterValue } from './getParameterValue';
 import { handleMulterError } from './multerError.util';
 
@@ -145,8 +145,9 @@ export function applyHandler(
   target: object,
   propertyKey: string | symbol,
   descriptor: TypedPropertyDescriptor<any>
-): void {
+): TypedPropertyDescriptor<any> {
   const originalHandler = descriptor.value;
+
   descriptor.value = async function (req: NextApiRequest, res: NextApiResponse) {
     const classMiddlewares: Middleware[] | undefined = Reflect.getMetadata(MIDDLEWARE_TOKEN, target.constructor);
     const methodMiddlewares: Middleware[] | undefined = Reflect.getMetadata(
@@ -159,16 +160,9 @@ export function applyHandler(
       await runMiddlewares.call(this, [...(classMiddlewares ?? []), ...(methodMiddlewares ?? [])], req, res);
       await runMainLayer.call(this, target, propertyKey, originalHandler, req, res);
     } catch (err) {
-      const statusCode = err instanceof HttpException ? err.statusCode : 500;
-      const message = err instanceof HttpException ? err.message : 'An unknown error occurred.';
-      const errors = err instanceof HttpException && err.errors?.length ? err.errors : [message];
-
-      res.status(statusCode).json({
-        statusCode,
-        message,
-        errors,
-        stack: 'stack' in err && process.env.NODE_ENV === 'development' ? err.stack : undefined
-      });
+      await handleException(target, propertyKey, err, req, res);
     }
   };
+
+  return descriptor;
 }
