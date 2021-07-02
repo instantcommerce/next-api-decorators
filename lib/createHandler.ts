@@ -1,6 +1,6 @@
 import type { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { findRoute } from './internals/findRoute';
-import { getFileDirectory } from './internals/getFileDirectory';
+import { getCallerInfo } from './internals/getCallerInfo';
 import { getParams } from './internals/getParams';
 import { notFound } from './internals/notFound';
 import { parseRequestUrl } from './internals/parseRequestUrl';
@@ -26,14 +26,14 @@ import { parseRequestUrl } from './internals/parseRequestUrl';
  */
 export function createHandler(cls: new (...args: any[]) => any): NextApiHandler {
   const instance = new cls();
-  const directory = getFileDirectory();
+  const [directory, fileName] = getCallerInfo();
 
   return (req: NextApiRequest, res: NextApiResponse) => {
     if (!req.url || !req.method) {
       return notFound(req, res);
     }
 
-    const path = parseRequestUrl(req.url, directory);
+    const path = parseRequestUrl(req, directory, fileName);
     const [keys, match, method] = findRoute(cls, req.method, path);
     if (!method) {
       return notFound(req, res);
