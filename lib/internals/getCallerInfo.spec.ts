@@ -1,4 +1,4 @@
-import { getFileDirectory } from './getFileDirectory';
+import { getCallerInfo } from './getCallerInfo';
 
 it('getFileDirectory', () => {
   const spyError = jest.spyOn(global, 'Error');
@@ -11,8 +11,8 @@ it('getFileDirectory', () => {
     return err;
   });
 
-  const dir = getFileDirectory();
-  expect(dir).toStrictEqual('/example-path/.next/server/pages/api/tags/[id]');
+  const dir = getCallerInfo();
+  expect(dir).toStrictEqual(['/example-path/.next/server/pages/api/tags/[id]', '[[...params]].ts']);
 
   spyError.mockRestore();
 });

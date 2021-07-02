@@ -1,7 +1,8 @@
-import { dirname } from 'path';
+import { basename, dirname } from 'path';
 
-export function getFileDirectory(): string | undefined {
+export function getCallerInfo(): [directoryPath: string | undefined, fileName: string | undefined] {
   let directoryPath: string | undefined;
+  let fileName: string | undefined;
 
   const parenthesisRegExp = /\(([^)]+)\)/;
   const pathInError = new Error().stack
@@ -13,9 +14,11 @@ export function getFileDirectory(): string | undefined {
     const [, pathWithRowCol] = parenthesisRegExp.exec(pathInError) ?? [];
     /* istanbul ignore else */
     if (pathWithRowCol) {
-      directoryPath = dirname(pathWithRowCol.replace(/:(\d+):(\d+)$/, ''));
+      const fullPath = pathWithRowCol.replace(/:(\d+):(\d+)$/, '');
+      directoryPath = dirname(fullPath);
+      fileName = basename(fullPath);
     }
   }
 
-  return directoryPath;
+  return [directoryPath, fileName];
 }
