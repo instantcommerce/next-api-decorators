@@ -40,7 +40,7 @@ describe('parseRequestUrl', () => {
       parseRequestUrl({ url: '/api/articles' }, '/next-api-decorators/.next/server/pages/api', 'articles.js')
     ).toStrictEqual('/'));
 
-  it('Should return "/" when the file name starts with "[..."', () =>
+  it('Should return "/" when the file name starts with a single bracket and three dots', () =>
     expect(
       parseRequestUrl(
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -48,6 +48,39 @@ describe('parseRequestUrl', () => {
         { url: '/api/article/1', query: { id: '1' } },
         '/next-api-decorators/.next/server/pages/api/article',
         '[...id].js'
+      )
+    ).toStrictEqual('/'));
+
+  it('Should return "/" when the file name starts with a double bracket and three dots', () =>
+    expect(
+      parseRequestUrl(
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        { url: '/api/article/1', query: { id: '1' } },
+        '/next-api-decorators/.next/server/pages/api/article',
+        '[[...id]].js'
+      )
+    ).toStrictEqual('/1'));
+
+  it('Should return "/" when the file name starts with a double bracket and three dots in a nested folder', () =>
+    expect(
+      parseRequestUrl(
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        { url: '/api/article/comments/1', query: { id: '1' } },
+        '/next-api-decorators/.next/server/pages/api/article/comments',
+        '[[...id]].js'
+      )
+    ).toStrictEqual('/1'));
+
+  it('Should return "/" when the file name starts with a single bracket', () =>
+    expect(
+      parseRequestUrl(
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        { url: '/api/article/1', query: { id: '1' } },
+        '/next-api-decorators/.next/server/pages/api/article',
+        '[id].js'
       )
     ).toStrictEqual('/'));
 });

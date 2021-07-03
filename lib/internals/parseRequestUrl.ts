@@ -6,22 +6,18 @@ export function parseRequestUrl(req: NextApiRequest, directoryPath?: string, fil
   const url = req.url!;
   let path = url.split('?')[0].split('/').slice(3).join('/');
 
-  // In order for the main method (e.g: `@Get()`) to be matched,
-  // the path for catch all routes should be set to "/"
-  if (fileName?.startsWith('[...')) {
-    const qsKey = basename(fileName.replace('[...', '').replace(']', ''), extname(fileName));
-    /* istanbul ignore else */
-    if (req.query[qsKey]) {
-      path = '';
-    }
+  // The path for parametererized routes should be set to "/", in order for the methods to be matched.
+  if (fileName?.startsWith('[')) {
+    path = '/';
   }
 
   if (directoryPath && !fileName?.startsWith('[...')) {
     const pathRegExp = new RegExp(
       // "pages/api/articles/index.ts" is compiled into "pages/api/articles.js" which has to be appended to the directory path for parsing
-      (directoryPath + (fileName && !fileName.startsWith('[') ? basename(fileName, extname(fileName)) : ''))
-        .split('/.next/server/pages')[1]
-        .replace(/(\[\w+\])/, '(\\w+)')
+      directoryPath.split('/.next/server/pages')[1].replace(/(\[\w+\])/, '(\\w+)') +
+        (fileName && !fileName.startsWith('[...') && !fileName.startsWith('[[...')
+          ? `/${basename(fileName, extname(fileName))}`
+          : '')
     );
     /* istanbul ignore else */
     if (pathRegExp.test(url)) {
