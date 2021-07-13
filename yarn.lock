@@ -1247,9 +1247,9 @@
   integrity sha512-ewFXqrQHlFsgc09MK5jP5iR7vumV/BYayNC6PgJO2LPe8vrnNFyjQjSppfEngITi0qvfKtzFvgKymGheFM9UOA==
 
 "@types/response-time@^2.3.4":
-  version "2.3.4"
-  resolved "https://registry.yarnpkg.com/@types/response-time/-/response-time-2.3.4.tgz#7e28c52505ada4207b4e6156afa004c3ea0ab16a"
-  integrity sha512-+MuxeMIzmXDy/CTw/mPlZO1SWBKbpz9QFo4+KYNXc2iiY0OGH3Ny9DPKT4eSamyDbhWJPfvMMPB4Kh7DapwJhA==
+  version "2.3.5"
+  resolved "https://registry.yarnpkg.com/@types/response-time/-/response-time-2.3.5.tgz#e85ff348caefd0f8d3e8902424c681a59aafc31e"
+  integrity sha512-4ANzp+I3K7sztFFAGPALWBvSl4ayaDSKzI2Bok+WNz+en2eB2Pvk6VCjR47PBXBWOkEg2r4uWpZOlXA5DNINOQ==
   dependencies:
     "@types/express" "*"
     "@types/node" "*"
