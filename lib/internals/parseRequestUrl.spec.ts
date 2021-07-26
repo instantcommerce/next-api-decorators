@@ -83,4 +83,18 @@ describe('parseRequestUrl', () => {
         '[id].js'
       )
     ).toStrictEqual('/'));
+
+  it('Should return the sub-path with url params without query parameters.', () =>
+    expect(
+      parseRequestUrl(
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        {
+          url: '/api/article/comments/the-user/another-user?limit=10',
+          query: { user: 'the-user', destination: 'another-user' }
+        },
+        '/next-api-decorators/.next/server/pages/api/article/comments',
+        '[[...params]].js'
+      )
+    ).toStrictEqual('/the-user/another-user'));
 });
