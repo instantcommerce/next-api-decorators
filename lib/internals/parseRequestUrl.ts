@@ -3,8 +3,8 @@ import type { NextApiRequest } from 'next';
 
 export function parseRequestUrl(req: NextApiRequest, directoryPath?: string, fileName?: string): string {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const url = req.url!;
-  let path = url.split('?')[0].split('/').slice(3).join('/');
+  const url = req.url!.split('?')[0];
+  let path = url.split('/').slice(3).join('/');
 
   // The path for parametererized routes should be set to "/", in order for the methods to be matched.
   if (fileName?.startsWith('[')) {
