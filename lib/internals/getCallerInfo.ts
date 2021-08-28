@@ -4,8 +4,9 @@ export function getCallerInfo(): [directoryPath: string | undefined, fileName: s
   let directoryPath: string | undefined;
   let fileName: string | undefined;
 
+  const errorStack = new Error().stack?.replace(process.platform === 'win32' ? /\\/g : '/', '/');
   const parenthesisRegExp = /\(([^)]+)\)/;
-  const pathInError = new Error().stack
+  const pathInError = errorStack
     ?.split('at ')
     .find(line => parenthesisRegExp.test(line) && line.includes('/.next/server/pages/api'));
 
