@@ -76,6 +76,7 @@
     "path-to-regexp": "^6.2.0",
     "pinst": "^2.1.6",
     "prettier": "2.2.1",
+    "react": "^17.0.2",
     "response-time": "^2.3.2",
     "semantic-release": "17.4.4",
     "supertest": "^6.1.3",
