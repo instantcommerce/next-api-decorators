@@ -72,7 +72,7 @@
     "jest": "26.6.3",
     "lint-staged": "11.1.2",
     "multer": "^1.4.2",
-    "next": "11.1.1",
+    "next": "11.1.2",
     "path-to-regexp": "^6.2.0",
     "pinst": "^2.1.6",
     "prettier": "2.2.1",
