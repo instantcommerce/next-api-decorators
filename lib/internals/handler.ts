@@ -137,7 +137,7 @@ async function runMainLayer(
       res.send(returnValue.contents);
     }
   } else {
-    res.json(returnValue ?? null);
+    res.send(returnValue ?? null);
   }
 }
 
