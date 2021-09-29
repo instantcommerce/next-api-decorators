@@ -18,7 +18,7 @@ export interface ValidationPipeOptions extends ValidatorOptions {
  */
 export function ValidationPipe(options?: ValidationPipeOptions): ParameterPipe<any> {
   if (process.env.NODE_ENV === 'development') {
-    ['class-validator', 'class-transformer'].forEach(requiredPackage =>
+    (['class-validator', 'class-transformer'] as const).forEach(requiredPackage =>
       loadPackage(requiredPackage, {
         context: 'ValidationPipe',
         docsUrl: 'https://github.com/storyofams/next-api-decorators#data-transfer-object'
