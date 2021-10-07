@@ -141,6 +141,7 @@ Refer to our docs for usage topics:
 | `@Post(path?: string)`                    | Marks the method as `POST` handler.               |
 | `@Put(path?: string)`                     | Marks the method as `PUT` handler.                |
 | `@Delete(path?: string)`                  | Marks the method as `DELETE` handler.             |
+| `@Patch(path?: string)`                   | Marks the method as `PATCH` handler.             |
 | `@SetHeader(name: string, value: string)` | Sets a header name/value into the route response. |
 | `@HttpCode(code: number)`                 | Sets the http code in the route response.         |
 | `@UseMiddleware(...middlewares: Middleware[])` | Registers one or multiple middlewares for the handler. |
