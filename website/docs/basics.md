@@ -12,6 +12,7 @@ We provide the following built-in decorators for you to handle the HTTP method t
 * `@Post()`
 * `@Put()`
 * `@Delete()`
+* `@Patch()`
 
 Since Next.js expects the default export to be a request handler, we provide the `createHandler` function which accepts a class as the only parameter.
 
