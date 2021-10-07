@@ -23,7 +23,8 @@ export {
   UploadedFile,
   UploadedFiles,
   createParamDecorator,
-  Catch
+  Catch,
+  Patch
 } from './decorators';
 export type { Middleware, NextFunction, NextMiddleware } from './decorators';
 export * from './exceptions';

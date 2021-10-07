@@ -21,10 +21,11 @@ slug: /api/decorators
 
 The following decorators mark your class method as a handler for the corresponding HTTP verb.
 
-* `Get(path?: string)`
-* `Post(path?: string)`
-* `Put(path?: string)`
-* `Delete(path?: string)`
+* `@Get(path?: string)`
+* `@Post(path?: string)`
+* `@Put(path?: string)`
+* `@Delete(path?: string)`
+* `@Patch(path?: string)`
 
 ## Parameter decorators
 
