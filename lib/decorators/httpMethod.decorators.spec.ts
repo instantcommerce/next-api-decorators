@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import 'reflect-metadata';
 import * as lp from '../internals/loadPackage';
-import { Get, Post, Put, Delete, HttpVerb, HTTP_METHOD_TOKEN } from './httpMethod.decorators';
+import { Get, Post, Put, Delete, HttpVerb, HTTP_METHOD_TOKEN, Patch } from './httpMethod.decorators';
 
 class Test {
   @Get()
@@ -15,6 +15,9 @@ class Test {
 
   @Delete()
   public delete(): void {}
+
+  @Patch()
+  public patch(): void {}
 }
 
 class TestPath {
@@ -54,7 +57,8 @@ describe('HttpMethod decorator', () => {
         { path: '/', verb: HttpVerb.GET, propertyKey: 'get' },
         { path: '/', verb: HttpVerb.POST, propertyKey: 'post' },
         { path: '/', verb: HttpVerb.PUT, propertyKey: 'put' },
-        { path: '/', verb: HttpVerb.DELETE, propertyKey: 'delete' }
+        { path: '/', verb: HttpVerb.DELETE, propertyKey: 'delete' },
+        { path: '/', verb: HttpVerb.PATCH, propertyKey: 'patch' }
       ])
     );
   });
@@ -82,8 +86,9 @@ describe('HttpMethod decorator', () => {
     Put('/:id');
     Post('/:id');
     Delete('/:id');
+    Patch('/:id');
 
-    ['@Get', '@Put', '@Post', '@Delete'].forEach(decoratorName =>
+    ['@Get', '@Put', '@Post', '@Delete', '@Patch'].forEach(decoratorName =>
       expect(spy).toHaveBeenCalledWith('path-to-regexp', {
         context: decoratorName,
         docsUrl: expect.stringContaining('https://')

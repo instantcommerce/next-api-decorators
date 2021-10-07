@@ -22,7 +22,8 @@ import {
   ParseDatePipe,
   ParseNumberPipe,
   NotFoundException,
-  DefaultValuePipe
+  DefaultValuePipe,
+  Patch
 } from '../lib';
 import { setupServer } from './setupServer';
 
@@ -136,6 +137,11 @@ class TestHandler {
     const { id } = query;
 
     return res.status(200).json({ contentType, id, receivedBody: body, test: this.testField });
+  }
+
+  @Patch()
+  public patch(@Body() body: any) {
+    return body;
   }
 }
 
@@ -317,9 +323,17 @@ describe('E2E', () => {
         })
       ));
 
-  it('Should return a express style 404 for an undefined HTTP verb.', () =>
+  it('Should successfully `PATCH` the request with a 200 status code.', () =>
     request(server)
       .patch('/')
+      .set('Content-Type', 'application/json')
+      .send({ patching: true })
+      .expect(200)
+      .then(res => expect(res).toMatchObject({ headers: { 'x-api': 'true' }, body: { patching: true } })));
+
+  it('Should return a express style 404 for an undefined HTTP verb.', () =>
+    request(server)
+      .options('/')
       .set('Content-Type', 'application/json')
       .expect(404)
       .then(res =>
