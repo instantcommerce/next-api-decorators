@@ -8,7 +8,17 @@ import { createHandler, Post, UseMiddleware, UploadedFile, UploadedFiles, Get, R
 import { setupServer } from './setupServer';
 
 const upload = multer({ storage: multer.memoryStorage() });
-const rateLimiter = rateLimit({ max: 1 });
+const rateLimiter = rateLimit({
+  max: 1,
+  keyGenerator(req) {
+    const ip = req.socket ? req.socket.remoteAddress : req.connection.remoteAddress;
+    if (!ip) {
+      throw new Error('Cannot determine the client IP address.');
+    }
+
+    return ip;
+  }
+});
 
 const messages: string[] = [];
 
