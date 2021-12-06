@@ -78,6 +78,8 @@ describe('HttpMethod decorator', () => {
   });
 
   it('Should check if "path-to-regexp" is installed if a regex is used.', async () => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
     process.env.NODE_ENV = 'development';
 
     const spy = jest.spyOn(lp, 'loadPackage');
