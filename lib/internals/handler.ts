@@ -160,6 +160,10 @@ export function applyHandler(
       await runMiddlewares.call(this, [...(classMiddlewares ?? []), ...(methodMiddlewares ?? [])], req, res);
       await runMainLayer.call(this, target, propertyKey, originalHandler, req, res);
     } catch (err) {
+      if (isResponseSent(res)) {
+        return;
+      }
+
       await handleException(target, propertyKey, err, req, res);
     }
   };
