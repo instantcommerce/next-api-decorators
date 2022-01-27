@@ -11,7 +11,8 @@ import {
   ParseNumberPipe,
   BadRequestException,
   Catch,
-  NextFunction
+  NextFunction,
+  ForbiddenException
 } from '../lib';
 import { setupServer } from './setupServer';
 
@@ -34,6 +35,15 @@ async function notFoundExceptionHandler(
   res.status(200).json({ notFound: true, message: exception.message });
 }
 
+async function forbiddenExceptionHandler(
+  exception: ForbiddenException,
+  _req: NextApiRequest,
+  res: NextApiResponse
+): Promise<void> {
+  await new Promise<void>(resolve => setTimeout(resolve, 250));
+  res.status(200).json({ error: true, errorMessage: exception.message });
+}
+
 function generalExceptionHandler(error: Error, _req: NextApiRequest, res: NextApiResponse): void {
   res.status(500).json({ error: true, name: error.name, msg: error.message });
 }
@@ -44,6 +54,7 @@ function exceptionHandlerToAvoid(_error: Error, _req: NextApiRequest, res: NextA
 
 @Catch(unauthorizedExceptionHandler, UnauthorizedException)
 @Catch(notFoundExceptionHandler, NotFoundException)
+@Catch(forbiddenExceptionHandler, ForbiddenException)
 class ArticleHandler {
   @Get()
   @UseMiddleware((req: NextApiRequest, _res: NextApiResponse, next: NextFunction) => {
@@ -59,6 +70,8 @@ class ArticleHandler {
         throw new NotFoundException();
       case 'another-forbidden-keyword':
         throw new BadRequestException();
+      case 'a-third-forbidden-keyword':
+        throw new ForbiddenException();
     }
 
     return ARTICLES.filter(({ title }) => (search ? title.includes(search.toLowerCase()) : true));
@@ -100,10 +113,20 @@ describe('E2E - Catch decorator', () => {
       errorMessage: 'Unauthorized'
     }));
 
+  it('Should handle the error via the "forbiddenExceptionHandler".', () =>
+    request(server).get('/api/article?search=a-third-forbidden-keyword').expect(200, {
+      error: true,
+      errorMessage: 'Forbidden'
+    }));
+
   it('Should handle the error via the built-in error handler.', () =>
     request(server)
       .get('/api/article?search=another-forbidden-keyword')
-      .expect(400, { statusCode: 400, message: 'Bad Request', errors: ['Bad Request'] }));
+      .expect(400, {
+        statusCode: 400,
+        message: 'Bad Request',
+        errors: ['Bad Request']
+      }));
 
   it('Should return the article.', () => request(server).get('/api/article/details?id=1').expect(200, ARTICLES[0]));
 
@@ -115,7 +138,9 @@ describe('E2E - Catch decorator', () => {
     }));
 
   it('Should handle the pipe errors via the "generalExceptionHandler".', () =>
-    request(server)
-      .get('/api/article/details')
-      .expect(500, { error: true, name: 'BadRequestException', msg: 'id is a required parameter.' }));
+    request(server).get('/api/article/details').expect(500, {
+      error: true,
+      name: 'BadRequestException',
+      msg: 'id is a required parameter.'
+    }));
 });
