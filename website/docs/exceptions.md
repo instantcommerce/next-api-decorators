@@ -9,7 +9,9 @@ The following common exceptions are provided by this package.
 | ------------------------------ | ----------- | ------------------------- |
 | `BadRequestException`          | `400`       | `'Bad Request'`           |
 | `UnauthorizedException`        | `401`       | `'Unauthorized'`          |
+| `ForbiddenException`           | `403`       | `'Forbidden'`             |
 | `NotFoundException`            | `404`       | `'Not Found'`             |
+| `ConflictException`            | `409`       | `'Conflict'`              |
 | `PayloadTooLargeException`     | `413`       | `'Payload Too Large'`     |
 | `UnprocessableEntityException` | `422`       | `'Unprocessable Entity'`  |
 | `InternalServerErrorException` | `500`       | `'Internal Server Error'` |
@@ -21,9 +23,9 @@ Any exception class that extends the base `HttpException` will be handled by the
 ```ts
 import { HttpException } from '@storyofams/next-api-decorators';
 
-export class ForbiddenException extends HttpException {
-  public constructor(message?: string = 'Forbidden') {
-    super(403, message);
+export class MethodNotAllowedException extends HttpException {
+  public constructor(message?: string = 'Method Not Allowed') {
+    super(405, message);
   }
 }
 ```
@@ -34,7 +36,7 @@ Then later in the app, we can use it in our route handler:
 class Events {
   @Get()
   public events() {
-    throw new ForbiddenException();
+    throw new MethodNotAllowedException();
   }
 }
 ```
@@ -45,21 +47,21 @@ Even though we already have a built-in exception handler, you may need more cont
 
 `@Catch` decorator can either be used for the whole handler (on the class) or can be used for a specific route (on a class method).
 
-Let's create an exception handler for the `ForbiddenException` we created above.
+Let's create an exception handler for the `MethodNotAllowedException` we created above.
 
 ```ts
 import { Catch } from '@storyofams/next-api-decorators';
 
-function forbiddenExceptionHandler(
-  error: ForbiddenException,
+function methodNotAllowedExceptionHandler(
+  error: MethodNotAllowedException,
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   Sentry.captureException(err);
-  res.status(403).end();
+  res.status(405).end();
 }
 
-@Catch(forbiddenExceptionHandler, ForbiddenException)
+@Catch(methodNotAllowedExceptionHandler, MethodNotAllowedException)
 class Events {
   @Get()
   public events() {

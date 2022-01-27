@@ -5,7 +5,9 @@ import {
   NotFoundException,
   UnauthorizedException,
   UnprocessableEntityException,
-  PayloadTooLargeException
+  PayloadTooLargeException,
+  ConflictException,
+  ForbiddenException
 } from '.';
 
 describe('HttpException', () => {
@@ -35,7 +37,9 @@ describe('HttpException', () => {
     it('Should set the default status codes', () => {
       expect(new BadRequestException()).toHaveProperty('statusCode', 400);
       expect(new InternalServerErrorException()).toHaveProperty('statusCode', 500);
+      expect(new ForbiddenException()).toHaveProperty('statusCode', 403);
       expect(new NotFoundException()).toHaveProperty('statusCode', 404);
+      expect(new ConflictException()).toHaveProperty('statusCode', 409);
       expect(new UnauthorizedException()).toHaveProperty('statusCode', 401);
       expect(new UnprocessableEntityException()).toHaveProperty('statusCode', 422);
       expect(new PayloadTooLargeException()).toHaveProperty('statusCode', 413);
@@ -44,7 +48,9 @@ describe('HttpException', () => {
     it('Should set the default error messages', () => {
       expect(new BadRequestException()).toHaveProperty('message', 'Bad Request');
       expect(new InternalServerErrorException()).toHaveProperty('message', 'Internal Server Error');
+      expect(new ForbiddenException()).toHaveProperty('message', 'Forbidden');
       expect(new NotFoundException()).toHaveProperty('message', 'Not Found');
+      expect(new ConflictException()).toHaveProperty('message', 'Conflict');
       expect(new UnauthorizedException()).toHaveProperty('message', 'Unauthorized');
       expect(new UnprocessableEntityException()).toHaveProperty('message', 'Unprocessable Entity');
       expect(new PayloadTooLargeException()).toHaveProperty('message', 'Payload Too Large');
