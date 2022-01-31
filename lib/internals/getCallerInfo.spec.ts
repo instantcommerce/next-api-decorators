@@ -7,13 +7,13 @@ describe('getCallerInfo', () => {
     Object.defineProperty(process, 'platform', { value: PLATFORM });
   });
 
-  function mockError(path: string) {
+  function mockError(path: string, stack?: string) {
     const spyError = jest.spyOn(global, 'Error');
 
     spyError.mockImplementation(() => ({
       name: 'Error',
       message: 'An error occurred.',
-      stack: `Object at (${path}:1:1)`
+      stack: stack ?? `Object at (${path}:1:1)`
     }));
 
     return spyError;
@@ -35,6 +35,19 @@ describe('getCallerInfo', () => {
 
     const dir = getCallerInfo();
     expect(dir).toStrictEqual(['/win-example-path/.next/server/pages/api/tags/[id]', '[[...params]].ts']);
+
+    spyError.mockRestore();
+  });
+
+  it('Should get the last paranthesis of the line.', () => {
+    const spyError = mockError(
+      '/unix-path/.next/server/pages/api/[[...user]].js',
+      'Object.(api)/./pages/api/user/[[...user]].ts (/unix-example-path/.next/server/pages/api/user/[[...user]].js:32:1)'
+    );
+    Object.defineProperty(process, 'platform', { value: 'darwin' });
+
+    const dir = getCallerInfo();
+    expect(dir).toStrictEqual(['/unix-example-path/.next/server/pages/api/user', '[[...user]].js']);
 
     spyError.mockRestore();
   });
