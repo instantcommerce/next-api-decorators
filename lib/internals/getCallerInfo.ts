@@ -4,10 +4,14 @@ export function getCallerInfo(): [directoryPath: string | undefined, fileName: s
   let directoryPath: string | undefined;
   let fileName: string | undefined;
 
-  const errorStack = new Error().stack?.replace(process.platform === 'win32' ? /\\/g : '/', '/');
+  let errorStack = new Error().stack;
+  if (errorStack && process.platform === 'win32') {
+    errorStack = errorStack.replace(/\\/g, '/');
+  }
+
   const parenthesisRegExp = /\(([^)]+)\)$/;
   const pathInError = errorStack
-    ?.split('at ')
+    ?.split('\n')
     .find(line => parenthesisRegExp.test(line) && line.includes('/.next/server/pages/api'));
 
   /* istanbul ignore else */
