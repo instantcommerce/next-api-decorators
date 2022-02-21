@@ -3,7 +3,7 @@ import http from 'http';
 import { parse } from 'url';
 import express from 'express';
 import type { NextApiHandler } from 'next';
-import { apiResolver } from 'next/dist/server/api-utils';
+import { apiResolver } from 'next/dist/server/api-utils/node';
 
 export function setupServer(handler: NextApiHandler, disableBodyParser?: boolean): http.Server | express.Express {
   if (process.env.TEST_SERVER === 'nextjs') {
