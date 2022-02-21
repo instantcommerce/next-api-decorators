@@ -74,7 +74,7 @@
     "multer": "^1.4.2",
     "next": "12.1.0",
     "path-to-regexp": "^6.2.0",
-    "pinst": "^2.1.6",
+    "pinst": "^3.0.0",
     "prettier": "2.2.1",
     "react": "^17.0.2",
     "response-time": "^2.3.2",
