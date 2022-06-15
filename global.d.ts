@@ -1,8 +1,11 @@
 import 'next';
+import { RequestMeta, NEXT_REQUEST_META } from 'next/dist/server/request-meta';
 
 declare module 'next' {
   interface NextApiRequest {
     params: Record<string, any>;
+
+    [NEXT_REQUEST_META]?: RequestMeta;
 
     /** `Multer.File` object populated by `single()` middleware. */
     file: Express.Multer.File;
