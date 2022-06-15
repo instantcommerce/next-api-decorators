@@ -46,8 +46,8 @@
     "next": ">=10.0.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "17.0.0",
-    "@commitlint/config-conventional": "16.2.4",
+    "@commitlint/cli": "17.0.2",
+    "@commitlint/config-conventional": "17.0.2",
     "@semantic-release/changelog": "6.0.1",
     "@storyofams/eslint-config-ams": "1.1.2",
     "@types/express": "^4.17.11",
@@ -70,7 +70,7 @@
     "express-rate-limit": "^6.0.4",
     "husky": "8.0.1",
     "jest": "26.6.3",
-    "lint-staged": "12.4.1",
+    "lint-staged": "13.0.1",
     "multer": "^1.4.2",
     "next": "12.1.6",
     "path-to-regexp": "^6.2.0",
