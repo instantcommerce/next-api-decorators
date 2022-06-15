@@ -37,6 +37,17 @@ If you are not familiar with Next.js or NestJS and want some more information (o
 npm install @storyofams/next-api-decorators
 ```
 
+### Using with SWC
+
+Your tsconfig.json needs the following flags in the `compilerOptions` section:
+
+```json5
+"experimentalDecorators": true,
+"emitDecoratorMetadata": true
+```
+
+### Using withBabel
+
 Since decorators are still in proposal state, you need to add the following plugins to your `devDependencies` in order to use them:
 
 ```bash npm2yarn
