@@ -1,3 +1,5 @@
+import { IsEmail, IsNotEmpty } from 'class-validator';
+import { BadRequestException } from '../../exceptions';
 import * as lp from '../../internals/loadPackage';
 import { ValidationPipe } from './validation.pipe';
 
@@ -37,4 +39,30 @@ describe('ValidationPipe', () => {
       firstName: 'Uncle',
       lastName: 'Bob'
     }));
+
+  it('Should throw for an "undefined" body.', () => {
+    class DTO {
+      @IsNotEmpty()
+      @IsEmail()
+      public email!: string;
+
+      @IsNotEmpty()
+      public name!: string;
+    }
+
+    expect(ValidationPipe()(undefined, { metaType: DTO })).rejects.toThrowError(BadRequestException);
+  });
+
+  it('Should throw for an empty string body.', () => {
+    class DTO {
+      @IsNotEmpty()
+      @IsEmail()
+      public email!: string;
+
+      @IsNotEmpty()
+      public name!: string;
+    }
+
+    expect(ValidationPipe()('', { metaType: DTO })).rejects.toThrowError(BadRequestException);
+  });
 });
