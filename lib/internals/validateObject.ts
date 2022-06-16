@@ -6,7 +6,7 @@ import { loadPackage } from './loadPackage';
 
 export async function validateObject(
   cls: ClassConstructor<any>,
-  value: Record<string, string>,
+  value: string | Record<string, any>,
   validatorOptions?: ValidationPipeOptions
 ): Promise<any> {
   const classValidator = loadPackage('class-validator');
@@ -17,6 +17,10 @@ export async function validateObject(
   const classTransformer = loadPackage('class-transformer');
   if (!classTransformer) {
     return value;
+  }
+
+  if (value == null || (typeof value === 'string' && !value.trim().length)) {
+    value = {};
   }
 
   const bodyValue = classTransformer.plainToClass(cls, value, {
