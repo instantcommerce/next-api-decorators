@@ -65,4 +65,19 @@ describe('ValidationPipe', () => {
 
     expect(ValidationPipe()('', { metaType: DTO })).rejects.toThrowError(BadRequestException);
   });
+
+  it('Should throw for a stringified JSON body.', () => {
+    class DTO {
+      @IsNotEmpty()
+      @IsEmail()
+      public email!: string;
+
+      @IsNotEmpty()
+      public name!: string;
+    }
+
+    expect(
+      ValidationPipe()('{"email":"hello@storyofams.com","name":"Hello world"}', { metaType: DTO })
+    ).rejects.toThrowError(BadRequestException);
+  });
 });
