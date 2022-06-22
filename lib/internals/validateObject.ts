@@ -19,7 +19,7 @@ export async function validateObject(
     return value;
   }
 
-  if (value == null || (typeof value === 'string' && !value.trim().length)) {
+  if (value == null || typeof value !== 'object') {
     value = {};
   }
 
