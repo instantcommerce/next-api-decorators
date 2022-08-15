@@ -1,20 +1,20 @@
 <div align="center">
-  <a aria-label="Story of AMS logo" href="https://storyofams.com/" target="_blank" align="center">
-    <img src="https://avatars.githubusercontent.com/u/19343504" alt="Story of AMS" width="100">
+  <a aria-label="Instant Commerce logo" href="https://instantcommerce.io/" target="_blank" align="center">
+    <img src="https://avatars.githubusercontent.com/u/93975473" alt="Instant Commerce" width="100">
   </a>
-  <h1 align="center">@storyofams/next-api-decorators</h1>
+  <h1 align="center">@instantcommerce/next-api-decorators</h1>
   <p align="center">
-    <a aria-label="releases" href="https://GitHub.com/storyofams/next-api-decorators/releases/" target="_blank">
-      <img src="https://github.com/storyofams/next-api-decorators/workflows/Release/badge.svg">
+    <a aria-label="releases" href="https://GitHub.com/instantcommerce/next-api-decorators/releases/" target="_blank">
+      <img src="https://github.com/instantcommerce/next-api-decorators/workflows/Release/badge.svg">
     </a>
-    <a aria-label="npm" href="https://www.npmjs.com/package/@storyofams/next-api-decorators" target="_blank">
-      <img src="https://img.shields.io/npm/v/@storyofams/next-api-decorators">
+    <a aria-label="npm" href="https://www.npmjs.com/package/@instantcommerce/next-api-decorators" target="_blank">
+      <img src="https://img.shields.io/npm/v/@instantcommerce/next-api-decorators">
     </a>
-    <a aria-label="codecov" href="https://codecov.io/gh/storyofams/next-api-decorators" target="_blank">
-      <img src="https://codecov.io/gh/storyofams/next-api-decorators/branch/master/graph/badge.svg?token=ZV0YT4HU5H">
+    <a aria-label="codecov" href="https://codecov.io/gh/instantcommerce/next-api-decorators" target="_blank">
+      <img src="https://codecov.io/gh/instantcommerce/next-api-decorators/branch/master/graph/badge.svg?token=ZV0YT4HU5H">
     </a>
-    <a aria-label="stars" href="https://github.com/storyofams/next-api-decorators/stargazers/" target="_blank">
-      <img src="https://img.shields.io/github/stars/storyofams/next-api-decorators.svg?style=social&label=Star&maxAge=86400" />
+    <a aria-label="stars" href="https://github.com/instantcommerce/next-api-decorators/stargazers/" target="_blank">
+      <img src="https://img.shields.io/github/stars/instantcommerce/next-api-decorators.svg?style=social&label=Star&maxAge=86400" />
     </a>
   </p>
 </div>

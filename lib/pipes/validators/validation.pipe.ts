@@ -14,14 +14,14 @@ export interface ValidationPipeOptions extends ValidatorOptions {
  *
  * @remarks
  * `class-validator` and `class-transformer` need to be installed.
- * More information: [data transfer object](https://github.com/storyofams/next-api-decorators#data-transfer-object)
+ * More information: [data transfer object](https://next-api-decorators.vercel.app/docs/validation)
  */
 export function ValidationPipe(options?: ValidationPipeOptions): ParameterPipe<any> {
   if (process.env.NODE_ENV === 'development') {
     (['class-validator', 'class-transformer'] as const).forEach(requiredPackage =>
       loadPackage(requiredPackage, {
         context: 'ValidationPipe',
-        docsUrl: 'https://github.com/storyofams/next-api-decorators#data-transfer-object'
+        docsUrl: 'https://next-api-decorators.vercel.app/docs/validation'
       })
     );
   }

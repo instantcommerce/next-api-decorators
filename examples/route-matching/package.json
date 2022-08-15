@@ -9,7 +9,7 @@
     "type-check": "tsc"
   },
   "dependencies": {
-    "@storyofams/next-api-decorators": "../../dist",
+    "@instantcommerce/next-api-decorators": "../../dist",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
     "next": "^12.1.0",

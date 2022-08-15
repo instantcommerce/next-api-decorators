@@ -1,20 +1,20 @@
 {
-  "name": "@storyofams/next-api-decorators",
+  "name": "@instantcommerce/next-api-decorators",
   "description": "Collection of decorators to create typed Next.js API routes, with easy request validation and transformation.",
   "version": "0.0.0-development",
   "author": {
-    "name": "Story of AMS",
-    "url": "https://storyofams.com",
-    "email": "dev@storyofams.com"
+    "name": "Instant Commerce",
+    "url": "https://instantcommerce.io",
+    "email": "dev@instantcommerce.io"
   },
   "main": "dist/index.js",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/storyofams/next-api-decorators"
+    "url": "https://github.com/instantcommerce/next-api-decorators"
   },
   "bugs": {
-    "url": "https://github.com/storyofams/next-api-decorators/issues"
+    "url": "https://github.com/instantcommerce/next-api-decorators/issues"
   },
   "keywords": [
     "typescript",

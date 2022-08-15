@@ -1,6 +1,6 @@
 {
 	"info": {
-		"name": "@storyofams/next-api-decorators/example",
+		"name": "@instantcommerce/next-api-decorators/example",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [

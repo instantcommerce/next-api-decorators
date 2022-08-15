@@ -4,7 +4,7 @@ import {
   Download,
   DownloadFileResult,
   createHandler,
-} from '@storyofams/next-api-decorators';
+} from '@instantcommerce/next-api-decorators';
 
 class Postman {
   private pathToFile = `${process.cwd()}/postman.json`;

@@ -11,7 +11,7 @@ As a basic example, let's get the browser information of the client via a decora
 
 First we create our decorator:
 ```ts
-import { createParamDecorator } from '@storyofams/next-api-decorators';
+import { createParamDecorator } from '@instantcommerce/next-api-decorators';
 
 export const UserAgent = createParamDecorator<string | undefined>(
   req => req.headers['user-agent']

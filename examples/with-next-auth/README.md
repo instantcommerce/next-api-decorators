@@ -1,6 +1,6 @@
-# `@storyofams/next-api-decorators` example with `next-auth`
+# `@instantcommerce/next-api-decorators` example with `next-auth`
 
-Example usage of the `@storyofams/next-api-decorators` with `next-auth`. This example only covers logging in via Github, for more providers please refer to `next-auth` documentation [here](https://next-auth.js.org/configuration/providers).
+Example usage of the `@instantcommerce/next-api-decorators` with `next-auth`. This example only covers logging in via Github, for more providers please refer to `next-auth` documentation [here](https://next-auth.js.org/configuration/providers).
 
 ## Getting started
 
