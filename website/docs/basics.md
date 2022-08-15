@@ -17,7 +17,7 @@ We provide the following built-in decorators for you to handle the HTTP method t
 Since Next.js expects the default export to be a request handler, we provide the `createHandler` function which accepts a class as the only parameter.
 
 ```ts
-import { createHandler, Get } from '@instantcommerce/next-api-decorators';
+import { createHandler, Get } from 'next-api-decorators';
 
 class UserHandler {
   @Get()
@@ -38,7 +38,7 @@ There is the `@Request()` decorator as well, which is an alias to the `@Req()` d
 :::
 
 ```ts
-import { createHandler, Get, Req } from '@instantcommerce/next-api-decorators';
+import { createHandler, Get, Req } from 'next-api-decorators';
 import { NextApiRequest } from 'next';
 
 class UserHandler {
@@ -58,7 +58,7 @@ In most cases, you won't need to access the request object since we provide deco
 By default, the response status code is `200`, unless the returned value is `null` or `undefined`. In that case, the response status code is `204`. However, it's possible to change it per route.
 
 ```ts
-import { createHandler, Post, HttpCode } from '@instantcommerce/next-api-decorators';
+import { createHandler, Post, HttpCode } from 'next-api-decorators';
 
 class UserHandler {
   @Post()
@@ -76,7 +76,7 @@ export default createHandler(UserHandler);
 Depending on your use case, you may either want to read a header value, set a custom one or do both. We provide `@Header` parameter decorator to read, and `@SetHeader` to set.
 
 ```ts
-import { createHandler, Get, Header, SetHeader } from '@instantcommerce/next-api-decorators';
+import { createHandler, Get, Header, SetHeader } from 'next-api-decorators';
 
 class UserHandler {
   @Get()
@@ -94,7 +94,7 @@ export default createHandler(UserHandler);
 In the [example](#status-code) above we created a `POST` request handler but we didn't expect the client to send any payload. Let's say, now we do want some data from the client, so first we need to determine the shape of the payload we expect. In order to do that we will use classes, which are part of the ES6 standard.
 
 ```ts
-import { createHandler, Post, Body } from '@instantcommerce/next-api-decorators';
+import { createHandler, Post, Body } from 'next-api-decorators';
 
 class CreateUserInput {
   email: string;
@@ -132,7 +132,7 @@ Usage in a handler:
 ```ts
 // src/pages/api/files/[[...params]].ts
 import { createReadStream } from 'fs';
-import { createHandler, Download, Get } from '@instantcommerce/next-api-decorators';
+import { createHandler, Download, Get } from 'next-api-decorators';
 
 class FileHandler {
   @Get('/whitepaper')
@@ -192,7 +192,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 However, with `next-api-decorators` you can write the same handler in a declarative manner:
 
 ```ts
-import { createHandler, Body, Get, HttpCode, NotFoundException, Post, Query } from '@instantcommerce/next-api-decorators';
+import { createHandler, Body, Get, HttpCode, NotFoundException, Post, Query } from 'next-api-decorators';
 
 class User {
   // GET /api/user

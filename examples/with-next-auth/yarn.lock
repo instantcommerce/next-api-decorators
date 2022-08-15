@@ -320,7 +320,7 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@instantcommerce/next-api-decorators@../../dist":
+"next-api-decorators@../../dist":
   version "0.0.0"
 
 "@mdx-js/util@1.6.22":

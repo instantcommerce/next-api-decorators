@@ -6,7 +6,7 @@ slug: /
 ## Basic usage
 
 ```ts
-import { createHandler, Get } from '@instantcommerce/next-api-decorators';
+import { createHandler, Get } from 'next-api-decorators';
 
 class UserHandler {
   @Get()
@@ -34,7 +34,7 @@ If you are not familiar with Next.js or NestJS and want some more information (o
 ## Installation
 
 ```bash npm2yarn
-npm install @instantcommerce/next-api-decorators
+npm install next-api-decorators
 ```
 
 ### Using with SWC

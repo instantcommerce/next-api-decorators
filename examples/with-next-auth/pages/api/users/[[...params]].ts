@@ -8,7 +8,7 @@ import {
   NextFunction,
   UnauthorizedException,
   SetHeader,
-} from '@instantcommerce/next-api-decorators';
+} from 'next-api-decorators';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getToken } from 'next-auth/jwt';
 import { User, sampleUserData } from '../../../data';

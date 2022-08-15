@@ -21,7 +21,7 @@ The following common exceptions are provided by this package.
 Any exception class that extends the base `HttpException` will be handled by the built-in error handler.
 
 ```ts
-import { HttpException } from '@instantcommerce/next-api-decorators';
+import { HttpException } from 'next-api-decorators';
 
 export class MethodNotAllowedException extends HttpException {
   public constructor(message?: string = 'Method Not Allowed') {
@@ -50,7 +50,7 @@ Even though we already have a built-in exception handler, you may need more cont
 Let's create an exception handler for the `MethodNotAllowedException` we created above.
 
 ```ts
-import { Catch } from '@instantcommerce/next-api-decorators';
+import { Catch } from 'next-api-decorators';
 
 function methodNotAllowedExceptionHandler(
   error: MethodNotAllowedException,
@@ -75,7 +75,7 @@ class Events {
 In case you need the exception handler to catch all errors, you can pass only the handler function to the `@Catch` decorator:
 
 ```ts
-import { Catch } from '@instantcommerce/next-api-decorators';
+import { Catch } from 'next-api-decorators';
 
 function exceptionHandler(
   error: unknown,

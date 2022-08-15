@@ -50,5 +50,5 @@ class SecureHandler {
 ```
 
 :::info
-`NextFunction` type is exported from `@instantcommerce/next-api-decorators`.
+`NextFunction` type is exported from `next-api-decorators`.
 :::

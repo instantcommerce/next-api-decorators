@@ -12,7 +12,7 @@ import {
   ParseNumberPipe,
   DefaultValuePipe,
   NotFoundException,
-} from '@instantcommerce/next-api-decorators';
+} from 'next-api-decorators';
 import { User, sampleUserData } from '../../../data';
 import { CreateUserInput, UpdateUserInput } from '../../../dto';
 

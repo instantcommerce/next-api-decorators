@@ -13,7 +13,7 @@ Then you can define your routes in your handler like:
 
 ```ts
 // pages/api/user/[[...params]].ts
-import { createHandler, Get, Param } from '@instantcommerce/next-api-decorators';
+import { createHandler, Get, Param } from 'next-api-decorators';
 
 class UserHandler {
   @Get()
