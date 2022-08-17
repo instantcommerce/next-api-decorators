@@ -1,7 +1,7 @@
 import type { RequestHandler } from 'express';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-export const MIDDLEWARE_TOKEN = Symbol('ams:next:middlewares');
+export const MIDDLEWARE_TOKEN = Symbol('instant:next:middlewares');
 
 export type NextFunction = (err?: Error) => void;
 export type NextMiddleware = (req: NextApiRequest, res: NextApiResponse, next: NextFunction) => void | Promise<void>;

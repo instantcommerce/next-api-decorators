@@ -24,7 +24,7 @@ interface HandlerOptions {
   extraMethods?: HttpMethod[];
 }
 
-export const HTTP_METHOD_TOKEN = Symbol('ams:next:httpMethod');
+export const HTTP_METHOD_TOKEN = Symbol('instant:next:httpMethod');
 
 function applyHttpMethod({ method, path, options }: { method: HttpMethod; path: string; options?: HandlerOptions }) {
   if (process.env.NODE_ENV === 'development' && path !== '/') {
