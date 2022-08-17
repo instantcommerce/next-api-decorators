@@ -3,18 +3,18 @@ module.exports = {
   title: 'Next.js API Decorators',
   tagline:
     'Collection of decorators to create typed Next.js API routes, with easy request validation and transformation.',
-  url: 'https://storyblok-toolkit.vercel.com',
+  url: 'https://next-api-decorators.vercel.com',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
-  organizationName: 'storyofams',
+  organizationName: 'instantcommerce',
   projectName: 'next-api-decorators',
   themeConfig: {
     navbar: {
       title: 'Next.js API Decorators',
       logo: {
-        alt: 'Story of AMS Logo',
+        alt: 'Instant Commerce Logo',
         src: 'img/logo.png',
         srcDark: 'img/logo-dark.png',
       },
@@ -36,7 +36,7 @@ module.exports = {
           position: 'right',
         },
         {
-          href: 'https://github.com/storyofams/next-api-decorators',
+          href: 'https://github.com/instantcommerce/next-api-decorators',
           label: 'GitHub',
           position: 'right',
         },
@@ -59,12 +59,16 @@ module.exports = {
           items: [
             {
               label: 'GitHub',
-              href: 'https://github.com/storyofams/next-api-decorators',
+              href: 'https://github.com/instantcommerce/next-api-decorators',
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} <a href="https://storyofams.com" target="_blank" rel="noopener">Story of AMS<a/>.`,
+      copyright: `Copyright © ${new Date().getFullYear()} <a href="https://instantcommerce.io" target="_blank" rel="noopener">Instant Commerce<a/>.`,
+    },
+    colorMode: {
+      defaultMode: 'dark',
+      respectPrefersColorScheme: true,
     },
   },
   presets: [
@@ -74,7 +78,7 @@ module.exports = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           editUrl:
-            'https://github.com/storyofams/next-api-decorators/edit/master/website/',
+            'https://github.com/instantcommerce/next-api-decorators/edit/master/website/',
           remarkPlugins: [
             [require('@docusaurus/remark-plugin-npm2yarn'), { sync: true }],
           ],

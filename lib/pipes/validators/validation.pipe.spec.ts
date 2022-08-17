@@ -77,7 +77,7 @@ describe('ValidationPipe', () => {
     }
 
     expect(
-      ValidationPipe()('{"email":"hello@storyofams.com","name":"Hello world"}', { metaType: DTO })
+      ValidationPipe()('{"email":"hello@instantcommerce.io","name":"Hello world"}', { metaType: DTO })
     ).rejects.toThrowError(BadRequestException);
   });
 });
