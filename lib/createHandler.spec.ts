@@ -3,7 +3,7 @@ import 'reflect-metadata';
 import express from 'express';
 import request from 'supertest';
 import { createHandler } from './createHandler';
-import { HttpVerb, HTTP_METHOD_TOKEN } from './decorators';
+import { HttpMethod, HTTP_METHOD_TOKEN } from './decorators';
 
 describe('createHandler', () => {
   it('Should return not found response when "req.url" is undefined', () => {
@@ -22,7 +22,11 @@ describe('createHandler', () => {
 
   it('Should return not found when method is not found.', done => {
     class TestHandler {}
-    Reflect.defineMetadata(HTTP_METHOD_TOKEN, [{ path: '/', verb: HttpVerb.GET, propertyKey: 'index' }], TestHandler);
+    Reflect.defineMetadata(
+      HTTP_METHOD_TOKEN,
+      [{ path: '/', method: HttpMethod.GET, propertyKey: 'index' }],
+      TestHandler
+    );
 
     const server = express();
     server.use(express.json());

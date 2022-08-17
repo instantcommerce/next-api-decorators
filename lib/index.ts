@@ -8,7 +8,7 @@ export {
   Get,
   Header,
   HttpCode,
-  HttpVerb,
+  HttpMethod,
   Post,
   Put,
   Query,
