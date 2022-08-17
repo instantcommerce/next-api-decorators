@@ -4,7 +4,7 @@
   </a>
   <h1 align="center">next-api-decorators</h1>
   <p align="center">
-    <a aria-label="releases" href="https://GitHub.com/instantcommerce/next-api-decorators/releases/" target="_blank">
+    <a aria-label="releases" href="https://github.com/instantcommerce/next-api-decorators/releases/" target="_blank">
       <img src="https://github.com/instantcommerce/next-api-decorators/workflows/Release/badge.svg">
     </a>
     <a aria-label="npm" href="https://www.npmjs.com/package/next-api-decorators" target="_blank">
