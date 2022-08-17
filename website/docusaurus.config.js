@@ -66,6 +66,9 @@ module.exports = {
       ],
       copyright: `Copyright © ${new Date().getFullYear()} <a href="https://instantcommerce.io" target="_blank" rel="noopener">Instant Commerce<a/>.`,
     },
+    colorMode: {
+      defaultMode: 'dark'
+    }
   },
   presets: [
     [
