@@ -12,7 +12,7 @@ import { parseRequestUrl } from './internals/parseRequestUrl';
  *
  * @example
  * ```ts
- * import { createHandler, Get } from '@storyofams/next-api-decorators';
+ * import { createHandler, Get } from 'next-api-decorators';
  *
  * class Events {
  *  Get()

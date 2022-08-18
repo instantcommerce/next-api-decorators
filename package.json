@@ -1,20 +1,20 @@
 {
-  "name": "@storyofams/next-api-decorators",
+  "name": "next-api-decorators",
   "description": "Collection of decorators to create typed Next.js API routes, with easy request validation and transformation.",
   "version": "0.0.0-development",
   "author": {
-    "name": "Story of AMS",
-    "url": "https://storyofams.com",
-    "email": "dev@storyofams.com"
+    "name": "Instant Commerce",
+    "url": "https://instantcommerce.io",
+    "email": "dev@instantcommerce.io"
   },
   "main": "dist/index.js",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/storyofams/next-api-decorators"
+    "url": "https://github.com/instantcommerce/next-api-decorators"
   },
   "bugs": {
-    "url": "https://github.com/storyofams/next-api-decorators/issues"
+    "url": "https://github.com/instantcommerce/next-api-decorators/issues"
   },
   "keywords": [
     "typescript",
@@ -46,8 +46,8 @@
     "next": ">=10.0.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "17.0.2",
-    "@commitlint/config-conventional": "17.0.2",
+    "@commitlint/cli": "17.0.3",
+    "@commitlint/config-conventional": "17.0.3",
     "@semantic-release/changelog": "6.0.1",
     "@storyofams/eslint-config-ams": "1.1.2",
     "@types/express": "^4.17.11",
@@ -70,9 +70,9 @@
     "express-rate-limit": "^6.0.4",
     "husky": "8.0.1",
     "jest": "26.6.3",
-    "lint-staged": "13.0.2",
+    "lint-staged": "13.0.3",
     "multer": "^1.4.2",
-    "next": "12.1.6",
+    "next": "12.2.5",
     "path-to-regexp": "^6.2.0",
     "pinst": "^3.0.0",
     "prettier": "2.2.1",

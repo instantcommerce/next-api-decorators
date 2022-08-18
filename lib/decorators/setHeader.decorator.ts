@@ -1,4 +1,4 @@
-export const HEADER_TOKEN = Symbol('ams:next:header');
+export const HEADER_TOKEN = Symbol('instant:next:header');
 
 /**
  * Sets a header parameter into the response header.

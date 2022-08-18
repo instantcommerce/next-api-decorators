@@ -1,7 +1,7 @@
 import type { ClassConstructor } from 'class-transformer';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-export const CATCH_TOKEN = Symbol('ams:next:catch');
+export const CATCH_TOKEN = Symbol('instant:next:catch');
 
 type ExceptionHandlerFunction<T> = (error: T, req: NextApiRequest, res: NextApiResponse) => void | Promise<void>;
 

@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <Layout
       title={siteConfig.title}
-      description={`${siteConfig.tagline} By Story of AMS.`}
+      description={`${siteConfig.tagline} By Instant Commerce.`}
     >
       <header className={clsx('hero hero--primary', styles.heroBanner)}>
         <div className="container">

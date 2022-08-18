@@ -11,7 +11,7 @@ export interface MetaParameter {
   fn?: ParamDecorator<any>;
 }
 
-export const PARAMETER_TOKEN = Symbol('ams:next:parameters');
+export const PARAMETER_TOKEN = Symbol('instant:next:parameters');
 
 function addParameter(
   location: MetaParameter['location'],

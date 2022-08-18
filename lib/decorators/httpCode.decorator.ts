@@ -1,4 +1,4 @@
-export const HTTP_CODE_TOKEN = Symbol('ams:next:httpCode');
+export const HTTP_CODE_TOKEN = Symbol('instant:next:httpCode');
 
 /**
  * Defines the HTTP response code of the route.

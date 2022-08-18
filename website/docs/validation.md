@@ -50,7 +50,7 @@ export default createHandler(UserHandler);
 When your application expects a nested JSON object, you can easily define its shape in your DTOs and validate the incoming data against it.
 
 ```ts
-import { createHandler, Body, Post, ValidationPipe } from '@storyofams/next-api-decorators';
+import { createHandler, Body, Post, ValidationPipe } from 'next-api-decorators';
 import { Type } from 'class-transformer';
 import { IsNotEmpty, IsNumber, MinLength, ValidateNested } from 'class-validator';
 

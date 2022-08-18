@@ -15,8 +15,8 @@ describe('getCallerInfo', () => {
         providedStack ??
         (nextJsVersion === 12_0_9
           ? `Error
-  at Object.getCallerInfo (/unix-example-path/node_modules/@storyofams/next-api-decorators/dist/internals/getCallerInfo.js:9:30)
-  at createHandler (/unix-example-path/node_modules/@storyofams/next-api-decorators/dist/createHandler.js:30:51)
+  at Object.getCallerInfo (/unix-example-path/node_modules/next-api-decorators/dist/internals/getCallerInfo.js:9:30)
+  at createHandler (/unix-example-path/node_modules/next-api-decorators/dist/createHandler.js:30:51)
   at eval (webpack-internal:///(api)/./${path}.ts:91:144)
   at Object.(api)/./${path}.ts (/unix-example-path/.next/server/${path}.js:32:1)
   at __webpack_require__ (/unix-example-path/.next/server/webpack-api-runtime.js:33:42)
@@ -26,8 +26,8 @@ describe('getCallerInfo', () => {
   at Module._compile (node:internal/modules/cjs/loader:1101:14)
   at Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)`
           : `Error
-  at Object.getCallerInfo (/unix-example-path/node_modules/@storyofams/next-api-decorators/dist/internals/getCallerInfo.js:9:30)
-  at createHandler (/unix-example-path/node_modules/@storyofams/next-api-decorators/dist/createHandler.js:30:51)
+  at Object.getCallerInfo (/unix-example-path/node_modules/next-api-decorators/dist/internals/getCallerInfo.js:9:30)
+  at createHandler (/unix-example-path/node_modules/next-api-decorators/dist/createHandler.js:30:51)
   at eval (webpack-internal:///./${path}.ts:91:144)
   at Object../${path}.ts (/unix-example-path/.next/server/${path}.js:32:1)
   at __webpack_require__ (/unix-example-path/.next/server/webpack-api-runtime.js:33:42)
@@ -116,8 +116,8 @@ describe('getCallerInfo', () => {
       'pages/api/users/deep/[[...params]]',
       undefined,
       'Error\n' +
-        '    at Object.getCallerInfo (C:/Users/exampleuser/project/route-matching/node_modules/@storyofams/next-api-decorators/dist/internals/getCallerInfo.js:9:30)\n' +
-        '    at createHandler (C:/Users/exampleuser/project/route-matching/node_modules/@storyofams/next-api-decorators/dist/createHandler.js:30:51)\n' +
+        '    at Object.getCallerInfo (C:/Users/exampleuser/project/route-matching/node_modules/next-api-decorators/dist/internals/getCallerInfo.js:9:30)\n' +
+        '    at createHandler (C:/Users/exampleuser/project/route-matching/node_modules/next-api-decorators/dist/createHandler.js:30:51)\n' +
         '    at Object../pages/api/users/deep/[[...params]].ts (C:/Users/exampleuser/project/route-matching/.next/server/pages/api/users/deep/[[...params]].js:287:142)\n' +
         '    at __webpack_require__ (C:/Users/exampleuser/project/route-matching/.next/server/webpack-runtime.js:25:42)\n' +
         '    at __webpack_exec__ (C:/Users/exampleuser/project/route-matching/.next/server/pages/api/users/deep/[[...params]].js:319:52)\n' +

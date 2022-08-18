@@ -1,6 +1,6 @@
-# @storyofams/next-api-decorators/example
+# next-api-decorators/example
 
-Example usage of the `@storyofams/next-api-decorators` with Next.js
+Example usage of the `next-api-decorators` with Next.js
 
 ## Getting started
 

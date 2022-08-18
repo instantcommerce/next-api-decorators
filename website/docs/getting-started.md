@@ -6,7 +6,7 @@ slug: /
 ## Basic usage
 
 ```ts
-import { createHandler, Get } from '@storyofams/next-api-decorators';
+import { createHandler, Get } from 'next-api-decorators';
 
 class UserHandler {
   @Get()
@@ -34,7 +34,7 @@ If you are not familiar with Next.js or NestJS and want some more information (o
 ## Installation
 
 ```bash npm2yarn
-npm install @storyofams/next-api-decorators
+npm install next-api-decorators
 ```
 
 ### Using with SWC
@@ -75,4 +75,4 @@ Your tsconfig.json needs the following flag in the `compilerOptions` section:
 
 ## Examples
 
-Please see [the examples](https://github.com/storyofams/next-api-decorators/tree/master/examples) to see how this library can be used.
+Please see [the examples](https://github.com/instantcommerce/next-api-decorators/tree/master/examples) to see how this library can be used.
