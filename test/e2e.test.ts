@@ -331,7 +331,7 @@ describe('E2E', () => {
       .expect(200)
       .then(res => expect(res).toMatchObject({ headers: { 'x-api': 'true' }, body: { patching: true } })));
 
-  it('Should return a express style 404 for an undefined HTTP verb.', () =>
+  it('Should return a express style 404 for an undefined HTTP method.', () =>
     request(server)
       .options('/')
       .set('Content-Type', 'application/json')

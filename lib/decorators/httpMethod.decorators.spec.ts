@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import 'reflect-metadata';
 import * as lp from '../internals/loadPackage';
-import { Get, Post, Put, Delete, HttpVerb, HTTP_METHOD_TOKEN, Patch } from './httpMethod.decorators';
+import { Get, Post, Put, Delete, HttpMethod, HTTP_METHOD_TOKEN, Patch } from './httpMethod.decorators';
 
 class Test {
   @Get()
@@ -49,30 +49,34 @@ describe('HttpMethod decorator', () => {
     process.env = ENV;
   });
 
-  it('Should create all the verbs.', () => {
+  it('Should create all the methods.', () => {
     const meta = Reflect.getMetadata(HTTP_METHOD_TOKEN, Test);
     expect(meta).toBeInstanceOf(Array);
     expect(meta).toMatchObject(
       expect.arrayContaining([
-        { path: '/', verb: HttpVerb.GET, propertyKey: 'get' },
-        { path: '/', verb: HttpVerb.POST, propertyKey: 'post' },
-        { path: '/', verb: HttpVerb.PUT, propertyKey: 'put' },
-        { path: '/', verb: HttpVerb.DELETE, propertyKey: 'delete' },
-        { path: '/', verb: HttpVerb.PATCH, propertyKey: 'patch' }
+        { path: '/', method: HttpMethod.GET, propertyKey: 'get' },
+        { path: '/', method: HttpMethod.POST, propertyKey: 'post' },
+        { path: '/', method: HttpMethod.PUT, propertyKey: 'put' },
+        { path: '/', method: HttpMethod.DELETE, propertyKey: 'delete' },
+        { path: '/', method: HttpMethod.PATCH, propertyKey: 'patch' }
       ])
     );
   });
 
-  it('Should create the GET verb with paths', () => {
+  it('Should create the GET method with paths', () => {
     const meta = Reflect.getMetadata(HTTP_METHOD_TOKEN, TestPath);
     expect(meta).toBeInstanceOf(Array);
     expect(meta).toMatchObject(
       expect.arrayContaining([
-        { path: '/', verb: HttpVerb.GET, propertyKey: 'index' },
-        { path: '/explore', verb: HttpVerb.GET, propertyKey: 'explore' },
-        { path: '/explore/:id', verb: HttpVerb.GET, propertyKey: 'exploreDetails' },
-        { path: '/explore/:id/comments', verb: HttpVerb.GET, propertyKey: 'exploreDetailsComments' },
-        { path: '/explore/:id/comments/:commentId', verb: HttpVerb.GET, propertyKey: 'exploreDetailsCommentDetails' }
+        { path: '/', method: HttpMethod.GET, propertyKey: 'index' },
+        { path: '/explore', method: HttpMethod.GET, propertyKey: 'explore' },
+        { path: '/explore/:id', method: HttpMethod.GET, propertyKey: 'exploreDetails' },
+        { path: '/explore/:id/comments', method: HttpMethod.GET, propertyKey: 'exploreDetailsComments' },
+        {
+          path: '/explore/:id/comments/:commentId',
+          method: HttpMethod.GET,
+          propertyKey: 'exploreDetailsCommentDetails'
+        }
       ])
     );
   });

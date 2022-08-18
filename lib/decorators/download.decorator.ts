@@ -1,4 +1,4 @@
-export const HTTP_DOWNLOAD_TOKEN = Symbol('ams:next:download');
+export const HTTP_DOWNLOAD_TOKEN = Symbol('instant:next:download');
 
 /**
  * Marks the method as a download handler for the client, so the returned file can be downloaded by the browser.

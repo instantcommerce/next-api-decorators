@@ -19,7 +19,7 @@ slug: /api/decorators
 
 ### HTTP method decorators
 
-The following decorators mark your class method as a handler for the corresponding HTTP verb.
+The following decorators mark your class method as a handler for the corresponding HTTP method.
 
 * `@Get(path?: string)`
 * `@Post(path?: string)`

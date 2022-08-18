@@ -1,10 +1,10 @@
 import 'reflect-metadata';
-import { Get } from '../decorators';
+import { Get, HttpMethod } from '../decorators';
 import { findRoute } from './findRoute';
 import * as lp from './loadPackage';
 
 class Handler {
-  @Get()
+  @Get({ extraMethods: [HttpMethod.HEAD] })
   public list() {
     return { list: true };
   }
@@ -14,7 +14,7 @@ class Handler {
     return { details: true };
   }
 
-  @Get('/item')
+  @Get('/item', { extraMethods: [HttpMethod.OPTIONS] })
   public item() {
     return { item: true };
   }
@@ -33,7 +33,7 @@ describe('findRoute', () => {
     expect(method).toMatchObject({
       path: expect.stringContaining('/:id'),
       propertyKey: 'details',
-      verb: 'GET'
+      method: 'GET'
     });
   });
 
@@ -44,7 +44,21 @@ describe('findRoute', () => {
     expect(method).toMatchObject({
       path: '/item',
       propertyKey: 'item',
-      verb: 'GET'
+      method: 'GET'
+    });
+  });
+
+  it('Should return the "item" method for the defined extra Http method.', () => {
+    const [keys, , method] = findRoute(Handler, 'OPTIONS', '/item');
+
+    expect(keys).toHaveLength(0);
+    expect(method).toMatchObject({
+      path: '/item',
+      propertyKey: 'item',
+      method: 'GET',
+      options: expect.objectContaining({
+        extraMethods: [HttpMethod.OPTIONS]
+      })
     });
   });
 
@@ -55,7 +69,7 @@ describe('findRoute', () => {
     expect(method).toMatchObject({
       path: '/item/child-item',
       propertyKey: 'childItem',
-      verb: 'GET'
+      method: 'GET'
     });
   });
 
@@ -71,7 +85,26 @@ describe('findRoute', () => {
     expect(method).toMatchObject({
       path: '/',
       propertyKey: 'list',
-      verb: 'GET'
+      method: 'GET'
+    });
+  });
+
+  it('Should return the main / route instead of "details" method for the defined extra Http method when "path-to-regexp" is not installed.', () => {
+    const spy = jest
+      .spyOn(lp, 'loadPackage')
+      .mockImplementation((name: string) => (name === 'path-to-regexp' ? false : require(name)));
+
+    const [, , method] = findRoute(Handler, 'HEAD', '/1');
+
+    spy.mockRestore();
+
+    expect(method).toMatchObject({
+      path: '/',
+      propertyKey: 'list',
+      method: 'GET',
+      options: expect.objectContaining({
+        extraMethods: [HttpMethod.HEAD]
+      })
     });
   });
 
@@ -88,7 +121,27 @@ describe('findRoute', () => {
     expect(method).toMatchObject({
       path: '/item',
       propertyKey: 'item',
-      verb: 'GET'
+      method: 'GET'
+    });
+  });
+
+  it('Should return the "item" method for the defined extra Http method when "path-to-regexp" is not installed.', () => {
+    const spy = jest
+      .spyOn(lp, 'loadPackage')
+      .mockImplementation((name: string) => (name === 'path-to-regexp' ? false : require(name)));
+
+    const [keys, , method] = findRoute(Handler, 'OPTIONS', '/item');
+
+    spy.mockRestore();
+
+    expect(keys).toHaveLength(0);
+    expect(method).toMatchObject({
+      path: '/item',
+      propertyKey: 'item',
+      method: 'GET',
+      options: expect.objectContaining({
+        extraMethods: [HttpMethod.OPTIONS]
+      })
     });
   });
 
@@ -105,7 +158,7 @@ describe('findRoute', () => {
     expect(method).toMatchObject({
       path: '/item/child-item',
       propertyKey: 'childItem',
-      verb: 'GET'
+      method: 'GET'
     });
   });
 });
