@@ -19,7 +19,7 @@ export function parseRequestUrl(req: NextApiRequest, directoryPath?: string, fil
   if (directoryPath && !fileName?.startsWith('[...')) {
     const pathRegExp = new RegExp(
       // "pages/api/articles/index.ts" is compiled into "pages/api/articles.js" which has to be appended to the directory path for parsing
-      directoryPath.split('/.next/server/pages')[1].replace(/(\[[0-9a-zA-Z-]+\])/, '([0-9a-zA-Z-]+)') +
+      directoryPath.split('/pages')[1].replace(/(\[[0-9a-zA-Z-]+\])/, '([0-9a-zA-Z-]+)') +
         (fileName && !fileName.startsWith('[...') && !fileName.startsWith('[[...')
           ? `/${basename(fileName, extname(fileName))}`
           : '')
