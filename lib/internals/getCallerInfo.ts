@@ -1,29 +1,20 @@
-import { basename, dirname } from 'path';
+import { basename, dirname, join } from 'path';
 
 export function getCallerInfo(): [directoryPath: string | undefined, fileName: string | undefined] {
-  let directoryPath: string | undefined;
-  let fileName: string | undefined;
-
   let errorStack = new Error().stack;
+  /* istanbul ignore else */
   if (errorStack && process.platform === 'win32') {
     errorStack = errorStack.replace(/\\/g, '/');
   }
 
-  const parenthesisRegExp = /\(([^)]+)\)$/;
-  const pathInError = errorStack
-    ?.split('\n')
-    .find(line => parenthesisRegExp.test(line) && line.includes('/.next/server/pages/api'));
-
+  const errorLine = errorStack?.split('\n').find(line => line.includes('/pages/api/'));
+  const fileInfo = errorLine?.split(/:\d+:\d+/);
   /* istanbul ignore else */
-  if (pathInError) {
-    const [, pathWithRowCol] = parenthesisRegExp.exec(pathInError) ?? [];
-    /* istanbul ignore else */
-    if (pathWithRowCol) {
-      const fullPath = pathWithRowCol.replace(/:(\d+):(\d+)$/, '');
-      directoryPath = dirname(fullPath);
-      fileName = basename(fullPath);
-    }
+  if (!fileInfo?.length) {
+    return [undefined, undefined];
   }
 
-  return [directoryPath, fileName];
+  const fileName = fileInfo[0].trim().split('/pages/api/');
+
+  return [join('/pages/api', dirname(fileName[fileName.length - 1])), basename(fileName[fileName.length - 1])];
 }
