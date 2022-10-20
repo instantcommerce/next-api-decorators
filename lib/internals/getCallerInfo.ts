@@ -16,5 +16,8 @@ export function getCallerInfo(): [directoryPath: string | undefined, fileName: s
 
   const fileName = fileInfo[0].trim().split('/pages/api/');
 
-  return [join('/pages/api', dirname(fileName[fileName.length - 1])), basename(fileName[fileName.length - 1])];
+  return [
+    join('/pages/api', dirname(fileName[fileName.length - 1])).replace(/\\/g, '/'),
+    basename(fileName[fileName.length - 1])
+  ];
 }
