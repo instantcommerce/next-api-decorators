@@ -3,6 +3,9 @@ import { loadPackage } from '../../internals/loadPackage';
 import { validateZodSchema } from '../../internals/validateZodSchema';
 import { ParameterPipe, PipeMetadata } from '../ParameterPipe';
 
+// re-export createZodDto to make it available under `next-api-decorators`
+export { createZodDto } from '../../internals/createZodDto';
+
 /**
  * Validates request body values and gets them as DTOs.
  *
