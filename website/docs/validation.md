@@ -111,7 +111,7 @@ const createUserSchema = z.object({
   fullName: z.string().min(1);
 });
 
-export class CreateUserDTO  extends createZodDto(createUserSchema) {};
+export class CreateUserDTO extends createZodDto(createUserSchema) {};
 ```
 
 And, later we make use of the `CreateUserDTO` in conjunction with `ZodValidationPipe` in our route handler.
@@ -130,7 +130,7 @@ export default createHandler(UserHandler);
 
 ### Nested data
 
-The equivalent of the `class-validator` and `class-transformer` would be
+The equivalent of the `class-validator` and `class-transformer` example would be
 
 ```ts
 import { createHandler, createZodDto, Body, Post, ZodValidationPipe } from 'next-api-decorators';
@@ -146,7 +146,7 @@ const mapMarkerSchema z.object({
   coordinates: coordinateSchema
 });
 
-export class MapMarker  extends createZodDto(mapMarkerSchema) {};
+export class MapMarker extends createZodDto(mapMarkerSchema) {};
 
 class LocationHandler {
   @Post()
