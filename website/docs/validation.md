@@ -79,8 +79,8 @@ class LocationHandler {
   @Post()
   saveLocation(@Body(ValidationPipe) body: MapMarker) {
     // Do something with the data.
-    return `Location "${body.label}" saved.';
-  }
+    return `Location "${body.label}" saved.`;
+  
 }
 
 export default createHandler(LocationHandler);

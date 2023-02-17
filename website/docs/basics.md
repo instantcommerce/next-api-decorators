@@ -192,7 +192,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 However, with `next-api-decorators` you can write the same handler in a declarative manner:
 
 ```ts
-import { createHandler, Body, Get, HttpCode, NotFoundException, Post, Query } from 'next-api-decorators';
+import { createHandler, Body, Get, HttpCode, NotFoundException, Post, Query, ValidationPipe } from 'next-api-decorators';
 
 class User {
   // GET /api/user
