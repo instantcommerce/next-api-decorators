@@ -182,7 +182,7 @@ export function applyHandler(
     );
 
     try {
-      const runMainlayerFunc = async () => {
+      const runMainLayerFunc = async () => {
         await runMainLayer.call(this, target, propertyKey, originalHandler, req, res);
       };
       await runMiddlewares.call(
@@ -190,7 +190,7 @@ export function applyHandler(
         [...(classMiddlewares ?? []), ...(methodMiddlewares ?? [])],
         req,
         res,
-        runMainlayerFunc
+        runMainLayerFunc
       );
     } catch (err) {
       if (isResponseSent(res)) {
