@@ -20,7 +20,12 @@ function isResponseSent(res: ServerResponse): boolean {
   return res.writableEnded || res.finished;
 }
 
-async function runMiddlewares(middlewares: Middleware[], req: NextApiRequest, res: NextApiResponse): Promise<void> {
+async function runMiddlewares(
+  middlewares: Middleware[],
+  req: NextApiRequest,
+  res: NextApiResponse,
+  mainFun: () => Promise<void>
+): Promise<void> {
   const executeMiddleware = async (
     req: NextApiRequest,
     res: NextApiResponse,
@@ -63,7 +68,7 @@ async function runMiddlewares(middlewares: Middleware[], req: NextApiRequest, re
         reject(err);
       } else {
         // All middlewares have been executed successfully
-        resolve();
+        mainFun().then(resolve).catch(reject);
       }
     });
   });
@@ -177,8 +182,16 @@ export function applyHandler(
     );
 
     try {
-      await runMiddlewares.call(this, [...(classMiddlewares ?? []), ...(methodMiddlewares ?? [])], req, res);
-      await runMainLayer.call(this, target, propertyKey, originalHandler, req, res);
+      const runMainlayerFunc = async () => {
+        await runMainLayer.call(this, target, propertyKey, originalHandler, req, res);
+      };
+      await runMiddlewares.call(
+        this,
+        [...(classMiddlewares ?? []), ...(methodMiddlewares ?? [])],
+        req,
+        res,
+        runMainlayerFunc
+      );
     } catch (err) {
       if (isResponseSent(res)) {
         return;
