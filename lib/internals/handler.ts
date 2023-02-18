@@ -24,7 +24,7 @@ async function runMiddlewares(
   middlewares: Middleware[],
   req: NextApiRequest,
   res: NextApiResponse,
-  mainFun: () => Promise<void>
+  callback: () => Promise<void>
 ): Promise<void> {
   const executeMiddleware = async (
     req: NextApiRequest,
@@ -68,7 +68,7 @@ async function runMiddlewares(
         reject(err);
       } else {
         // All middlewares have been executed successfully
-        mainFun().then(resolve).catch(reject);
+        callback().then(resolve).catch(reject);
       }
     });
   });
