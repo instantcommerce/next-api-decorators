@@ -46,7 +46,7 @@
     "next": ">=10.0.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "17.5.0",
+    "@commitlint/cli": "17.5.1",
     "@commitlint/config-conventional": "17.4.4",
     "@semantic-release/changelog": "6.0.3",
     "@storyofams/eslint-config-ams": "1.1.2",
