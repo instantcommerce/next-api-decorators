@@ -47,7 +47,7 @@
   },
   "devDependencies": {
     "@commitlint/cli": "17.6.1",
-    "@commitlint/config-conventional": "17.4.4",
+    "@commitlint/config-conventional": "17.6.3",
     "@semantic-release/changelog": "6.0.3",
     "@storyofams/eslint-config-ams": "1.1.2",
     "@types/express": "^4.17.11",
