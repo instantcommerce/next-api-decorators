@@ -37,7 +37,7 @@ And, later we make use of the `CreateUserDTO` in conjunction with `ValidationPip
 // pages/api/user.ts
 class UserHandler {
   @Post()
-  createUser(@Body(ValidationPipe) body: CreateUserDTO) {
+  async createUser(@Body(ValidationPipe) body: CreateUserDTO) {
     return await DB.createUser(body);
   }
 }
