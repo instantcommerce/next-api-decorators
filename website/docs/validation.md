@@ -37,7 +37,7 @@ And, later we make use of the `CreateUserDTO` in conjunction with `ValidationPip
 // pages/api/user.ts
 class UserHandler {
   @Post()
-  createUser(@Body(ValidationPipe) body: CreateUserDTO) {
+  async createUser(@Body(ValidationPipe) body: CreateUserDTO) {
     return await DB.createUser(body);
   }
 }
@@ -93,7 +93,6 @@ The options you can pass into `ValidationPipe` are inherited from `class-validat
 🔗 [`class-validator` options](https://github.com/typestack/class-validator#passing-options)
 
 🔗 [`class-transformer` options](https://github.com/typestack/class-transformer/blob/e5fc6bb7cfad7ba03f1b898f639cae4264bfbc12/src/interfaces/class-transformer-options.interface.ts#L6)
-
 
 ## ZodValidationPipe
 The `ZodValidationPipe` uses [`zod`](https://github.com/colinhacks/zod) to validate and transform the incoming request body.

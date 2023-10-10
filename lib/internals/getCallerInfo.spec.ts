@@ -17,8 +17,8 @@ describe('getCallerInfo', () => {
           ? `Error
   at Object.getCallerInfo (/unix-example-path/node_modules/next-api-decorators/dist/internals/getCallerInfo.js:9:30)
   at createHandler (/unix-example-path/node_modules/next-api-decorators/dist/createHandler.js:30:51)
-  at eval (webpack-internal:///(api)/./${path}.ts:91:144)
-  at Object.(api)/./${path}.ts (/unix-example-path/.next/server/${path}.js:32:1)
+  at eval (webpack-internal:///(api)/./${path}.js:91:144)
+  at Object.(api)/./${path}.js (/unix-example-path/.next/server/${path}.js:32:1)
   at __webpack_require__ (/unix-example-path/.next/server/webpack-api-runtime.js:33:42)
   at __webpack_exec__ (/unix-example-path/.next/server/${path}.js:42:39)
   at /unix-example-path/.next/server/${path}.js:43:28
@@ -28,8 +28,8 @@ describe('getCallerInfo', () => {
           : `Error
   at Object.getCallerInfo (/unix-example-path/node_modules/next-api-decorators/dist/internals/getCallerInfo.js:9:30)
   at createHandler (/unix-example-path/node_modules/next-api-decorators/dist/createHandler.js:30:51)
-  at eval (webpack-internal:///./${path}.ts:91:144)
-  at Object../${path}.ts (/unix-example-path/.next/server/${path}.js:32:1)
+  at eval (webpack-internal:///./${path}.js:91:144)
+  at Object../${path}.js (/unix-example-path/.next/server/${path}.js:32:1)
   at __webpack_require__ (/unix-example-path/.next/server/webpack-api-runtime.js:33:42)
   at __webpack_exec__ (/unix-example-path/.next/server/${path}.js:42:39)
   at /unix-example-path/.next/server/${path}.js:43:28
@@ -56,7 +56,7 @@ describe('getCallerInfo', () => {
     Object.defineProperty(process, 'platform', { value: 'darwin' });
 
     const dir = getCallerInfo();
-    expect(dir).toStrictEqual(['/unix-example-path/.next/server/pages/api/tags/[id]', '[[...params]].js']);
+    expect(dir).toStrictEqual(['/pages/api/tags/[id]', '[[...params]].js']);
 
     spyError.mockRestore();
   });
@@ -66,7 +66,7 @@ describe('getCallerInfo', () => {
     Object.defineProperty(process, 'platform', { value: 'darwin' });
 
     const dir = getCallerInfo();
-    expect(dir).toStrictEqual(['/unix-example-path/.next/server/pages/api/tags/[id]', '[[...params]].js']);
+    expect(dir).toStrictEqual(['/pages/api/tags/[id]', '[[...params]].js']);
 
     spyError.mockRestore();
   });
@@ -76,7 +76,7 @@ describe('getCallerInfo', () => {
     Object.defineProperty(process, 'platform', { value: 'win32' });
 
     const dir = getCallerInfo();
-    expect(dir).toStrictEqual(['C:/win-example-path/.next/server/pages/api/tags/[id]', '[[...params]].js']);
+    expect(dir).toStrictEqual(['/pages/api/tags/[id]', '[[...params]].js']);
 
     spyError.mockRestore();
   });
@@ -86,7 +86,7 @@ describe('getCallerInfo', () => {
     Object.defineProperty(process, 'platform', { value: 'win32' });
 
     const dir = getCallerInfo();
-    expect(dir).toStrictEqual(['C:/win-example-path/.next/server/pages/api/tags/[id]', '[[...params]].js']);
+    expect(dir).toStrictEqual(['/pages/api/tags/[id]', '[[...params]].js']);
 
     spyError.mockRestore();
   });
@@ -96,7 +96,7 @@ describe('getCallerInfo', () => {
     Object.defineProperty(process, 'platform', { value: 'darwin' });
 
     const dir = getCallerInfo();
-    expect(dir).toStrictEqual(['/unix-example-path/.next/server/pages/api', '[[...user]].js']);
+    expect(dir).toStrictEqual(['/pages/api', '[[...user]].js']);
 
     spyError.mockRestore();
   });
@@ -106,7 +106,7 @@ describe('getCallerInfo', () => {
     Object.defineProperty(process, 'platform', { value: 'darwin' });
 
     const dir = getCallerInfo();
-    expect(dir).toStrictEqual(['/unix-example-path/.next/server/pages/api', '[[...user]].js']);
+    expect(dir).toStrictEqual(['/pages/api', '[[...user]].js']);
 
     spyError.mockRestore();
   });
@@ -130,10 +130,41 @@ describe('getCallerInfo', () => {
     Object.defineProperty(process, 'platform', { value: 'win32' });
 
     const dir = getCallerInfo();
-    expect(dir).toStrictEqual([
-      'C:/Users/exampleuser/project/route-matching/.next/server/pages/api/users/deep',
-      '[[...params]].js'
-    ]);
+    expect(dir).toStrictEqual(['/pages/api/users/deep', '[[...params]].js']);
+
+    spyError.mockRestore();
+  });
+
+  test('Issue #482 - Development error', () => {
+    const spyError = mockError(
+      'pages/api/deep/nested/route/[[...params]]',
+      undefined,
+      'Error\n' +
+        '    at Object.getCallerInfo (/unix-example-path/node_modules/next-api-decorators/dist/internals/getCallerInfo.js:9:22)\n' +
+        '    at createHandler (/unix-example-path/node_modules/next-api-decorators/dist/createHandler.js:30:51)\n' +
+        '    at eval (webpack-internal:///(api)/./pages/api/deep/nested/route/[[...params]].js:35:132)'
+    );
+    Object.defineProperty(process, 'platform', { value: 'darwin' });
+
+    const dir = getCallerInfo();
+    expect(dir).toStrictEqual(['/pages/api/deep/nested/route', '[[...params]].js']);
+
+    spyError.mockRestore();
+  });
+
+  test('Issue #482 - Production error', () => {
+    const spyError = mockError(
+      'pages/api/deep/nested/route/[[...params]]',
+      undefined,
+      'Error\n' +
+        '    at Object.getCallerInfo (/unix-example-path/node_modules/next-api-decorators/dist/internals/getCallerInfo.js:9:22)\n' +
+        '    at createHandler (/unix-example-path/node_modules/next-api-decorators/dist/createHandler.js:30:51)\n' +
+        '    at /unix-example-path/.next/server/pages/api/deep/nested/route/[[...params]].js:58:132'
+    );
+    Object.defineProperty(process, 'platform', { value: 'darwin' });
+
+    const dir = getCallerInfo();
+    expect(dir).toStrictEqual(['/pages/api/deep/nested/route', '[[...params]].js']);
 
     spyError.mockRestore();
   });
