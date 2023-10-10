@@ -106,8 +106,8 @@ import { createZodDto } from "next-api-decorators";
 import { z } from 'zod';
 
 const createUserSchema = z.object({
-  email: z.string().email();
-  fullName: z.string().min(1);
+  email: z.string().email(),
+  fullName: z.string().min(1)
 });
 
 export class CreateUserDTO extends createZodDto(createUserSchema) {};
