@@ -102,7 +102,7 @@ The `ZodValidationPipe` uses [`zod`](https://github.com/colinhacks/zod) to valid
 We first create our `createUserSchema` (zod schema) to define the rules we need and from that schema we create our DTO.
 
 ```ts
-import { createUserSchema } from "next-api-decorators";
+import { createZodDto } from "next-api-decorators";
 import { z } from 'zod';
 
 const createUserSchema = z.object({
