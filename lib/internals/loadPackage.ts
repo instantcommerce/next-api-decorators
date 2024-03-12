@@ -3,7 +3,7 @@ interface LoadPackageWarning {
   docsUrl: string;
 }
 
-type LoadablePackages = 'path-to-regexp' | 'class-validator' | 'class-transformer';
+type LoadablePackages = 'path-to-regexp' | 'class-validator' | 'class-transformer' | 'zod';
 
 export function loadPackage(name: LoadablePackages, warning?: LoadPackageWarning): any {
   try {
@@ -14,6 +14,9 @@ export function loadPackage(name: LoadablePackages, warning?: LoadPackageWarning
         return require('class-transformer');
       case 'class-validator':
         return require('class-validator');
+      case 'zod':
+        return require('zod');
+
       default:
         throw new Error('Invalid package name.');
     }

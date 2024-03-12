@@ -270,7 +270,9 @@ describe('E2E', () => {
       .then(res =>
         expect(res).toMatchObject({
           body: {
-            errors: expect.arrayContaining([expect.stringContaining('source must be one of the following values: online, offline')])
+            errors: expect.arrayContaining([
+              expect.stringContaining('source must be one of the following values: online, offline')
+            ])
           }
         })
       ));
