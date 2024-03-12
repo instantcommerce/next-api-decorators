@@ -9,6 +9,7 @@ import { parseRequestUrl } from './internals/parseRequestUrl';
  * Prepares a router for the given class.
  *
  * @param cls Router class
+ * @param builder Router instance builder
  *
  * @example
  * ```ts
@@ -24,13 +25,20 @@ import { parseRequestUrl } from './internals/parseRequestUrl';
  * export default createHandler(Events);
  * ```
  */
-export function createHandler(cls: new (...args: any[]) => any): NextApiHandler {
-  const instance = new cls();
+export function createHandler<T extends any>(
+  cls: new (...args: any[]) => T,
+  builder: () => T | Promise<T> = () => new cls()
+): NextApiHandler {
+  let instance: any;
   const [directory, fileName] = getCallerInfo();
 
-  return (req: NextApiRequest, res: NextApiResponse) => {
+  return async (req: NextApiRequest, res: NextApiResponse) => {
     if (!req.url || !req.method) {
       return notFound(req, res);
+    }
+
+    if (!instance) {
+      instance = await builder();
     }
 
     const path = parseRequestUrl(req, directory, fileName);
