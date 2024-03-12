@@ -21,32 +21,57 @@ function isResponseSent(res: ServerResponse): boolean {
 }
 
 async function runMiddlewares(
-  this: TypedPropertyDescriptor<any>,
   middlewares: Middleware[],
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
+  callback: () => Promise<void>
 ): Promise<void> {
-  for (const middleware of middlewares) {
+  const executeMiddleware = async (
+    req: NextApiRequest,
+    res: NextApiResponse,
+    index: number,
+    next: (err: Error | null) => void
+  ) => {
     if (isResponseSent(res)) {
-      break;
+      next(null);
+      return;
+    }
+    if (index === middlewares.length) {
+      // Base case: all middlewares have been executed
+      next(null);
+      return;
     }
 
-    await new Promise<void>((resolve, reject) => {
-      // The middleware uses the callback.
-      const fnResult = (middleware as NextMiddleware).call(this, req, res, err => {
+    const middleware = middlewares[index] as NextMiddleware;
+
+    try {
+      await middleware(req, res, async err => {
         if (err) {
-          return reject(handleMulterError(err));
+          // If an error occurs, stop execution and propagate the error back up the call stack
+          next(handleMulterError(err));
+        } else {
+          // If no error occurs, execute the next middleware
+          await executeMiddleware(req, res, index + 1, next);
         }
-
-        resolve();
       });
+    } catch (err) {
+      // If an error occurs, stop execution and propagate the error back up the call stack
+      next(handleMulterError(err as Error));
+    }
+  };
 
-      // The middleware is async.
-      if (fnResult instanceof Promise) {
-        fnResult.then(resolve).catch(reject);
+  // Start executing the first middleware
+  await new Promise<void>((resolve, reject) => {
+    executeMiddleware(req, res, 0, (err: Error | null) => {
+      if (err) {
+        // Handle any errors that occur during middleware execution
+        reject(err);
+      } else {
+        // All middlewares have been executed successfully
+        callback().then(resolve).catch(reject);
       }
     });
-  }
+  });
 }
 
 async function runMainLayer(
@@ -157,8 +182,16 @@ export function applyHandler(
     );
 
     try {
-      await runMiddlewares.call(this, [...(classMiddlewares ?? []), ...(methodMiddlewares ?? [])], req, res);
-      await runMainLayer.call(this, target, propertyKey, originalHandler, req, res);
+      const runMainLayerWrapper = async () => {
+        await runMainLayer.call(this, target, propertyKey, originalHandler, req, res);
+      };
+      await runMiddlewares.call(
+        this,
+        [...(classMiddlewares ?? []), ...(methodMiddlewares ?? [])],
+        req,
+        res,
+        runMainLayerWrapper
+      );
     } catch (err) {
       if (isResponseSent(res)) {
         return;
